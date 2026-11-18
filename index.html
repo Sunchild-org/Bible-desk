@@ -124,6 +124,7 @@
   #dv button{height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(236,235,228,.3);background:transparent;color:#ECEBE4;font-size:14px;cursor:pointer;font-family:inherit}
   #dv button.pri,#dvOn.on{background:rgba(67,190,144,.18);border-color:rgba(67,190,144,.55)}
   #dv .row{display:flex;gap:8px}#dv .row button{flex:1}
+  #dv .col{display:flex;flex-direction:column;gap:8px;margin-top:14px}#dv .dvn{margin:12px 2px 0;font-size:12.5px;line-height:1.5;color:rgba(236,235,228,.62)}
 #vm{position:fixed;inset:0;display:flex;align-items:flex-end;justify-content:center;background:rgba(5,8,7,.4);z-index:7;opacity:0;pointer-events:none;transition:opacity .2s}
 #vm.show{opacity:1;pointer-events:auto}
 #vm .vmc{width:min(420px,100%);margin:0 12px calc(16px + env(safe-area-inset-bottom));padding:16px;border-radius:18px;background:rgba(16,21,19,.95);border:1px solid rgba(67,190,144,.28);color:#F4F3EC;font-family:Georgia,serif;backdrop-filter:blur(8px)}
@@ -354,7 +355,7 @@ body.at-window #medBtn{visibility:visible;transition:opacity .8s ease}
 <div id="nav"><button type="button" data-stop="window">Window</button><button type="button" data-stop="study" class="on">Study</button></div>
 <button id="medBtn" type="button" aria-label="Stillness: music, sleep timer and breathing"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg></button>
 <button id="hlBtn" type="button" aria-label="Highlighter colour"></button>
-<div id="dv" role="dialog" aria-modal="true" aria-label="Daily devotion"><div class="box"><label>Daily devotion</label><div id="dvS"></div><div id="dvW"></div><label for="dvT">Reminder time</label><input id="dvT" type="time" value="07:00"><div class="tg"><span>Nudge me while the desk is open</span><button id="dvOn" type="button">Off</button></div><div class="row"><button id="dvCal" type="button">Add to calendar</button><button id="dvX" type="button" class="pri">Done</button></div></div></div>
+<div id="dv" role="dialog" aria-modal="true" aria-label="Daily devotion"><div class="box"><label>Daily devotion</label><div id="dvS"></div><div id="dvW"></div><label for="dvT">Reminder time</label><input id="dvT" type="time" value="07:00"><p class="dvn">Your phone's calendar will remind you every day at this time, even when the site is closed.</p><div class="col"><button id="dvG" type="button" class="pri">Add to Google Calendar</button><button id="dvCal" type="button">Download calendar file</button><button id="dvX" type="button">Done</button></div></div></div>
 <button id="sBtn" type="button" aria-label="Room sounds on or off"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/></svg></button>
 <button id="gBtn" type="button" aria-label="Settings" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
 <button id="sBtn2" type="button" aria-label="Search the Bible" aria-expanded="false"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button>
@@ -1900,14 +1901,13 @@ function dvDraw(){
   const n=streakNow(),b=Math.max(streakBest(),n);
   $('dvS').innerHTML=(n?n+'-day streak':'No streak yet')+'<small>Best: '+b+' day'+(b===1?'':'s')+' · read a page to count today</small>';
   let h='';for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);h+='<b class="'+(DAYS.includes(dk(d))?'on':'')+'">'+'SMTWTFS'[d.getDay()]+'</b>';}
-  $('dvW').innerHTML=h;$('dvT').value=REM.t;$('dvOn').textContent=REM.on?'On':'Off';$('dvOn').classList.toggle('on',REM.on);
+  $('dvW').innerHTML=h;$('dvT').value=REM.t;
 }
 function openDv(){dvDraw();$('dv').classList.add('show');}
 const closeDv=()=>$('dv').classList.remove('show');
 $('dvX').onclick=closeDv;$('dv').addEventListener('pointerdown',e=>{if(e.target===$('dv'))closeDv();});
 $('dvT').addEventListener('keydown',e=>e.stopPropagation());
 $('dvT').addEventListener('change',e=>{if(e.target.value){REM.t=e.target.value;REM.last='';remSave();}});
-$('dvOn').onclick=()=>{REM.on=!REM.on;REM.last='';remSave();dvDraw();if(REM.on&&window.Notification&&Notification.permission==='default')try{Notification.requestPermission();}catch(e){}};
 $('dvCal').onclick=()=>{   // a real repeating alarm in the phone's own calendar
   const [hh,mm]=REM.t.split(':').map(Number),d=new Date(),p=n=>String(n).padStart(2,'0'),f=x=>''+x.getFullYear()+p(x.getMonth()+1)+p(x.getDate())+'T'+p(x.getHours())+p(x.getMinutes())+'00';
   d.setHours(hh,mm,0,0);const e=new Date(d);e.setMinutes(mm+15);
@@ -1915,14 +1915,12 @@ $('dvCal').onclick=()=>{   // a real repeating alarm in the phone's own calendar
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download='daily-bible-reading.ics';document.body.appendChild(a);a.click();a.remove();toast('Calendar file ready',2200);
 };
 function sfxChime(){if(!sfx.on||!sfx.ctx)return;const c=sfx.ctx,t=c.currentTime;[660,880].forEach((fr,i)=>{const o=c.createOscillator(),g=c.createGain(),s=t+i*.25;o.frequency.value=fr;g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(.12,s+.02);g.gain.exponentialRampToValueAtTime(.0001,s+1.6);o.connect(g);g.connect(c.destination);o.start(s);o.stop(s+1.7);});}
-function remCheck(){
-  if(!REM.on)return;const d=new Date(),t=ago(0);
-  if(REM.last===t||DAYS.includes(t))return;
-  const [hh,mm]=REM.t.split(':').map(Number);if(d.getHours()*60+d.getMinutes()<hh*60+mm)return;
-  REM.last=t;remSave();toast('Time for your daily reading',7000);sfxChime();
-  try{if(window.Notification&&Notification.permission==='granted')new Notification('Daily reading',{body:'Your Bible is waiting on the desk.'});}catch(e){}
-}
-setInterval(remCheck,20000);setTimeout(remCheck,4000);
+$('dvG').onclick=()=>{   // opens Google Calendar with a repeating daily event already filled in; the user taps Save
+  const [hh,mm]=REM.t.split(':').map(Number),d=new Date(),p=n=>String(n).padStart(2,'0'),f=x=>''+x.getFullYear()+p(x.getMonth()+1)+p(x.getDate())+'T'+p(x.getHours())+p(x.getMinutes())+'00';
+  d.setHours(hh,mm,0,0);const e=new Date(d);e.setMinutes(mm+15);
+  const u='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Daily Bible reading')+'&details='+encodeURIComponent('Your Bible is waiting on the desk: https://sunchild-org.github.io/Bible-desk/')+'&dates='+f(d)+'/'+f(e)+'&recur='+encodeURIComponent('RRULE:FREQ=DAILY');
+  window.open(u,'_blank','noopener');
+};
 const cupHit=new THREE.Mesh(new THREE.CylinderGeometry(.75,.75,2.4,12),new THREE.MeshBasicMaterial({visible:false}));cupHit.position.y=1.2;cupG.add(cupHit);
 function studyAct(root,fn){fn.study=true;root.traverse(o=>{if(o.isMesh)actionTargets.set(o,fn);});}
 studyAct(cupG,hlNext);studyAct(clockG,openDv);hlUI();
@@ -2733,6 +2731,21 @@ function medPause(fade=1.2){
   med.master.gain.cancelScheduledValues(c.currentTime);med.master.gain.setTargetAtTime(0,c.currentTime,fade/3);
   setTimeout(()=>{if(!med.playing){try{c.suspend();}catch(e){}}},fade*1000+300);
   medUI();
+}
+/* leaving the page (another tab, another app, screen off) silences everything at once; coming back resumes what was playing */
+{
+  let wasMed=false;
+  const away=()=>{
+    if(med.playing){wasMed=true;medPause(.3);}
+    try{if(sfx.ctx&&sfx.ctx.state==='running')sfx.ctx.suspend();}catch(e){}
+    try{if(med.ctx&&!med.playing&&med.ctx.state==='running')setTimeout(()=>{try{med.ctx.suspend();}catch(e){}},400);}catch(e){}
+  };
+  const back=()=>{
+    try{if(sfx.ctx&&sfx.ctx.state==='suspended'&&sfx.on)sfx.ctx.resume();}catch(e){}
+    if(wasMed){wasMed=false;medPlay();}
+  };
+  document.addEventListener('visibilitychange',()=>document.hidden?away():back());
+  addEventListener('pagehide',away);
 }
 const ICO_PLAY='<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>',
       ICO_PAUSE='<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><rect x="6.5" y="5" width="3.8" height="14" rx="1"/><rect x="13.7" y="5" width="3.8" height="14" rx="1"/></svg>';

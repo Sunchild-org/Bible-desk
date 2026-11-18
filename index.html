@@ -9,9 +9,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Bible Desk"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta property="og:title" content="Bible Desk"><meta property="og:description" content="A quiet 3D study desk for reading the Bible. Highlight, bookmark, take notes and read offline."><meta property="og:type" content="website"><meta property="og:site_name" content="Bible Desk">
-<link rel="canonical" href="https://sunchild-org.github.io/Bible-desk/"><meta property="og:url" content="https://sunchild-org.github.io/Bible-desk/">
-<meta property="og:image" content="https://sunchild-org.github.io/Bible-desk/icons/share.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Bible Desk, a quiet study desk for reading the Bible">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Bible Desk"><meta name="twitter:description" content="A quiet 3D study desk for reading the Bible."><meta name="twitter:image" content="https://sunchild-org.github.io/Bible-desk/icons/share.png">
+<link rel="canonical" href="https://bible-desk.vercel.app/"><meta property="og:url" content="https://bible-desk.vercel.app/">
+<meta property="og:image" content="https://bible-desk.vercel.app/icons/share.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Bible Desk, a quiet study desk for reading the Bible">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Bible Desk"><meta name="twitter:description" content="A quiet 3D study desk for reading the Bible."><meta name="twitter:image" content="https://bible-desk.vercel.app/icons/share.png">
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1635,7 +1635,7 @@ function sfxInit(){
   const f=c.createBiquadFilter();f.type='lowpass';f.frequency.value=380;
   const g=c.createGain();g.gain.value=0;s.connect(f);f.connect(g);g.connect(c.destination);s.start();sfx.room=g;sfxRoom();
 }
-function sfxRoom(){if(sfx.room)sfx.room.gain.setTargetAtTime(sfx.on&&!med.playing?.03:0,sfx.ctx.currentTime,.6);}
+function sfxRoom(){if(sfx.room)sfx.room.gain.setTargetAtTime(sfx.on&&!med.playing?.016:0,sfx.ctx.currentTime,.6);}
 function sfxBurst(freq,q,dur,vol,f2){
   if(!sfx.on||!sfx.ctx||sfx.ctx.state!=='running')return;
   const c=sfx.ctx,t=c.currentTime,s=c.createBufferSource();s.buffer=sfx.wn;
@@ -1643,9 +1643,9 @@ function sfxBurst(freq,q,dur,vol,f2){
   const g=c.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+Math.min(.03,dur/3));g.gain.exponentialRampToValueAtTime(.0001,t+dur);
   s.connect(f);f.connect(g);g.connect(c.destination);s.start(t,Math.random(),dur+.05);
 }
-const sfxPage=()=>sfxBurst(1300,.9,.4,.3,4200);                         // paper rustle
-const sfxClick=()=>{sfxBurst(2400,3,.05,1.2);sfxBurst(320,2,.1,1.1);};   // lamp switch
-function sfxTick(){if(!sfx.ctx)return;sfxRoom();if(!sfx.on||med.playing)return;sfx.tk^=1;sfxBurst(sfx.tk?3300:2700,7,.03,.15);}   // faint clock tick
+const sfxPage=()=>sfxBurst(1300,.9,.4,.09,4200);                         // paper rustle
+const sfxClick=()=>{sfxBurst(2400,3,.05,.6);sfxBurst(320,2,.1,.5);};   // lamp switch
+function sfxTick(){if(!sfx.ctx)return;sfxRoom();if(!sfx.on||med.playing)return;sfx.tk^=1;sfxBurst(sfx.tk?3300:2700,7,.03,.07);}   // faint clock tick
 addEventListener('pointerdown',sfxInit,{passive:true});addEventListener('keydown',sfxInit);
 $('sBtn').classList.toggle('off',!sfx.on);
 $('sBtn').addEventListener('click',()=>{
@@ -1918,7 +1918,7 @@ function sfxChime(){if(!sfx.on||!sfx.ctx)return;const c=sfx.ctx,t=c.currentTime;
 $('dvG').onclick=()=>{   // opens Google Calendar with a repeating daily event already filled in; the user taps Save
   const [hh,mm]=REM.t.split(':').map(Number),d=new Date(),p=n=>String(n).padStart(2,'0'),f=x=>''+x.getFullYear()+p(x.getMonth()+1)+p(x.getDate())+'T'+p(x.getHours())+p(x.getMinutes())+'00';
   d.setHours(hh,mm,0,0);const e=new Date(d);e.setMinutes(mm+15);
-  const u='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Daily Bible reading')+'&details='+encodeURIComponent('Your Bible is waiting on the desk: https://sunchild-org.github.io/Bible-desk/')+'&dates='+f(d)+'/'+f(e)+'&recur='+encodeURIComponent('RRULE:FREQ=DAILY');
+  const u='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Daily Bible reading')+'&details='+encodeURIComponent('Your Bible is waiting on the desk: https://bible-desk.vercel.app/')+'&dates='+f(d)+'/'+f(e)+'&recur='+encodeURIComponent('RRULE:FREQ=DAILY');
   window.open(u,'_blank','noopener');
 };
 const cupHit=new THREE.Mesh(new THREE.CylinderGeometry(.75,.75,2.4,12),new THREE.MeshBasicMaterial({visible:false}));cupHit.position.y=1.2;cupG.add(cupHit);

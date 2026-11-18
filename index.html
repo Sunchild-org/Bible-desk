@@ -812,9 +812,9 @@ pen(.22,.1,2.0,.05,0xb7c3e6,0xb7c3e6,.02,-.22);
 /* ---------- translation books: shelf <-> desk ---------- */
 const TR=[
   {id:'KJV',name:'King James Version',color:'#242928',W:2.7,L:3.6,T:.78},
-  {id:'WEB',name:'World English Bible',color:'#182640',W:2.55,L:3.45,T:.7},
-  {id:'BSB',name:'Berean Standard Bible',color:'#2f2a3d',W:2.6,L:3.5,T:.74},
-  {id:'ASV',name:'American Standard Version',color:'#123a2e',W:2.45,L:3.3,T:.64},
+  {id:'WEB',name:'World English Bible',color:'#182640',W:2.7,L:3.6,T:.78},
+  {id:'BSB',name:'Berean Standard Bible',color:'#2f2a3d',W:2.7,L:3.6,T:.78},
+  {id:'ASV',name:'American Standard Version',color:'#123a2e',W:2.7,L:3.6,T:.78},
 ];
 const PLT=.07;
 const stripe=canvasTex(4,16,(g,w,h)=>{g.fillStyle='#f1efe6';g.fillRect(0,0,w,h/2);g.fillStyle='#cdd1c9';g.fillRect(0,h/2,w,h/2);});
@@ -1588,7 +1588,7 @@ function goStop(n){
   document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.stop===n));
   showTag({window:'Window',study:'The study'}[n],2200);
   clearTimeout(medAutoT);
-  if(n==='window')medAutoT=setTimeout(()=>{if(rig.stop==='window'&&!openGoal)medOpen(true);},1500);else if(med.open)medOpen(false);   // music panel rises when you reach Meditation
+  if(n!=='window'&&med.open)medOpen(false);   // the music panel only opens when you tap the music button   // music panel rises when you reach Meditation
 }
 document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>goStop(b.dataset.stop)));
 function navHide(b){$('nav').classList.toggle('hide',b);}
@@ -1635,7 +1635,7 @@ function sfxInit(){
   const f=c.createBiquadFilter();f.type='lowpass';f.frequency.value=380;
   const g=c.createGain();g.gain.value=0;s.connect(f);f.connect(g);g.connect(c.destination);s.start();sfx.room=g;sfxRoom();
 }
-function sfxRoom(){if(sfx.room)sfx.room.gain.setTargetAtTime(sfx.on&&!med.playing?.05:0,sfx.ctx.currentTime,.6);}
+function sfxRoom(){if(sfx.room)sfx.room.gain.setTargetAtTime(sfx.on&&!med.playing?.03:0,sfx.ctx.currentTime,.6);}
 function sfxBurst(freq,q,dur,vol,f2){
   if(!sfx.on||!sfx.ctx||sfx.ctx.state!=='running')return;
   const c=sfx.ctx,t=c.currentTime,s=c.createBufferSource();s.buffer=sfx.wn;
@@ -1643,9 +1643,9 @@ function sfxBurst(freq,q,dur,vol,f2){
   const g=c.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+Math.min(.03,dur/3));g.gain.exponentialRampToValueAtTime(.0001,t+dur);
   s.connect(f);f.connect(g);g.connect(c.destination);s.start(t,Math.random(),dur+.05);
 }
-const sfxPage=()=>sfxBurst(1300,.9,.4,.9,4200);                         // paper rustle
+const sfxPage=()=>sfxBurst(1300,.9,.4,.3,4200);                         // paper rustle
 const sfxClick=()=>{sfxBurst(2400,3,.05,1.2);sfxBurst(320,2,.1,1.1);};   // lamp switch
-function sfxTick(){if(!sfx.ctx)return;sfxRoom();if(!sfx.on||med.playing)return;sfx.tk^=1;sfxBurst(sfx.tk?3300:2700,7,.03,.22);}   // faint clock tick
+function sfxTick(){if(!sfx.ctx)return;sfxRoom();if(!sfx.on||med.playing)return;sfx.tk^=1;sfxBurst(sfx.tk?3300:2700,7,.03,.15);}   // faint clock tick
 addEventListener('pointerdown',sfxInit,{passive:true});addEventListener('keydown',sfxInit);
 $('sBtn').classList.toggle('off',!sfx.on);
 $('sBtn').addEventListener('click',()=>{
@@ -3102,6 +3102,11 @@ if(document.fonts&&document.fonts.load){Promise.all(['500 100px "Cormorant Garam
   });
 }
 
+const _reshade=()=>{shadowHot=performance.now()+1500;renderer.shadowMap.needsUpdate=true;};
+canvas.addEventListener('webglcontextlost',e=>e.preventDefault(),false);
+canvas.addEventListener('webglcontextrestored',_reshade);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)_reshade();});
+addEventListener('pageshow',_reshade);
 function frame(){
   if(window.__readerOpen||document.hidden){requestAnimationFrame(frame);return;}   // nothing to draw behind reading mode or in a hidden tab
   if(Qs&&Qs.fps){const n=performance.now();if(n-lastRender<1000/Qs.fps-3){requestAnimationFrame(frame);return;}lastRender=n;}

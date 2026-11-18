@@ -9,9 +9,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Bible Desk"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta property="og:title" content="Bible Desk"><meta property="og:description" content="A quiet 3D study desk for reading the Bible. Highlight, bookmark, take notes and read offline."><meta property="og:type" content="website"><meta property="og:site_name" content="Bible Desk">
-<!-- After hosting, change the two image links below to your full address, e.g. https://yourname.netlify.app/icons/share.png (many apps need the full address) -->
-<meta property="og:image" content="icons/share.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Bible Desk, a quiet study desk for reading the Bible">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Bible Desk"><meta name="twitter:description" content="A quiet 3D study desk for reading the Bible."><meta name="twitter:image" content="icons/share.png">
+<link rel="canonical" href="https://sunchild-org.github.io/Bible-desk/"><meta property="og:url" content="https://sunchild-org.github.io/Bible-desk/">
+<meta property="og:image" content="https://sunchild-org.github.io/Bible-desk/icons/share.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Bible Desk, a quiet study desk for reading the Bible">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Bible Desk"><meta name="twitter:description" content="A quiet 3D study desk for reading the Bible."><meta name="twitter:image" content="https://sunchild-org.github.io/Bible-desk/icons/share.png">
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -233,6 +233,24 @@ body.ready #gBtn{opacity:1;pointer-events:auto}
 #st .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#3aae83,#5fd0a6);transition:width .4s}
 #stDl{width:100%;height:40px;border-radius:999px;border:0;background:linear-gradient(180deg,#5fd0a6,#3aae83);color:#06100C;font:600 13.5px var(--sans);cursor:pointer}
 #stDl[disabled]{opacity:.5;cursor:default}
+/* ===== holographic hints ===== */
+#hx{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+#hxs{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#hxs line{stroke:rgba(127,224,184,.75);stroke-width:1;stroke-dasharray:var(--len,80);stroke-dashoffset:var(--len,80);opacity:0;transition:opacity .4s}
+#hxs line.on{opacity:1;stroke-dashoffset:0;transition:stroke-dashoffset .7s cubic-bezier(.2,.8,.2,1) .15s,opacity .3s}
+.hxd{position:absolute;left:0;top:0;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:#7fe0b8;box-shadow:0 0 10px 2px rgba(95,208,166,.7);opacity:0;transform:scale(.3);transition:opacity .4s,transform .5s cubic-bezier(.2,.8,.2,1)}
+.hxd.on{opacity:1;transform:scale(1)}
+.hxd::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(127,224,184,.7);animation:hxp 2.2s ease-out infinite}
+@keyframes hxp{0%{transform:scale(.5);opacity:.9}100%{transform:scale(1.9);opacity:0}}
+.hxl{position:absolute;left:0;top:0;width:max-content;min-width:92px;max-width:124px;padding:7px 10px 8px;color:#E8EAE3;font-family:var(--sans);background:linear-gradient(180deg,rgba(13,25,21,.8),rgba(7,13,11,.8));border:1px solid rgba(127,224,184,.4);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 0 22px rgba(67,190,144,.2),inset 0 0 18px rgba(67,190,144,.07);opacity:0;clip-path:inset(0 100% 0 0);transition:opacity .35s,clip-path .6s cubic-bezier(.2,.8,.2,1);overflow:hidden}
+.hxl.on{opacity:1;clip-path:inset(0 0 0 0)}
+.hxl::before{content:'';position:absolute;left:-1px;top:-1px;width:8px;height:8px;border-left:2px solid #7fe0b8;border-top:2px solid #7fe0b8}
+.hxl::after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(127,224,184,.07) 0 1px,transparent 1px 3px),linear-gradient(100deg,transparent 35%,rgba(160,255,220,.16) 50%,transparent 65%);background-size:100% 100%,250% 100%;background-position:0 0,160% 0;animation:hxs 3.2s ease-in-out infinite}
+@keyframes hxs{0%{background-position:0 0,160% 0}60%,100%{background-position:0 0,-60% 0}}
+.hxl b{display:block;font:600 10.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#8fe3c2}
+.hxl span{display:block;font:400 11.5px/1.3 var(--sans);color:rgba(232,234,227,.82);margin-top:3px}
+body.rm .hxd::after,body.rm .hxl::after{animation:none}
+body.rm #hxs line{transition:opacity .01ms;stroke-dashoffset:0}
 /* ===== search ===== */
 #sBtn2{position:fixed;top:calc(14px + env(safe-area-inset-top));left:66px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(67,190,144,.38);background:linear-gradient(180deg,rgba(24,32,29,.62),rgba(12,17,15,.62));color:#E8EAE3;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 26px rgba(0,0,0,.35),0 0 22px rgba(67,190,144,.12);opacity:0;pointer-events:none;transition:opacity .8s ease}
 body.ready #sBtn2{opacity:1;pointer-events:auto}
@@ -281,6 +299,50 @@ body.ready #sBtn2{opacity:1;pointer-events:auto}
 .mbi .go:hover{border-color:rgba(67,190,144,.45);background:rgba(67,190,144,.1)}
 .mbi .go b{color:#f4f3ec}
 .mbi .dot{border-color:rgba(255,255,255,.35)}
+
+#st .cr{margin:18px 2px 4px;font-size:11.5px;line-height:1.55;color:rgba(232,234,227,.5)}
+/* the reading hint floats above the page buttons instead of sitting behind them */
+#tag.up{left:50%;right:auto;bottom:calc(74px + env(safe-area-inset-bottom));transform:translateX(-50%);width:max-content;max-width:88vw;padding:9px 18px;border-radius:999px;background:var(--gl-bg);border:1px solid var(--gl-line);backdrop-filter:var(--gl-blur);-webkit-backdrop-filter:var(--gl-blur);color:rgba(240,238,230,.92);letter-spacing:.1em;line-height:1.4;box-shadow:0 8px 26px rgba(0,0,0,.35)}
+/* the music button lives at the window only */
+body:not(.at-window) #medBtn{visibility:hidden;opacity:0!important;pointer-events:none!important;transition:opacity .4s ease,visibility 0s linear .4s}
+body.at-window #medBtn{visibility:visible;transition:opacity .8s ease}
+/* ===== glass system: every overlay shares one frosted-glass look ===== */
+:root{--gl-bg:rgba(15,21,19,.64);--gl-line:rgba(255,255,255,.14);--gl-hi:rgba(255,255,255,.18);--gl-blur:blur(24px) saturate(1.7);--gl-r:22px;--gl-soft:rgba(255,255,255,.07)}
+#st,#mb,#sr,#picker,#med,#gd .gdb,#nm .box,#dv .box,#vm .vmc{
+  background:linear-gradient(155deg,rgba(255,255,255,.12),rgba(255,255,255,.02) 42%),var(--gl-bg);
+  -webkit-backdrop-filter:var(--gl-blur);backdrop-filter:var(--gl-blur);
+  border:1px solid var(--gl-line);border-radius:var(--gl-r);
+  box-shadow:0 28px 70px rgba(0,0,0,.42),0 1px 0 var(--gl-hi) inset,0 -1px 0 rgba(0,0,0,.2) inset}
+#mb,#sr,#picker{border-radius:var(--gl-r) var(--gl-r) 0 0;border-bottom:0}
+/* small floating controls */
+#gBtn,#sBtn2,#medBtn,#nav,#bar button,#toast{
+  background:linear-gradient(155deg,rgba(255,255,255,.14),rgba(255,255,255,.03) 50%),rgba(15,21,19,.42)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);
+  border:1px solid var(--gl-line)!important;box-shadow:0 10px 28px rgba(0,0,0,.28),0 1px 0 var(--gl-hi) inset!important;color:#F4F3EC}
+#medBtn.live{background:linear-gradient(155deg,rgba(95,208,166,.35),rgba(95,208,166,.1)),rgba(15,21,19,.42)!important;border-color:rgba(127,224,184,.6)!important}
+#nav button.on{background:rgba(255,255,255,.18)!important;box-shadow:0 1px 0 rgba(255,255,255,.2) inset}
+#gBtn:hover,#sBtn2:hover,#medBtn:hover{border-color:rgba(127,224,184,.6)!important}
+/* modal backdrops: a plain dim, no blur (a full-screen blur would slow the 3D) */
+#nm,#dv{background:rgba(4,7,6,.38)}#vm{background:rgba(4,7,6,.28)}
+/* panel contents */
+#st .big,.mbi .go,.mbi .rm,#st .dv,#st .dl,#dv .box .tg{background:var(--gl-soft);border-color:rgba(255,255,255,.12)}
+#st .big:hover,.mbi .go:hover{background:rgba(255,255,255,.12);border-color:rgba(127,224,184,.45)}
+#st .dl{background:rgba(95,208,166,.07);border-color:rgba(127,224,184,.28)}
+.seg,#mb .mbt button,#st .mh button,#mb .mbh button,#sr .mbh button,#pkHead button{border-color:rgba(255,255,255,.18)}
+#srIn,#nmIn,#dvT{background:rgba(0,0,0,.28);border-color:rgba(255,255,255,.18);color:#F7F6F1}
+#srIn:focus,#nmIn:focus,#dvT:focus{border-color:#7fe0b8;box-shadow:0 0 0 3px rgba(95,208,166,.18);outline:none}
+#vm .vmrow button,#vm #vmSave,#medVerse,#dv button,#nm .row button,#medSleep button{background:var(--gl-soft);border-color:rgba(255,255,255,.16)}
+#dv button.pri,#dvOn.on,#nm .row button.pri,#medSleep button.on{background:linear-gradient(180deg,rgba(95,208,166,.42),rgba(58,174,131,.3));border-color:rgba(127,224,184,.6);color:#fff}
+/* the chapter picker joins the dark glass (it used to be pale paper) */
+#picker{color:#ECEBE4;font-family:var(--sans)}
+#pkHead{background:transparent;border-bottom:1px solid rgba(255,255,255,.12);border-radius:var(--gl-r) var(--gl-r) 0 0;color:#F4F3EC}
+#pkHead button{color:#8fe3c2}
+.pkH{color:#8fe3c2;border-bottom:1px solid rgba(255,255,255,.12)}
+#pkBody button{background:var(--gl-soft);border:1px solid rgba(255,255,255,.14);color:#ECEBE4;font-family:var(--sans);box-shadow:none}
+#pkBody button:active,#pkBody button:hover{background:rgba(95,208,166,.22);border-color:rgba(127,224,184,.5)}
+/* hints use the same glass */
+.hxl{background:linear-gradient(155deg,rgba(255,255,255,.12),rgba(255,255,255,.02) 50%),rgba(10,18,15,.5);-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6)}
+@media (prefers-reduced-transparency:reduce){:root{--gl-bg:rgba(15,21,19,.95)}#gBtn,#sBtn2,#medBtn,#nav,#bar button,#toast{background:rgba(15,21,19,.92)!important}}
 </style>
 </head>
 <body>
@@ -289,7 +351,7 @@ body.ready #sBtn2{opacity:1;pointer-events:auto}
 <div id="msg"></div>
 <div id="tag">Tap the Bible to open it</div>
 <div id="bar"><button id="prevBtn" class="arrow" type="button" aria-label="Previous page"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><button id="tocBtn" class="arrow" type="button" aria-label="Contents"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M5 12h14M5 17h9"/></svg></button><button id="refBtn" type="button">Go to…</button><button id="nextBtn" class="arrow" type="button" aria-label="Next page"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button><button id="closeBtn" type="button">Close</button></div>
-<div id="nav"><button type="button" data-stop="window">Meditation</button><button type="button" data-stop="study" class="on">Study</button></div>
+<div id="nav"><button type="button" data-stop="window">Window</button><button type="button" data-stop="study" class="on">Study</button></div>
 <button id="medBtn" type="button" aria-label="Stillness: music, sleep timer and breathing"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg></button>
 <button id="hlBtn" type="button" aria-label="Highlighter colour"></button>
 <div id="dv" role="dialog" aria-modal="true" aria-label="Daily devotion"><div class="box"><label>Daily devotion</label><div id="dvS"></div><div id="dvW"></div><label for="dvT">Reminder time</label><input id="dvT" type="time" value="07:00"><div class="tg"><span>Nudge me while the desk is open</span><button id="dvOn" type="button">Off</button></div><div class="row"><button id="dvCal" type="button">Add to calendar</button><button id="dvX" type="button" class="pri">Done</button></div></div></div>
@@ -299,6 +361,7 @@ body.ready #sBtn2{opacity:1;pointer-events:auto}
 <button id="qBtn" type="button" aria-label="Graphics quality"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h8M20 7h-2M4 17h2M12 17h8"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></button>
 <div id="sr" role="dialog" aria-modal="true" aria-label="Search"><div class="mbh"><span>Search</span><button id="srX" type="button" aria-label="Close search"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
 <div class="srf"><input id="srIn" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="A word, a phrase, or a verse like John 3:16" aria-label="Search the Bible"></div><div id="srS" class="srs" aria-live="polite"></div><div id="srL"></div></div>
+<div id="hx" aria-hidden="true"><svg id="hxs"></svg></div>
 <div id="gd" role="dialog" aria-modal="true" aria-labelledby="gdT"><div class="gdb"><div class="gdn" id="gdN">1 of 3</div><svg class="gdi" id="gdI" viewBox="0 0 64 64" width="46" height="46" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"></svg><h2 id="gdT"></h2><p id="gdP"></p><div class="gdd" id="gdD"><i></i><i></i><i></i></div><div class="gdr"><button id="gdS" type="button">Skip</button><button id="gdX" type="button">Next</button></div></div></div>
 <div id="nm" role="dialog" aria-modal="true" aria-label="Your name"><div class="box"><label for="nmIn">Your name</label><input id="nmIn" maxlength="24" autocomplete="off" placeholder="Name"><div class="row"><button id="nmNo" type="button">Cancel</button><button id="nmOk" type="button" class="pri">Save</button></div></div></div>
 <div id="breath" aria-hidden="true"><i></i><span id="breathTxt">Breathe in</span></div>
@@ -318,11 +381,11 @@ body.ready #sBtn2{opacity:1;pointer-events:auto}
 <button id="stRd" class="big" type="button">Reading mode<small>Plain text for screen readers. Text size and spacing.</small></button>
 <div class="tg"><span>Room sounds</span><button id="stSnd" class="sw" type="button" role="switch" aria-checked="true" aria-label="Room sounds"></button></div>
 <div class="tg"><span>Reduce motion<small>Calmer camera, no drifting scenery</small></span><button id="stRm" class="sw" type="button" role="switch" aria-checked="false" aria-label="Reduce motion"></button></div>
+<div class="tg"><span>Hints<small>Small labels on the desk objects</small></span><button id="stHint" class="sw" type="button" role="switch" aria-checked="true" aria-label="Hints"></button></div>
 <div class="tl">Graphics</div><div class="seg" id="stQ"><button type="button" data-q="light">Light</button><button type="button" data-q="balanced">Balanced</button><button type="button" data-q="high">High</button></div>
-<div class="tl">Offline KJV</div>
-<div class="dl"><div id="stDlT">Checking…</div><div class="bar"><i id="stDlB"></i></div><button id="stDl" type="button">Download KJV for offline</button></div>
 <div class="tl">Your data</div><div class="seg two"><button id="stExp" type="button">Back up</button><button id="stImp" type="button">Restore</button></div>
 <input id="stFile" type="file" accept="application/json,.json" hidden>
+<div class="cr">Bible texts: King James Version, American Standard Version (1901) and World English Bible are in the public domain. Berean Standard Bible is released into the public domain by Berean Bible (bereanbible.com). Bible Desk is free to use.</div>
 <p class="fine">Everything is saved on this device only.</p></div>
 <div id="mb" role="dialog" aria-modal="true" aria-label="My Bible"><div class="mbh"><span>My Bible</span><button id="mbX" type="button" aria-label="Close My Bible"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="mbt" role="tablist"><button type="button" role="tab" data-t="bm">Bookmarks</button><button type="button" role="tab" data-t="nt">Notes</button><button type="button" role="tab" data-t="hl">Highlights</button></div><div id="mbL"></div></div>
 <div id="rd" role="dialog" aria-modal="true" aria-label="Reading mode" data-theme="auto">
@@ -370,83 +433,37 @@ body.ready #sBtn2{opacity:1;pointer-events:auto}
     $('rdTh').textContent=S.theme==='auto'?'Auto':S.theme==='light'?'Light':'Dark';
     $('rdSm').disabled=S.size<=15;$('rdLg').disabled=S.size>=34;
   }
-  /* offline KJV: if data/kjv.json is hosted next to this page, KJV reads from it and never needs the network */
-  var LOCAL=null,localP=null,dbP=null;
-  function idb(){
-    if(dbP)return dbP;
-    dbP=new Promise(function(res){
-      try{var q=indexedDB.open('bibleDeskText',1);q.onupgradeneeded=function(){q.result.createObjectStore('kjv');};q.onsuccess=function(){res(q.result);};q.onerror=function(){res(null);};}catch(e){res(null);}
-    });return dbP;
+  /* offline text: data/kjv.json, web.json, bsb.json and asv.json are hosted next to this page (made by tools/build-bibles.mjs) */
+  var TXT={};
+  function txtFile(api){
+    if(!TXT[api])TXT[api]=fetch('data/'+api+'.json').then(function(r){return r.ok?r.json():null;}).then(function(j){return(Array.isArray(j)&&j.length===66)?j:null;}).catch(function(){return null;}).then(function(j){if(!j)delete TXT[api];return j;});
+    return TXT[api];
   }
-  function idbGet(k){return idb().then(function(db){return !db?null:new Promise(function(res){try{var r=db.transaction('kjv').objectStore('kjv').get(k);r.onsuccess=function(){res(r.result||null);};r.onerror=function(){res(null);};}catch(e){res(null);}});});}
-  function idbPut(k,v){return idb().then(function(db){return !db?false:new Promise(function(res){try{var tx=db.transaction('kjv','readwrite');tx.objectStore('kjv').put(v,k);tx.oncomplete=function(){res(true);};tx.onerror=function(){res(false);};}catch(e){res(false);}});});}
-  function idbCount(){return idb().then(function(db){return !db?0:new Promise(function(res){try{var r=db.transaction('kjv').objectStore('kjv').count();r.onsuccess=function(){res(r.result);};r.onerror=function(){res(0);};}catch(e){res(0);}});});}
   window.__localText=function(api,b,c){
-    if(api!=='kjv')return Promise.resolve(null);
-    if(!localP)localP=fetch('data/kjv.json').then(function(r){return r.ok?r.json():null;}).then(function(j){if(Array.isArray(j)&&j.length===66)LOCAL=j;}).catch(function(){});
-    return localP.then(function(){
-      var ch=LOCAL&&LOCAL[b]&&LOCAL[b][c-1];
-      if(Array.isArray(ch)&&ch.length)return ch;
-      return idbGet(b+':'+c);
-    }).then(function(ch){return(Array.isArray(ch)&&ch.length)?ch.map(function(t,i){return{verse:i+1,text:t};}):null;});
+    return txtFile(api).then(function(j){
+      var ch=j&&j[b]&&j[b][c-1];if(!Array.isArray(ch)||!ch.length)return null;
+      var out=[];ch.forEach(function(t,i){if(t)out.push({verse:i+1,text:t});});   // verses a translation leaves out are skipped, numbering stays true
+      return out.length?out:null;
+    });
   };
-  /* search index over every KJV chapter available on this device (file or downloaded) */
-  var IDX={sig:'',rows:null,have:0};
-  function idbAll(){return idb().then(function(db){return !db?[]:new Promise(function(res){var out=[];try{var q=db.transaction('kjv').objectStore('kjv').openCursor();q.onsuccess=function(){var c=q.result;if(c){out.push([c.key,c.value]);c.continue();}else res(out);};q.onerror=function(){res(out);};}catch(e){res(out);}});});}
+  /* search index over the KJV file */
+  var IDX=null;
   window.__searchIndex=function(){
-    if(!localP)window.__localText('kjv',0,1);
-    return localP.then(function(){return LOCAL?null:idbAll();}).then(function(stored){
-      var sig=LOCAL?'file':'idb'+(stored?stored.length:0);
-      if(IDX.rows&&IDX.sig===sig)return IDX;
+    if(IDX)return Promise.resolve(IDX);
+    return txtFile('kjv').then(function(J){
       var rows=[],have=0;
-      function add(b,c,arr){if(!Array.isArray(arr)||!arr.length)return;have++;for(var i=0;i<arr.length;i++){var tx=arr[i]||'';rows.push({b:b,c:c,v:i+1,t:tx,l:tx.toLowerCase().replace(/[^a-z0-9' ]+/g,' ')});}}
-      if(LOCAL){for(var b=0;b<LOCAL.length;b++)for(var c=0;c<(LOCAL[b]||[]).length;c++)add(b,c+1,LOCAL[b][c]);}
-      else (stored||[]).forEach(function(kv){var p=String(kv[0]).split(':');add(+p[0],+p[1],kv[1]);});
-      rows.sort(function(a,b){return a.b-b.b||a.c-b.c||a.v-b.v;});
-      IDX={sig:sig,rows:rows,have:have};return IDX;
+      if(J)for(var b=0;b<J.length;b++)for(var c=0;c<(J[b]||[]).length;c++){var arr=J[b][c];if(!Array.isArray(arr)||!arr.length)continue;have++;for(var i=0;i<arr.length;i++){var tx=arr[i]||'';if(!tx)continue;rows.push({b:b,c:c+1,v:i+1,t:tx,l:tx.toLowerCase().replace(/[^a-z0-9' ]+/g,' ')});}}
+      if(J)IDX={sig:'file',rows:rows,have:have};
+      return J?IDX:{sig:'none',rows:rows,have:0};
     });
   };
-  /* in-app download of the whole KJV into this device (resumable) */
-  var DL={run:false,stop:false};
-  window.__kjvStatus=function(){return idbCount().then(function(n){return{have:n,total:1189,full:!!LOCAL||n>=1189,file:!!LOCAL};});};
-  window.__kjvDownload=function(onP){
-    if(DL.run)return Promise.resolve();
-    DL.run=true;DL.stop=false;
-    var wl=null;try{if(navigator.wakeLock)navigator.wakeLock.request('screen').then(function(l){wl=l;}).catch(function(){});}catch(e){}
-    var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms);});};
-    var jobs=[];BOOKS.forEach(function(bk,b){for(var c=1;c<=bk[1];c++)jobs.push([b,c]);});
-    return idbCount().then(function(have){
-      var n=have,i=0,err=0;
-      function next(){
-        if(DL.stop||i>=jobs.length){DL.run=false;if(wl)try{wl.release();}catch(e){}return onP&&onP({have:n,total:jobs.length,done:i>=jobs.length,stopped:DL.stop,err:err});}
-        var b=jobs[i][0],c=jobs[i][1];i++;
-        return idbGet(b+':'+c).then(function(ex){
-          if(ex)return null;
-          var tries=0;
-          function go(){
-            return fetch('https://bible-api.com/'+encodeURIComponent(BOOKS[b][0]+' '+c)+'?translation=kjv').then(function(r){
-              if(r.status===429){if(++tries>6)throw new Error('rate');return sleep(15000+tries*8000).then(go);}
-              if(!r.ok)throw new Error('http');return r.json();
-            }).then(function(j){
-              if(!j||!j.verses||!j.verses.length)throw new Error('empty');
-              var arr=[];j.verses.forEach(function(v){arr[v.verse-1]=String(v.text).replace(/\s+/g,' ').trim();});
-              for(var k=0;k<arr.length;k++)if(!arr[k])throw new Error('gap');
-              return idbPut(b+':'+c,arr).then(function(){n++;return sleep(2200);});
-            });
-          }
-          return go().catch(function(e){err++;if(err>12){DL.stop=true;}return sleep(3000);});
-        }).then(function(){if(onP)onP({have:n,total:jobs.length,at:BOOKS[b][0]+' '+c});return next();});
-      }
-      return next();
-    });
-  };
-  window.__kjvStop=function(){DL.stop=true;};
-  function trans(){var id='KJV';try{id=localStorage.getItem('bibleDeskBook')||'KJV';}catch(e){}return id==='KJV'?{api:'kjv',label:'KJV',name:'King James Version'}:{api:'web',label:'WEB',name:'World English Bible'};}
+  function trans(){var id='KJV';try{id=localStorage.getItem('bibleDeskBook')||'KJV';}catch(e){}var m={KJV:['kjv','King James Version'],WEB:['web','World English Bible'],BSB:['bsb','Berean Standard Bible'],ASV:['asv','American Standard Version']};if(!m[id])id='KJV';return{api:m[id][0],label:id,name:m[id][1]};}
   function saved(){try{var o=JSON.parse(localStorage.getItem('bibleDeskLoc'));if(o&&BOOKS[o.b]&&o.c>=1&&o.c<=BOOKS[o.b][1])return{b:o.b,c:o.c};}catch(e){}return{b:0,c:1};}
   function load(b,c){
     var tr=trans(),key=tr.api+'|'+b+'|'+c;
     if(cache[key])return Promise.resolve(cache[key]);
-    return window.__localText(tr.api,b,c).then(function(L){if(L)return{verses:L};return fetch('https://bible-api.com/'+encodeURIComponent(BOOKS[b][0]+' '+c)+'?translation='+tr.api).then(function(r){
+    var online=(tr.api==='kjv'||tr.api==='web')?tr.api:'web';
+    return window.__localText(tr.api,b,c).then(function(L){if(L)return{verses:L};if(online!==tr.api)tr={api:'web',label:'WEB',name:'World English Bible'};return fetch('https://bible-api.com/'+encodeURIComponent(BOOKS[b][0]+' '+c)+'?translation='+online).then(function(r){
       if(!r.ok)throw new Error(r.status===429?'Too many requests. Wait a few seconds and try again.':'The text service returned an error ('+r.status+').');
       return r.json();
     });}).then(function(j){
@@ -615,15 +632,15 @@ function walnutTex(){
       const y0=p*ph;
       g.save();g.beginPath();g.rect(0,y0,w,ph);g.clip();
       g.fillStyle=`hsl(${21+r()*6},${38+r()*10}%,${26+r()*7}%)`;g.fillRect(0,y0,w,ph);
-      for(let i=0;i<9;i++){g.strokeStyle=`rgba(20,8,2,${.07+r()*.1})`;g.lineWidth=6+r()*16;wave(y0+r()*ph,1+(r()*3|0),4+r()*10,r()*6.28);}
+      for(let i=0;i<9;i++){g.strokeStyle=`rgba(20,8,2,${.05+r()*.07})`;g.lineWidth=6+r()*16;wave(y0+r()*ph,1+(r()*3|0),4+r()*10,r()*6.28);}
       for(let i=0;i<90;i++){
-        g.strokeStyle=r()<.7?`rgba(15,6,2,${.08+r()*.2})`:`rgba(215,155,95,${.04+r()*.09})`;
+        g.strokeStyle=r()<.7?`rgba(15,6,2,${.05+r()*.13})`:`rgba(215,155,95,${.03+r()*.07})`;
         g.lineWidth=.6+r()*1.6;wave(y0+r()*ph,1+(r()*3|0),2+r()*9,r()*6.28);
       }
       g.fillStyle='rgba(10,4,1,.22)';
       for(let i=0;i<700;i++)g.fillRect(r()*w,y0+r()*ph,3+r()*8,1);
       g.restore();
-      g.fillStyle='rgba(0,0,0,.55)';g.fillRect(0,y0,w,2.5);
+      g.fillStyle='rgba(0,0,0,.34)';g.fillRect(0,y0,w,2.5);
       g.fillStyle='rgba(255,210,150,.08)';g.fillRect(0,y0+2.5,w,1.5);
     }
   });
@@ -674,7 +691,7 @@ const deskBump=bumpNoise.clone();deskBump.repeat.set(10,5);deskBump.needsUpdate=
 const leatherBump=bumpNoise.clone();leatherBump.repeat.set(2,2);leatherBump.needsUpdate=true;
 
 /* ---------- room: wall + desk ---------- */
-const wallMat=new THREE.MeshStandardMaterial({color:0x98a39c,roughness:.96,bumpMap:wallBump,bumpScale:.6});
+const wallMat=new THREE.MeshStandardMaterial({color:0x98a39c,roughness:.96,bumpMap:wallBump,bumpScale:.22});
 const ROOM={x:16,y0:-15,y1:28,z0:-3.6,z1:40};
 const WIN={cz:5,w:10,y0:5,y1:18};          // window on the left wall, centred at z = cz
 /* a flat rectangle (optionally with a hole) mapped onto a wall/floor/ceiling; map(a,b)->[x,y,z] */
@@ -695,7 +712,7 @@ scene.add(wallBack,wallLeft,wallRight,wallFront,ceil);
 navTargets.set(wallLeft,'window');
 
 const walnut=walnutTex();
-const deskMat=new THREE.MeshPhysicalMaterial({color:new THREE.Color(1.35,1.25,1.15),map:walnut,bumpMap:walnut,bumpScale:.35,roughness:.5,metalness:0,clearcoat:.3,clearcoatRoughness:.45});
+const deskMat=new THREE.MeshPhysicalMaterial({color:new THREE.Color(1.35,1.25,1.15),map:walnut,bumpMap:walnut,bumpScale:.2,roughness:.5,metalness:0,clearcoat:.22,clearcoatRoughness:.5});
 const desk=mk(new THREE.BoxGeometry(20,.6,13),deskMat,true,true);
 desk.position.set(0,-.3,2.9);scene.add(desk);navTargets.set(desk,'study');
 {
@@ -712,23 +729,14 @@ desk.position.set(0,-.3,2.9);scene.add(desk);navTargets.set(desk,'study');
 function faceTexture(){
   return canvasTex(1024,1024,(g,w,h)=>{
     const c=w/2;
-    const grd=g.createRadialGradient(c,c,40,c,c,c);
-    grd.addColorStop(0,'#f6f7f3');grd.addColorStop(.8,'#eceee9');grd.addColorStop(1,'#d3d7d0');
-    g.fillStyle=grd;g.fillRect(0,0,w,h);
+    g.fillStyle='#f2f0e8';g.fillRect(0,0,w,h);
     const r=rng(11);
-    for(let i=0;i<1400;i++){g.fillStyle=`rgba(95,105,98,${r()*.05})`;g.fillRect(r()*w,r()*h,1+r()*2,1+r()*2);}
-    g.strokeStyle='#1d1b17';
-    for(let i=0;i<60;i++){
-      const a=i/60*Math.PI*2,major=i%5===0;
-      const r1=major?428:452,r2=486;
-      g.lineWidth=major?7:3;
-      g.beginPath();g.moveTo(c+Math.sin(a)*r1,c-Math.cos(a)*r1);g.lineTo(c+Math.sin(a)*r2,c-Math.cos(a)*r2);g.stroke();
-    }
-    g.fillStyle='#1d1b17';g.textAlign='center';g.textBaseline='middle';
-    g.font='bold 104px "Times New Roman",Georgia,serif';
-    for(let n=1;n<=12;n++){
-      const a=n/12*Math.PI*2;
-      g.fillText(String(n),c+Math.sin(a)*352,c-Math.cos(a)*352+6);
+    for(let i=0;i<900;i++){g.fillStyle=`rgba(95,105,98,${r()*.035})`;g.fillRect(r()*w,r()*h,1+r()*2,1+r()*2);}
+    g.lineCap='round';
+    for(let i=0;i<60;i++){   // fine minute dots, bold hour bars
+      const a=i/60*Math.PI*2,sx=Math.sin(a),sy=-Math.cos(a);
+      if(i%5===0){g.strokeStyle='#17201d';g.lineWidth=i%15===0?22:12;g.beginPath();g.moveTo(c+sx*(i%15===0?392:420),c+sy*(i%15===0?392:420));g.lineTo(c+sx*470,c+sy*470);g.stroke();}
+      else{g.fillStyle='rgba(23,32,29,.45)';g.beginPath();g.arc(c+sx*462,c+sy*462,4.5,0,Math.PI*2);g.fill();}
     }
   });
 }
@@ -744,14 +752,14 @@ const clockG=new THREE.Group();
 clockG.position.set(0.8,0,-1.5);
 scene.add(clockG);
 const CR=.95,CD=.6,CY=CR+.2;
-const creamMat=new THREE.MeshStandardMaterial({color:0xe4e6e1,roughness:.34,metalness:.55});
-const chromeMat=new THREE.MeshStandardMaterial({color:0xf2f0e8,roughness:.16,metalness:1});
+const creamMat=new THREE.MeshStandardMaterial({color:0x1a2220,roughness:.48,metalness:.25});   // matte charcoal case
+const chromeMat=new THREE.MeshStandardMaterial({color:0xc9a566,roughness:.3,metalness:1});   // brushed brass
 const darkMat=new THREE.MeshStandardMaterial({color:0x151412,roughness:.4,metalness:.3});
 
 const cb=new THREE.Group();cb.position.y=CY;clockG.add(cb);
 const bodyGeo=new THREE.CylinderGeometry(CR,CR,CD,72);bodyGeo.rotateX(Math.PI/2);
 cb.add(mk(bodyGeo,creamMat));
-const bezel=mk(new THREE.TorusGeometry(CR-.03,.07,20,96),chromeMat);
+const bezel=mk(new THREE.TorusGeometry(CR-.03,.035,16,96),chromeMat);
 bezel.position.z=CD/2;cb.add(bezel);
 const face=mk(new THREE.CircleGeometry(CR-.09,72),new THREE.MeshStandardMaterial({map:faceTex,roughness:.7}),false,true);
 face.position.z=CD/2+.006;cb.add(face);
@@ -762,23 +770,14 @@ glass.position.z=CD/2+.09;cb.add(glass);
 const hourPivot=new THREE.Group(),minPivot=new THREE.Group(),secPivot=new THREE.Group();
 hourPivot.position.z=CD/2+.03;minPivot.position.z=CD/2+.045;secPivot.position.z=CD/2+.06;
 cb.add(hourPivot,minPivot,secPivot);
-hourPivot.add(new THREE.Mesh(handGeo(.5,.075),darkMat));
-minPivot.add(new THREE.Mesh(handGeo(.76,.055),darkMat));
+hourPivot.add(new THREE.Mesh(handGeo(.5,.05),darkMat));
+minPivot.add(new THREE.Mesh(handGeo(.76,.036),darkMat));
 const secMat=new THREE.MeshStandardMaterial({color:0x2fae80,roughness:.5});
 const secBar=new THREE.Mesh(new THREE.BoxGeometry(.016,.86,.008),secMat);secBar.position.y=.3;secPivot.add(secBar);
 const hub=mk(new THREE.CylinderGeometry(.06,.06,.05,20),chromeMat,false,false);hub.rotation.x=Math.PI/2;hub.position.z=CD/2+.075;cb.add(hub);
 
-// bells, hammer, legs
-for(const s of [-1,1]){
-  const bell=mk(new THREE.SphereGeometry(.36,32,16,0,Math.PI*2,0,Math.PI/2),chromeMat);
-  bell.material.side=THREE.DoubleSide;
-  bell.position.set(s*.66,.74,-.02);bell.rotation.z=-s*.72;cb.add(bell);
-  const leg=mk(new THREE.CylinderGeometry(.045,.04,.5,12),chromeMat);
-  leg.position.set(s*.52,-.93,0);leg.rotation.z=s*.55;cb.add(leg);
-}
-const stem=mk(new THREE.CylinderGeometry(.02,.02,.4,10),chromeMat);stem.position.set(0,CR+.1,0);cb.add(stem);
-const ball=mk(new THREE.SphereGeometry(.07,16,12),chromeMat);ball.position.set(0,CR+.32,0);cb.add(ball);
-const knob=mk(new THREE.CylinderGeometry(.08,.08,.18,16),chromeMat);knob.rotation.x=Math.PI/2;knob.position.set(.35,-.2,-CD/2-.08);cb.add(knob);
+// a slim brass foot instead of bells and legs
+{const ft=mk(new THREE.BoxGeometry(.8,.24,.36),chromeMat);ft.position.set(0,-CR-.08,0);cb.add(ft);}
 
 /* ---------- pen cup + pens ---------- */
 const cupG=new THREE.Group();cupG.position.set(-1.25,0,-1.5);scene.add(cupG);
@@ -789,10 +788,11 @@ const meshAlpha=canvasTex(256,128,(g,w,h)=>{
   for(let y=0;y<=h;y+=16){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke();}
 },false);
 meshAlpha.wrapS=meshAlpha.wrapT=THREE.RepeatWrapping;meshAlpha.repeat.set(2,1);
-const cupMat=new THREE.MeshStandardMaterial({color:0x1a1b1d,roughness:.42,metalness:.85,alphaMap:meshAlpha,alphaTest:.5,side:THREE.DoubleSide});
+const cupMat=new THREE.MeshStandardMaterial({color:0xe6e1d4,roughness:.62,metalness:0,side:THREE.DoubleSide});   // matte ceramic
+const cupInner=new THREE.MeshStandardMaterial({color:0x2a302d,roughness:.7});
 cupG.add(mk(new THREE.CylinderGeometry(.56,.5,1.5,40,1,true),cupMat,true,true).translateY(.75));
-const rim=mk(new THREE.TorusGeometry(.56,.028,10,48),darkMat);rim.rotation.x=Math.PI/2;rim.position.y=1.5;cupG.add(rim);
-const cupBase=mk(new THREE.CylinderGeometry(.5,.5,.05,40),darkMat);cupBase.position.y=.025;cupG.add(cupBase);
+const rim=mk(new THREE.TorusGeometry(.56,.028,10,48),cupMat);rim.rotation.x=Math.PI/2;rim.position.y=1.5;cupG.add(rim);
+const cupBase=mk(new THREE.CylinderGeometry(.5,.5,.05,40),cupInner);cupBase.position.y=.025;cupG.add(cupBase);
 
 function pen(x,z,len,r,body,cap,tx,tz){
   const g=new THREE.Group();g.position.set(x,.06,z);g.rotation.set(tx,0,tz);
@@ -802,18 +802,18 @@ function pen(x,z,len,r,body,cap,tx,tz){
   const c=mk(new THREE.CapsuleGeometry(r*1.06,len*.28,6,14),cm);c.position.y=len+r*.2;g.add(c);
   cupG.add(g);return cm;
 }
-pen(-.1,.08,1.9,.1,0x2a2a2e,0xc23b2a,.05,.16);     // red marker
-const hlCap=pen(.14,-.05,2.0,.1,0x1d1d20,0x9be21b,-.12,-.1);   // neon highlighter
-pen(-.2,-.12,2.1,.045,0x101012,0x2a2a2a,.12,.2);
-pen(.04,.18,2.2,.045,0x101012,0x1d6b3a,-.2,.04);
-pen(.22,.1,2.0,.045,0x0e0e10,0x2a2a2a,.02,-.22);
+pen(-.1,.08,1.9,.1,0xd98a7c,0xd98a7c,.05,.16);     // coral marker
+const hlCap=pen(.14,-.05,2.0,.1,0xe6e1d4,0x9be21b,-.12,-.1);   // neon highlighter
+pen(-.2,-.12,2.1,.05,0x9cc7b3,0x9cc7b3,.12,.2);
+pen(.04,.18,2.2,.05,0xe9b8c6,0xe9b8c6,-.2,.04);
+pen(.22,.1,2.0,.05,0xb7c3e6,0xb7c3e6,.02,-.22);
 
 /* ---------- translation books: shelf <-> desk ---------- */
 const TR=[
   {id:'KJV',name:'King James Version',color:'#242928',W:2.7,L:3.6,T:.78},
-  {id:'NIV',name:'New International Version',color:'#182640',W:2.55,L:3.45,T:.7},
-  {id:'ESV',name:'English Standard Version',color:'#2f2a3d',W:2.6,L:3.5,T:.74},
-  {id:'NLT',name:'New Living Translation',color:'#123a2e',W:2.45,L:3.3,T:.64},
+  {id:'WEB',name:'World English Bible',color:'#182640',W:2.55,L:3.45,T:.7},
+  {id:'BSB',name:'Berean Standard Bible',color:'#2f2a3d',W:2.6,L:3.5,T:.74},
+  {id:'ASV',name:'American Standard Version',color:'#123a2e',W:2.45,L:3.3,T:.64},
 ];
 const PLT=.07;
 const stripe=canvasTex(4,16,(g,w,h)=>{g.fillStyle='#f1efe6';g.fillRect(0,0,w,h/2);g.fillStyle='#cdd1c9';g.fillRect(0,h/2,w,h/2);});
@@ -943,15 +943,15 @@ function paintCover(g,w,h,d,pass){
     ls('4px');txt('HOLY BIBLE',h*.14,92,gold);
     ls('2px');txt('AUTHORISED',h*.69,34,gold,true);txt('KING JAMES VERSION',h*.74,46,gold);
     g.fillStyle=gold();g.fillRect(cx-130,h*.82,260,3);
-  }else if(d.id==='NIV'){
+  }else if(d.id==='WEB'){
     g.fillStyle=gold();
     for(const y of [100,h-100]){g.fillRect(80,y,w-160,3);g.fillRect(80,y+12,w-160,1.5);}
     const t=h*.17,b=h*.62,hy=h*.28,pts=[[-37,t],[37,t],[37,hy],[150,hy],[150,hy+74],[37,hy+74],[37,b],[-37,b],[-37,hy+74],[-150,hy+74],[-150,hy],[-37,hy]];
     g.beginPath();pts.forEach(([x,y],i)=>i?g.lineTo(cx+x,y):g.moveTo(cx+x,y));g.closePath();
     g.fillStyle=blind();g.fill();stroke(gold,4);g.stroke();
     ls('12px');txt('HOLY BIBLE',h*.74,62,gold);
-    ls('5px');txt('NEW INTERNATIONAL VERSION',h*.795,28,gold,true);
-  }else if(d.id==='ESV'){
+    ls('5px');txt('WORLD ENGLISH BIBLE',h*.795,28,gold,true);
+  }else if(d.id==='BSB'){
     frame(40,3,gold);
     const arch=(x0,x1,y0,y1)=>{const rad=(x1-x0)/2;g.beginPath();g.moveTo(x0,y1);g.lineTo(x0,y0+rad);g.arc(cx,y0+rad,rad,Math.PI,0);g.lineTo(x1,y1);g.closePath();};
     const y1=h*.8;
@@ -962,9 +962,9 @@ function paintCover(g,w,h,d,pass){
     g.restore();
     g.fillStyle=base;g.beginPath();g.ellipse(cx,h*.43,215,135,0,0,6.283);g.fill();
     ring(cx,h*.43,215,3,gold);ring(cx,h*.43,204,1.5,gold);
-    ls('6px');txt('ESV',h*.41,140,gold);
+    ls('6px');txt('BSB',h*.41,140,gold);
     ls('3px');txt('THE HOLY BIBLE',h*.51,36,gold,true);
-    ls('3px');txt('ENGLISH STANDARD VERSION',h*.87,34,gold);
+    ls('3px');txt('BEREAN STANDARD BIBLE',h*.87,34,gold);
   }else{
     stroke(gold,5);rrect(g,48,48,w-96,h-96,36);g.stroke();
     stroke(gold,3);g.setLineDash([14,10]);rrect(g,70,70,w-140,h-140,26);g.stroke();g.setLineDash([]);
@@ -975,7 +975,7 @@ function paintCover(g,w,h,d,pass){
     for(const a of [-1.5708,.5236,2.618])ring(cx+Math.cos(a)*62,my+Math.sin(a)*62,100,8,gold);
     ls('8px');txt('HOLY BIBLE',h*.70,80,gold);
     g.fillStyle=gold();g.fillRect(cx-150,h*.745,300,3);
-    ls('4px');txt('NEW LIVING TRANSLATION',h*.79,38,gold);
+    ls('3px');txt('AMERICAN STANDARD VERSION',h*.79,32,gold);
   }
   ls('0px');
 }
@@ -1156,7 +1156,7 @@ let busy=false,tagTimer=0;
 const anims=[];
 const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 function showTag(text,ms=4000){
-  const el=$('tag');el.textContent=text;el.style.opacity=1;
+  const el=$('tag');el.textContent=text;el.classList.toggle('up',$('bar').classList.contains('show'));el.style.opacity=1;
   clearTimeout(tagTimer);tagTimer=setTimeout(()=>{el.style.opacity=0;},ms);
 }
 function selectBook(i){
@@ -1204,32 +1204,34 @@ function updateAnims(dt){
 
 
 /* ---------- desk lamp ---------- */
-const metal=new THREE.MeshStandardMaterial({color:0x8d9094,roughness:.34,metalness:.9});
-const shadeMat=new THREE.MeshStandardMaterial({color:0x1b1d21,roughness:.45,metalness:.55,side:THREE.DoubleSide});
-const base=mk(new THREE.CylinderGeometry(.85,.9,.16,56),metal);base.position.set(4.9,.08,-2.2);scene.add(base);
-const P0=new THREE.Vector3(4.9,.4,-2.2),P1=new THREE.Vector3(5.5,3.9,-2.2),HEAD=new THREE.Vector3(3.6,6.3,-2.2),LT=new THREE.Vector3(0,0,1.4);
+const metal=new THREE.MeshStandardMaterial({color:0x1d2120,roughness:.42,metalness:.7});   // matte black
+const brass=new THREE.MeshStandardMaterial({color:0xc9a566,roughness:.3,metalness:1});
+const shadeMat=new THREE.MeshStandardMaterial({color:0x151918,roughness:.5,metalness:.4,side:THREE.DoubleSide});
+const base=mk(new THREE.CylinderGeometry(.8,.86,.24,56),metal);base.position.set(4.9,.12,-2.2);scene.add(base);
+{const br=mk(new THREE.TorusGeometry(.8,.022,8,56),brass,false,false);br.rotation.x=Math.PI/2;br.position.set(4.9,.24,-2.2);scene.add(br);}
+const P0=new THREE.Vector3(4.9,.3,-2.2),P1=new THREE.Vector3(5.5,3.9,-2.2),HEAD=new THREE.Vector3(3.6,6.3,-2.2),LT=new THREE.Vector3(0,0,1.4);
 
 const shade=new THREE.Group();shade.position.copy(HEAD);scene.add(shade);
 const lathe=new THREE.LatheGeometry([
-  new THREE.Vector2(.95,0),new THREE.Vector2(.97,.05),new THREE.Vector2(.9,.35),new THREE.Vector2(.7,.7),
-  new THREE.Vector2(.4,.95),new THREE.Vector2(.12,1.08),new THREE.Vector2(.001,1.1)
+  new THREE.Vector2(.56,0),new THREE.Vector2(.58,.03),new THREE.Vector2(.58,.95),new THREE.Vector2(.52,1.05),new THREE.Vector2(.001,1.06)
 ],56);
 lathe.rotateX(-Math.PI/2);
 shade.add(mk(lathe,shadeMat,false,false));
-const bulb=new THREE.Mesh(new THREE.SphereGeometry(.26,24,16),new THREE.MeshBasicMaterial({color:new THREE.Color(1,.82,.55).multiplyScalar(4),toneMapped:false}));
-bulb.position.z=-.35;shade.add(bulb);
-const glow=new THREE.Mesh(new THREE.CircleGeometry(.93,56),new THREE.MeshBasicMaterial({color:new THREE.Color(1,.9,.7).multiplyScalar(2.2),toneMapped:false}));
-glow.position.z=.02;shade.add(glow);
+const bulb=new THREE.Mesh(new THREE.SphereGeometry(.17,24,16),new THREE.MeshBasicMaterial({color:new THREE.Color(1,.82,.55).multiplyScalar(4),toneMapped:false}));
+bulb.position.z=-.3;shade.add(bulb);
+const glow=new THREE.Mesh(new THREE.CircleGeometry(.55,48),new THREE.MeshBasicMaterial({color:new THREE.Color(1,.9,.7).multiplyScalar(2.2),toneMapped:false}));
+glow.position.z=-.02;shade.add(glow);
+const ring=mk(new THREE.TorusGeometry(.575,.032,10,56),brass,false,false);ring.position.z=.0;shade.add(ring);   // brass trim around the light
 shade.lookAt(LT);shade.updateMatrixWorld(true);
-const armEnd=shade.localToWorld(new THREE.Vector3(0,.5,-.85));
+const armEnd=shade.localToWorld(new THREE.Vector3(0,0,-1.08));
 
 const _n0=scene.children.length;
-for(const dz of [-.11,.11]){
+for(const dz of [0]){
   const o=new THREE.Vector3(0,0,dz);
-  scene.add(bar(P0.clone().add(o),P1.clone().add(o),.045,metal));
-  scene.add(bar(P1.clone().add(o),armEnd.clone().add(o),.045,metal));
+  scene.add(bar(P0.clone().add(o),P1.clone().add(o),.055,metal));
+  scene.add(bar(P1.clone().add(o),armEnd.clone().add(o),.055,metal));
 }
-for(const p of [P0,P1,armEnd]){const j=mk(new THREE.SphereGeometry(.17,20,14),metal);j.position.copy(p);scene.add(j);}
+for(const p of [P1,armEnd]){const j=mk(new THREE.SphereGeometry(.11,20,14),brass);j.position.copy(p);scene.add(j);}
 const lampHit=[base,...scene.children.slice(_n0)];
 shade.traverse(o=>{if(o.isMesh)lampHit.push(o);});
 const hitProxy=new THREE.Mesh(new THREE.SphereGeometry(1.5,12,8),new THREE.MeshBasicMaterial({visible:false}));
@@ -1239,7 +1241,7 @@ scene.add(mk(new THREE.TubeGeometry(cable,40,.04,6,false),darkMat,false,true));
 
 /* ---------- lights ---------- */
 const lampDir=new THREE.Vector3().subVectors(LT,HEAD).normalize();
-const spot=new THREE.SpotLight(0xffc98a,210,0,.7,.75,2);
+const spot=new THREE.SpotLight(0xffd3a0,210,0,.7,.5,2);   // a cleaner pool with a softer edge, like an LED desk light
 spot.position.copy(HEAD).addScaledVector(lampDir,.25);
 spot.target.position.copy(LT);scene.add(spot,spot.target);
 spot.castShadow=true;
@@ -1251,10 +1253,10 @@ const spill=new THREE.PointLight(0xffb870,5,0,2);
 spill.position.copy(HEAD).addScaledVector(lampDir,-.4);scene.add(spill);
 const hemi=new THREE.HemisphereLight(0x46524c,0x0b0f0d,.32);scene.add(hemi);
 let sky=null;
-const skyU={uDay:{value:1},uWarm:{value:0},uTime:{value:0},uSun:{value:new THREE.Vector3(-1,.42,.18).normalize()},uMoon:{value:new THREE.Vector3(-1,.3,-.2).normalize()}};
+const skyU={uDay:{value:1},uWarm:{value:0},uTime:{value:0},uSun:{value:new THREE.Vector3(-1,.42,.18).normalize()},uHor:{value:new THREE.Vector3(1.5,1.72,1.98)},uZen:{value:new THREE.Vector3(.5,.95,2.05)},uPh:{value:1.2},uMoon:{value:new THREE.Vector3(-1,.3,-.2).normalize()}};
 const SKY_VS='varying vec3 vWorld;void main(){vec4 w=modelMatrix*vec4(position,1.);vWorld=w.xyz;gl_Position=projectionMatrix*viewMatrix*w;}';
 const SKY_FS=`
-uniform float uDay,uWarm,uTime;uniform vec3 uSun,uMoon;varying vec3 vWorld;
+uniform float uDay,uWarm,uTime,uPh;uniform vec3 uSun,uMoon,uHor,uZen;varying vec3 vWorld;
 float h12(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
 float h13(vec3 p){p=fract(p*.3183099+.1);p*=17.;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
 float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
@@ -1266,7 +1268,7 @@ void main(){
   vec3 sd=normalize(uSun),md=normalize(uMoon);
   float sunDot=max(dot(d,sd),0.),mdot=dot(d,md);
   // base gradient: day blue / night navy
-  vec3 dayC=mix(vec3(1.5,1.72,1.98),vec3(.5,.95,2.05),pow(hp,.5));
+  vec3 dayC=mix(uHor,uZen,pow(hp,.5));
   vec3 nightC=mix(vec3(.05,.07,.15),vec3(.004,.008,.03),pow(hp,.45));
   vec3 col=mix(nightC,dayC,uDay);
   // sunrise / sunset: warm band at the horizon, strongest toward the sun, purple higher up
@@ -1304,7 +1306,7 @@ void main(){
     }
   }
   // moon
-  float mv=(1.-smoothstep(0.,.55,uDay));
+  float mv=1.;
   if(mdot>.99){
     vec3 u=normalize(cross(md,vec3(0.,1.,0.)));vec3 v=cross(md,u);
     vec2 xy=vec2(dot(d,u),dot(d,v))/.04;
@@ -1314,10 +1316,10 @@ void main(){
     float mare=smoothstep(.46,.62,fbm(xy*1.7+4.3));
     float cr=smoothstep(.6,.72,vn(xy*9.+1.7))*.22+smoothstep(.62,.7,vn(xy*17.+5.))*.12;
     float alb=mix(1.,.55,mare)*(.88+.24*vn(xy*7.)*vn(xy*13.+2.))-cr;
-    float lit=smoothstep(-.015,.07,length(xy-vec2(.34,.1))-1.);   // crescent: the disc minus a shifted shadow disc
-    col=mix(col,vec3(.95,.93,.84)*alb*(.035+.965*lit),disc*mv);
+    float lit=smoothstep(-.03,.08,dot(n,vec3(sin(uPh),0.,-cos(uPh))));   // real phase: the terminator follows the sun-moon angle for today's date
+    col=mix(col,vec3(.95,.93,.84)*alb*(.06+.94*lit)*(1.+uDay*1.1),disc*mix(.2,1.,lit)*mix(1.,.8,uDay)*mv);   // the unlit part fades into the sky, as in real life
   }
-  col+=(pow(max(mdot,0.),900.)*.1+pow(max(mdot,0.),60.)*.025)*vec3(.65,.75,1.)*mv;
+  col+=(pow(max(mdot,0.),900.)*.1+pow(max(mdot,0.),60.)*.025)*vec3(.65,.75,1.)*(1.-cos(uPh))*.5*(1.-uDay);
   // sun
   float sv2=smoothstep(.1,.6,uDay);
   vec3 sunCol=mix(vec3(3.2,2.8,2.1),vec3(3.6,1.4,.45),uWarm);
@@ -1335,22 +1337,61 @@ void main(){
     cc=mix(cc,mix(vec3(1.,.5,.55),vec3(2.4,1.1,.5),lit),uWarm*.75);
     col=mix(col,cc,cl*mix(.55,.9,uDay));
   }
-  // distant hills on the horizon
-  float az=atan(d.z,d.x);
-  float hill=-.004+.05*(fbm(vec2(az*2.5,3.))-.45)+.012*(vn(vec2(az*14.,9.))-.5);
-  vec3 g=mix(vec3(.004,.006,.01),vec3(.13,.21,.15),uDay);
-  g=mix(g,vec3(.35,.14,.1),uWarm*.5);
-  g=mix(g,col*.75,smoothstep(-.1,hill,h));
-  col=mix(col,g,(1.-smoothstep(hill-.002,hill+.004,h)));
+  // sun glare in the haze
+  col+=uHor*(pow(sunDot,5.)*.10+pow(sunDot,2.)*.03)*sv2*(1.-hp*.6);
+  // landscape: far and middle ridges fading into haze, then fields, a winding river and village lights. Only worked out near the horizon.
+  if(h<.12){
+    float az=atan(d.z,-d.x);   // seam sits behind the window view
+    float rN=-.006+.032*(fbm(vec2(az*3.1,3.))-.45)+.010*(vn(vec2(az*18.,9.))-.5);
+    float gm=1.-smoothstep(rN-.002,rN+.004,h);
+    if(gm<1.){
+      float rF=.032+.05*(fbm(vec2(az*1.7,11.))-.45)+.006*(vn(vec2(az*9.,4.))-.5);
+      float rM=.012+.042*(fbm(vec2(az*2.4,23.))-.45)+.008*(vn(vec2(az*13.,8.))-.5);
+      vec3 hz=mix(uHor,vec3(.55,.68,.82),.35);
+      vec3 cF=mix(vec3(.008,.011,.02),hz*.62,uDay),cM=mix(vec3(.006,.009,.014),mix(vec3(.18,.31,.30),hz*.5,.35),uDay);
+      vec3 wt=vec3(.42,.17,.11)*uWarm*.55;
+      cF=mix(cF,cF*.6+wt,uWarm*.5);cM=mix(cM,cM*.6+wt*.8,uWarm*.5);
+      float rX=.05+.04*(fbm(vec2(az*1.2,41.))-.45)+.004*(vn(vec2(az*7.,2.))-.5);   // farthest ridge, almost lost in the haze
+      vec3 cX=mix(vec3(.01,.014,.026),mix(hz,uHor,.5)*.8,uDay);cX=mix(cX,cX*.7+wt*.6,uWarm*.5);
+      col=mix(col,cX,1.-smoothstep(rX-.002,rX+.004,h));
+      cF=mix(cF,hz*.82,smoothstep(rF-.02,rF,h)*.4*uDay);cM=mix(cM,hz*.7,smoothstep(rM-.02,rM,h)*.35*uDay);   // air gets hazier toward each ridge top
+      col=mix(col,cF,1.-smoothstep(rF-.002,rF+.004,h));
+      col=mix(col,cM,1.-smoothstep(rM-.002,rM+.004,h));
+    }
+    if(gm>0.){
+      float tg=22./max(-h+.004,.012);
+      vec2 gp=d.xz*tg*.02;
+      float f1=fbm(gp*1.6+3.);
+      float f2=vn(gp*5.+9.)*.6+vn(gp*11.+2.)*.4;
+      vec3 grass=mix(vec3(.11,.22,.10),vec3(.30,.40,.17),smoothstep(.35,.65,f1));
+      grass=mix(grass,vec3(.30,.25,.14),smoothstep(.6,.75,f2)*.55);
+      grass*=.86+.28*vn(gp*26.);
+      float rv=abs(fbm(gp*.7+vec2(5.,2.))-.5);
+      float wv=smoothstep(.012,.04,rv);
+      vec3 water=mix(uHor*.55,vec3(.10,.27,.36),.7)+vec3(1.,.9,.7)*pow(sunDot,6.)*.25;
+      vec3 gcol=mix(water,grass,wv);
+      gcol=mix(gcol,gcol*vec3(1.2,.72,.5)+vec3(.05,.01,0.),uWarm*.5);
+      float fog=1.-exp(-tg*.0009);
+      vec3 hazeC=mix(vec3(.01,.014,.024),uHor*.9,uDay);
+      gcol=mix(gcol,hazeC,fog*.78);
+      vec3 ngt=vec3(.006,.009,.012);
+      vec2 vg=gp*30.,vc=floor(vg);float vh=h12(vc);
+      vec2 vo=(vec2(h12(vc+3.1),h12(vc+7.7))-.5)*.5;
+      float vd=length(fract(vg)-.5-vo);
+      ngt+=vec3(1.,.74,.4)*step(.955,vh)*smoothstep(.13,.0,vd)*(1.-fog)*smoothstep(.0,.3,wv)*1.3;
+      gcol=mix(ngt,gcol,smoothstep(0.,.5,uDay));
+      col=mix(col,gcol,gm);
+    }
+  }
   gl_FragColor=vec4(col,1.);
   #include <tonemapping_fragment>
   #include <colorspace_fragment>
 }`;
 const sun=new THREE.DirectionalLight(0xfff1de,0);
-const sunC=new THREE.Color(0xfff1de),moonC=new THREE.Color(0x8fb0ff);
+const goldC=new THREE.Color(0xffc489),sunC=new THREE.Color(0xfff1de),moonC=new THREE.Color(0x8fb0ff);
 // the window light enters through the left wall; frame bars, curtains and pane shadow the desk
 const SUN_T=new THREE.Vector3(1,0,2.7);
-function aimSun(el){const dx=Math.sqrt(1-el*el);sun.position.set(SUN_T.x-dx*45,el*45,SUN_T.z);}
+function aimSun(el,zo){const dx=Math.sqrt(1-el*el);sun.position.set(SUN_T.x-dx*45,el*45,SUN_T.z+(zo||0)*45);}
 aimSun(.6);sun.target.position.copy(SUN_T);scene.add(sun,sun.target);
 sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
 {const sc=sun.shadow.camera;sc.left=-24;sc.right=24;sc.top=24;sc.bottom=-24;sc.near=1;sc.far=70;}
@@ -1358,7 +1399,7 @@ const fill=new THREE.DirectionalLight(0xfff1de,0);fill.position.set(-9,11,8);sce
 {
   const fw=WIN.w,fh=WIN.y1-WIN.y0,cy=(WIN.y0+WIN.y1)/2;
   const win=new THREE.Group();win.position.set(-ROOM.x,0,WIN.cz);win.rotation.y=Math.PI/2;scene.add(win);   // local +z points into the room
-  const frameM=new THREE.MeshStandardMaterial({color:0xe8e9e3,roughness:.6});
+  const frameM=new THREE.MeshStandardMaterial({color:0x1b2220,roughness:.42,metalness:.35});
   const bx=(parent,w,h,d,x,y,z)=>{const m=mk(new THREE.BoxGeometry(w,h,d),frameM,true,true);m.position.set(x,y,z);parent.add(m);navTargets.set(m,'window');return m;};
   // fixed frame and sill
   bx(win,.5,fh,.4,-fw/2+.25,cy,.1);bx(win,.5,fh,.4,fw/2-.25,cy,.1);
@@ -1370,13 +1411,12 @@ const fill=new THREE.DirectionalLight(0xfff1de,0);fill.position.set(-9,11,8);sce
     const g=new THREE.Group();g.position.set(hx,cy,.1);g.rotation.y=ang;win.add(g);
     bx(g,sw,t,.25,dir*sw/2,sh/2-t/2,0);bx(g,sw,t,.25,dir*sw/2,-sh/2+t/2,0);
     bx(g,t,sh,.25,dir*t/2,0,0);bx(g,t,sh,.25,dir*(sw-t/2),0,0);
-    bx(g,sw,.14,.15,dir*sw/2,0,0);bx(g,.14,sh,.15,dir*sw/2,0,0);     // muntins
     bx(g,.2,.7,.3,dir*(sw-t-.15),0,.18);                               // latch handle
   };
   sash(-fw/2+.5,1,1.75);sash(fw/2-.5,-1,-1.75);
   sky=new THREE.Mesh(new THREE.SphereGeometry(110,48,32),new THREE.ShaderMaterial({uniforms:skyU,vertexShader:SKY_VS,fragmentShader:SKY_FS,side:THREE.BackSide,depthWrite:false}));
   sky.position.set(0,6,18);sky.frustumCulled=false;sky.renderOrder=1000;scene.add(sky);navTargets.set(sky,'window');   // the world outside the window
-  const curtainM=new THREE.MeshStandardMaterial({color:0x3a5f50,roughness:.95,side:THREE.DoubleSide});
+  const curtainM=new THREE.MeshStandardMaterial({color:0xd6cfbd,roughness:.95,side:THREE.DoubleSide});
   for(const sx of [-1,1]){
     const cg=new THREE.PlaneGeometry(3,fh+2.5,48,1),p=cg.attributes.position;
     for(let i=0;i<p.count;i++)p.setZ(i,Math.sin((p.getX(i)/3+.5)*Math.PI*2*6)*.2);
@@ -1423,13 +1463,13 @@ function conSet(k){const x=Math.min(1,Math.max(0,k/.45));conU.uA.value=1-x*x*(3-
 }
 
 
-/* ---------- daytime outside the window: drifting hot-air balloons and a flock of birds (hidden at night) ---------- */
+/* ---------- daytime outside the window: a flock of birds (hidden at night) ---------- */
 const outG=new THREE.Group();scene.add(outG);
 const outMats=[];
 {
   const PAL=[['#f4f1e8','#1B6B52'],['#e9e6dc','#2b2f2d'],['#f0ece0','#b7a47a'],['#1B6B52','#f4f1e8']];
   const balloons=[];
-  const specs=[[-52,13,-1,3.4,0],[-68,19,9,2.8,1],[-82,15,19,3.0,2],[-60,24,-12,2.4,3]];
+  const specs=[];   // hot-air balloons removed: the view follows real life
   specs.forEach(([x,y,z,r,pi],i)=>{
     const [c1,c2]=PAL[pi];
     const tex=canvasTex(256,64,(g,w,h)=>{const n=8;for(let k=0;k<n;k++){g.fillStyle=k%2?c2:c1;g.fillRect(k*w/n,0,w/n+1,h);}});
@@ -1543,9 +1583,9 @@ function goStop(n){
   if(!STOPS[n]||n===rig.stop||openGoal||openT>0||busy)return;
   const c=rig.cur;
   rig.fromS={tgt:c.tgt.clone(),yaw:c.yaw,pitch:c.pitch,dist:c.dist,fov:c.fov};
-  rig.studyFrom=rig.studyK;rig.stop=n;rig.t=0;rig.hold=false;rig.lookTY=rig.lookTP=0;
+  rig.studyFrom=rig.studyK;rig.stop=n;document.body.classList.toggle('at-window',n==='window');rig.t=0;rig.hold=false;rig.lookTY=rig.lookTP=0;
   document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.stop===n));
-  showTag({window:'Meditation',study:'The study'}[n],2200);
+  showTag({window:'Window',study:'The study'}[n],2200);
   clearTimeout(medAutoT);
   if(n==='window')medAutoT=setTimeout(()=>{if(rig.stop==='window'&&!openGoal)medOpen(true);},1500);else if(med.open)medOpen(false);   // music panel rises when you reach Meditation
 }
@@ -1616,7 +1656,7 @@ $('sBtn').addEventListener('click',()=>{
 {
   const gd=$('gd'),STEPS=[
     ['Open the Bible','Tap the Bible on the desk to open it. Turn pages by swiping, or use the arrows. Tap Go to… at the bottom to jump to any book or chapter.','<path d="M32 18v32M32 50C26 45 14 44 8 46V16c6-2 18-1 24 4 6-5 18-6 24-4v30c-6-2-18-1-24 4z"/><path d="M32 4v10M27 9h10"/>'],
-    ['Look around','Drag to look around the room. Switch between Study and Meditation with the buttons at the bottom. Meditation moves you to the window, with calm music.','<circle cx="32" cy="32" r="22"/><path d="M32 14v6M32 44v6M14 32h6M44 32h6"/><circle cx="32" cy="32" r="4"/>'],
+    ['Look around','Drag to look around the room. Switch between Study and Window with the buttons at the bottom. The window view shows the sky for the real time of day, with calm music.','<circle cx="32" cy="32" r="22"/><path d="M32 14v6M32 44v6M14 32h6M44 32h6"/><circle cx="32" cy="32" r="4"/>'],
     ['Make it yours','Press and hold a verse to highlight, bookmark or add a note. Your streak counts each day you read. The gear holds My Bible, reading mode and settings.','<path d="M16 8h32v48L32 44 16 56z"/><path d="M24 20h16M24 28h10"/>']
   ];
   let gi=0,gprev=null;
@@ -1626,7 +1666,7 @@ $('sBtn').addEventListener('click',()=>{
     document.querySelectorAll('#gdD i').forEach((d,k)=>d.classList.toggle('on',k===gi));
     $('gdX').textContent=gi===STEPS.length-1?'Get started':'Next';$('gdS').style.visibility=gi===STEPS.length-1?'hidden':'visible';
   };
-  const close=()=>{gd.classList.remove('show');try{localStorage.setItem(KEY,'1');}catch(e){}if(gprev){try{gprev.focus();}catch(e){}gprev=null;}};
+  const close=()=>{gd.classList.remove('show');try{localStorage.setItem(KEY,'1');}catch(e){}if(gprev){try{gprev.focus();}catch(e){}gprev=null;}if(window.__hintsMaybe)window.__hintsMaybe(900);};
   const open=()=>{gi=0;gprev=document.activeElement;draw();gd.classList.add('show');setTimeout(()=>{try{$('gdX').focus();}catch(e){}},400);};
   $('gdX').addEventListener('click',()=>{if(gi<STEPS.length-1){gi++;draw();}else close();});
   $('gdS').addEventListener('click',close);
@@ -1640,40 +1680,19 @@ $('sBtn').addEventListener('click',()=>{
   const st=$('st'),mbEl=$('mb');
   const KEYS=['bibleDeskHL','bibleDeskBm','bibleDeskNotes','bibleDeskDays','bibleDeskLoc','bibleDeskName','bibleDeskRem','bibleDeskHLc','bibleDeskBook','bibleDeskSnd','bibleDeskQ','bibleDeskRM','bibleDeskRead','bibleDeskMed'];
   const stUI=()=>{
-    $('stSnd').setAttribute('aria-checked',String(sfx.on));$('stRm').setAttribute('aria-checked',String(rmOn()));
+    $('stSnd').setAttribute('aria-checked',String(sfx.on));$('stRm').setAttribute('aria-checked',String(rmOn()));$('stHint').setAttribute('aria-checked',String(window.__hintsOn?window.__hintsOn():true));
     document.querySelectorAll('#stQ button').forEach(b=>{const on=b.dataset.q===qMode.v;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));});
   };
-  const stOpen=o=>{if(o&&window.__searchOpen)window.__searchOpen(false);st.classList.toggle('show',o);$('gBtn').setAttribute('aria-expanded',String(o));if(o){mbOpen(false);stUI();dlRefresh();}};
+  const stOpen=o=>{if(o&&window.__searchOpen)window.__searchOpen(false);st.classList.toggle('show',o);$('gBtn').setAttribute('aria-expanded',String(o));if(o){mbOpen(false);stUI();}};
   $('gBtn').addEventListener('click',()=>stOpen(!st.classList.contains('show')));
   $('stX').addEventListener('click',()=>stOpen(false));
   $('stGd').addEventListener('click',()=>{stOpen(false);if(window.__guideOpen)window.__guideOpen();});
   $('stRd').addEventListener('click',()=>{stOpen(false);if(window.__openReader)window.__openReader({from:$('gBtn')});});
   $('stMb').addEventListener('click',()=>{stOpen(false);mbOpen(true);});
   $('stSnd').addEventListener('click',()=>{$('sBtn').click();stUI();});
+  $('stHint').addEventListener('click',()=>{const on=!(window.__hintsOn&&window.__hintsOn());if(on){try{localStorage.setItem('bibleDeskHints','1');}catch(e){}stOpen(false);setTimeout(()=>window.__hintsPlay&&window.__hintsPlay(),450);}else window.__hintsSet&&window.__hintsSet(false);stUI();toast(on?'Hints on':'Hints off',1600);});
   $('stRm').addEventListener('click',()=>{setRM(!rmOn());stUI();toast(rmOn()?'Reduced motion on':'Reduced motion off',1800);});
   document.querySelectorAll('#stQ button').forEach(b=>b.addEventListener('click',()=>{qSet(b.dataset.q);toast('Graphics: '+Qs.name,1800);stUI();}));
-  const dlUI=s=>{
-    const T=$('stDlT'),B=$('stDlB'),btn=$('stDl');
-    if(s.file){T.textContent='The whole KJV is built into this app. It works offline.';B.style.width='100%';btn.style.display='none';return;}
-    btn.style.display='';
-    const pct=Math.round(100*s.have/s.total);B.style.width=pct+'%';
-    if(s.have>=s.total){T.textContent='Done. The whole KJV is saved on this device and works offline.';btn.textContent='Downloaded';btn.disabled=true;return;}
-    btn.disabled=false;
-    if(s.running){T.textContent='Downloading… '+s.have+' of '+s.total+' chapters'+(s.at?' ('+s.at+'). Keep this page open.':'');btn.textContent='Pause';return;}
-    T.textContent=s.have?s.have+' of '+s.total+' chapters saved. Tap to continue.':'Save the King James Bible on this device (about 40 minutes, once). Keep this page open while it runs.';
-    btn.textContent=s.have?'Continue download':'Download KJV for offline';
-  };
-  const dlRefresh=()=>window.__kjvStatus&&window.__kjvStatus().then(dlUI);
-  let dlRun=false;
-  $('stDl').addEventListener('click',()=>{
-    if(dlRun){window.__kjvStop();$('stDl').disabled=true;return;}
-    if(!navigator.onLine){toast('Connect to the internet first.',2600);return;}
-    dlRun=true;
-    window.__kjvDownload(s=>{
-      if(s.done||s.stopped||s.err>12){dlRun=false;dlRefresh();if(s.done)toast('KJV saved for offline use',3000);else if(s.err>12)toast('Download stopped after errors. Check your connection and continue.',4000);return;}
-      dlUI({have:s.have,total:s.total,running:true,at:s.at});
-    });
-  });
   $('stExp').addEventListener('click',()=>{
     const data={};for(const k of KEYS){try{const v=localStorage.getItem(k);if(v!==null)data[k]=v;}catch(e){}}
     const d=new Date(),ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
@@ -1785,7 +1804,7 @@ $('sBtn').addEventListener('click',()=>{
     S.textContent='Searching…';
     let ix;try{ix=await window.__searchIndex();}catch(e){ix=null;}
     if(inp.value.trim()!==q)return;
-    if(!ix||!ix.rows.length){S.textContent='To search inside verses, save the KJV for offline in Settings first. You can still jump with a reference like John 3:16.';return;}
+    if(!ix||!ix.rows.length){S.textContent='Searching inside verses needs the KJV text file, which could not be loaded. You can still jump with a reference like John 3:16.';return;}
     const phrase=ws.join(' '),res=[];
     for(const row of ix.rows){
       let ok=true;for(const w of ws){if(row.l.indexOf(w)<0){ok=false;break;}}
@@ -1793,7 +1812,7 @@ $('sBtn').addEventListener('click',()=>{
       res.push({row,s:(row.l.indexOf(phrase)>=0?2:0)+(new RegExp('(^| )'+phrase.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'( |$)').test(row.l)?1:0)});
     }
     res.sort((a,b)=>b.s-a.s);
-    const cov=ix.have<1189?' Searching '+ix.have+' of 1189 chapters. Save the whole KJV in Settings to search everything.':'';
+    const cov='';
     S.textContent=res.length?(res.length>60?'60 of '+res.length+' verses':res.length+(res.length===1?' verse':' verses'))+' in the KJV.'+cov:'No verses found for "'+q+'".'+cov;
     const frag=document.createDocumentFragment();
     res.slice(0,60).forEach(o=>frag.appendChild(item({b:o.row.b,c:o.row.c,v:o.row.v},mark(o.row.t,ws))));
@@ -1911,11 +1930,11 @@ studyAct(cupG,hlNext);studyAct(clockG,openDv);hlUI();
 /* ═════════════ STAGE 14c: one room — shared plaster + panelling on all three walls ═════════════ */
 {
   const plaster=canvasTex(512,512,(g,w,h)=>{g.fillStyle='#fff';g.fillRect(0,0,w,h);const r=rng(5);
-    for(let i=0;i<2600;i++){const v=205+r()*50|0;g.fillStyle=`rgba(${v-6},${v},${v-4},.32)`;g.fillRect(r()*w,r()*h,3+r()*16,3+r()*16);}});
+    for(let i=0;i<1500;i++){const v=234+r()*20|0;g.fillStyle=`rgba(${v-3},${v},${v-2},.13)`;g.fillRect(r()*w,r()*h,6+r()*30,6+r()*30);}});
   plaster.wrapS=plaster.wrapT=THREE.RepeatWrapping;
   wallMat.map=plaster;wallMat.emissiveMap=plaster;wallMat.needsUpdate=true;
-  const wm=new THREE.MeshStandardMaterial({color:0x4a2f1c,roughness:.55,bumpMap:walnut,bumpScale:.25});
-  const rl=new THREE.MeshStandardMaterial({color:0x65402a,roughness:.45});
+  const wm=new THREE.MeshStandardMaterial({color:0x151e1a,roughness:.5,bumpMap:walnut,bumpScale:.06});
+  const rl=new THREE.MeshStandardMaterial({color:0x26352e,roughness:.4});
   const wain=(len,x,z,ry)=>{
     const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=ry;scene.add(g);
     const add=(w,h,d,px,py,pz,m)=>{const b=mk(new THREE.BoxGeometry(w,h,d),m,false,true);b.position.set(px,py,pz);g.add(b);};
@@ -1930,8 +1949,28 @@ studyAct(cupG,hlNext);studyAct(clockG,openDv);hlUI();
 
 /* ---------- theme: lamp-lit night <-> daylight ---------- */
 const lerpN=(a,b,k)=>a+(b-a)*k;
-const cN={bg:new THREE.Color(0x070a09),wall:new THREE.Color(0x98a39c),hs:new THREE.Color(0x46524c),hg:new THREE.Color(0x0b0f0d)};
-const cD={bg:new THREE.Color(0xd3d8d1),wall:new THREE.Color(0xd4d9d2),hs:new THREE.Color(0xbcd2ee),hg:new THREE.Color(0x8a928c)};
+/* the sky follows the real clock: the sun crosses the window from morning (left) to evening (right), and the colours change by the hour */
+const SKYP=[[5.5,[1.9,.9,.6],[.2,.3,.65]],[7,[1.9,1.6,1.4],[.45,.8,1.8]],[9.5,[1.55,1.75,1.95],[.5,.95,2.05]],[13,[1.45,1.7,1.98],[.38,.85,2.15]],[16,[1.7,1.65,1.55],[.5,.9,2.0]],[17.8,[2.3,1.3,.7],[.45,.6,1.4]],[19,[1.6,.7,.55],[.2,.25,.6]]];
+let moonI=1;
+function moonFrac(){return (((Date.now()/864e5-10962.7597)%29.530588)+29.530588)%29.530588/29.530588;}   // 0 new, .5 full (new moon 6 Jan 2000)
+function sunArc(){
+  const h=(typeof manual!=='undefined'&&manual===1)?10.5:hourNow();
+  const u=Math.min(1,Math.max(0,(h-6.2)/12.6)),s=Math.sin(u*Math.PI);
+  skyU.uSun.value.set(-1,.035+.095*s,.2*(1-2*u)).normalize();   // kept inside the window frame so the sun can really be seen crossing it
+  // the moon: real phase, and it rises and sets about 50 minutes later each day (full moon crosses at midnight)
+  const mf=moonFrac(),tr=(12+mf*24)%24,mu=(((h-(tr-6.3))%24)+24)%24/12.6;
+  skyU.uPh.value=mf*Math.PI*2;
+  if(mu<=1)skyU.uMoon.value.set(-1,.04+.1*Math.sin(mu*Math.PI),.2*(1-2*mu)).normalize();else skyU.uMoon.value.set(-1,-.5,0).normalize();
+  moonI=.35+.65*(1-Math.cos(mf*Math.PI*2))/2;
+  let i=0;while(i<SKYP.length-2&&h>SKYP[i+1][0])i++;
+  const A=SKYP[i],B=SKYP[i+1],f=Math.min(1,Math.max(0,(h-A[0])/(B[0]-A[0])));
+  skyU.uHor.value.set(lerpN(A[1][0],B[1][0],f),lerpN(A[1][1],B[1][1],f),lerpN(A[1][2],B[1][2],f));
+  skyU.uZen.value.set(lerpN(A[2][0],B[2][0],f),lerpN(A[2][1],B[2][1],f),lerpN(A[2][2],B[2][2],f));
+  aimSun(.28+.34*s,.2*(1-2*u));
+  renderer.shadowMap.needsUpdate=true;
+}
+const cN={bg:new THREE.Color(0x070a09),wall:new THREE.Color(0x40504a),hs:new THREE.Color(0x46524c),hg:new THREE.Color(0x0b0f0d)};
+const cD={bg:new THREE.Color(0xd3d8d1),wall:new THREE.Color(0x586d63),hs:new THREE.Color(0xbcd2ee),hg:new THREE.Color(0x8a928c)};
 let lampK=1,lastK=0;
 const duskC=new THREE.Color(0xff9055),duskH=new THREE.Color(0xd9906a),duskP=new THREE.Color(2.2,1.0,.4),duskW=new THREE.Color(0xd9a070);
 function setTheme(k){lastK=k;conSet(k);document.body.classList.toggle('day',k>.5);if(window.__homeTheme)window.__homeTheme(k);if(window.__outTheme)window.__outTheme(k);
@@ -1939,7 +1978,7 @@ function setTheme(k){lastK=k;conSet(k);document.body.classList.toggle('day',k>.5
   spill.intensity=lerpN(5,0,k)*lampK;
   hemi.intensity=lerpN(.32,.85,k);
   hemi.color.lerpColors(cN.hs,cD.hs,k);hemi.groundColor.lerpColors(cN.hg,cD.hg,k);
-  sun.intensity=lerpN(.5,3.2,k);sun.color.lerpColors(moonC,sunC,k);
+  {const hh=(typeof manual!=='undefined'&&manual===1)?10.5:hourNow(),ss=Math.sin(Math.min(1,Math.max(0,(hh-6.2)/12.6))*Math.PI);sun.intensity=lerpN(.5*moonI,3.2*(.72+.28*ss),k);sun.color.lerpColors(moonC,sunC,k);if(k>.5)sun.color.lerp(goldC,(1-ss)*.38*k);}
   fill.intensity=lerpN(0,.9,k);
   skyU.uDay.value=k;
   scene.environmentIntensity=lerpN(.14,.5,k);
@@ -1951,14 +1990,15 @@ function setTheme(k){lastK=k;conSet(k);document.body.classList.toggle('day',k>.5
   if(bloom)bloom.strength=lerpN(.45,.1,k);
   if(finalPass){finalPass.uniforms.vig.value=lerpN(.55,.3,k);finalPass.uniforms.grade.value=lerpN(1,.75,k);}
   const wm=warmK;   // sunrise / sunset warmth
-  skyU.uWarm.value=wm;skyU.uSun.value.set(-1,lerpN(.42,.13,wm),.18).normalize();
+  skyU.uWarm.value=wm;
   fill.color.copy(sunC);
   if(wm>0){sun.color.lerp(duskC,wm*.85);fill.color.lerp(duskC,wm*.7);hemi.color.lerp(duskH,wm*.5);
     wallMat.color.lerp(duskW,wm*.25);}
-  aimSun(lerpN(.6,.42,wm));
-  wallMat.emissive.copy(wallMat.color);wallMat.emissiveIntensity=lerpN(.3,.08,k);   // evens out the walls the lamp and window don't reach
+  sunArc();
+  wallMat.emissive.copy(wallMat.color);wallMat.emissiveIntensity=lerpN(.2,.06,k);   // evens out the walls the lamp and window don't reach
 }
 let themeT=0,themeGoal=0,manual=null,warmK=0,lastMs=performance.now();
+setInterval(()=>{if(document.hidden)return;try{sunArc();}catch(e){}},20000);
 const hourNow=()=>{const d=new Date();return d.getHours()+d.getMinutes()/60+d.getSeconds()/3600;};
 function autoK(){const h=hourNow();if(h<5.5||h>=20)return 0;if(h<7.5)return (h-5.5)/2;if(h<17)return 1;return 1-(h-17)/3;}
 function autoWarm(){const h=hourNow();if(h>=5.5&&h<7.5)return Math.sin((h-5.5)/2*Math.PI);if(h>=17&&h<20)return Math.sin((h-17)/3*Math.PI);return 0;}
@@ -2059,13 +2099,13 @@ addEventListener('keydown',e=>{if(e.key==='l'||e.key==='L')toggleTheme();});
 /* ═════════════ STAGE 5: reading — text, page turns, picker, highlights ═════════════ */
 const BOOKS=[['Genesis',50],['Exodus',40],['Leviticus',27],['Numbers',36],['Deuteronomy',34],['Joshua',24],['Judges',21],['Ruth',4],['1 Samuel',31],['2 Samuel',24],['1 Kings',22],['2 Kings',25],['1 Chronicles',29],['2 Chronicles',36],['Ezra',10],['Nehemiah',13],['Esther',10],['Job',42],['Psalms',150],['Proverbs',31],['Ecclesiastes',12],['Song of Solomon',8],['Isaiah',66],['Jeremiah',52],['Lamentations',5],['Ezekiel',48],['Daniel',12],['Hosea',14],['Joel',3],['Amos',9],['Obadiah',1],['Jonah',4],['Micah',7],['Nahum',3],['Habakkuk',3],['Zephaniah',3],['Haggai',2],['Zechariah',14],['Malachi',4],['Matthew',28],['Mark',16],['Luke',24],['John',21],['Acts',28],['Romans',16],['1 Corinthians',16],['2 Corinthians',13],['Galatians',6],['Ephesians',6],['Philippians',4],['Colossians',4],['1 Thessalonians',5],['2 Thessalonians',3],['1 Timothy',6],['2 Timothy',4],['Titus',3],['Philemon',1],['Hebrews',13],['James',5],['1 Peter',5],['2 Peter',3],['1 John',5],['2 John',1],['3 John',1],['Jude',1],['Revelation',22]];
 
-// Where each shelf translation gets its text. KJV and WEB are public domain.
-// NIV / ESV / NLT are licensed, so they show the WEB text until you plug in your own licensed source.
+// Where each shelf translation gets its text: the hosted files in /data (KJV, WEB, BSB and ASV are all public domain or openly licensed).
+// If a file has not been uploaded yet, KJV and WEB fall back to the online service, and BSB / ASV show WEB with a notice.
 const SOURCES={
-  KJV:{api:'kjv',label:'KJV',note:''},
-  NIV:{api:'web',label:'WEB',note:'NIV text is licensed, so this shows the World English Bible for now.'},
-  ESV:{api:'web',label:'WEB',note:'ESV text is licensed, so this shows the World English Bible for now.'},
-  NLT:{api:'web',label:'WEB',note:'NLT text is licensed, so this shows the World English Bible for now.'},
+  KJV:{api:'kjv',label:'KJV'},
+  WEB:{api:'web',label:'WEB'},
+  BSB:{api:'bsb',label:'BSB'},
+  ASV:{api:'asv',label:'ASV'},
 };
 const SRC=()=>SOURCES[TR[deskIdx].id];
 const noted=new Set();
@@ -2133,17 +2173,18 @@ function loadChapter(b,c){
   if(chCache.has(key))return Promise.resolve(chCache.get(key));
   if(chPend.has(key))return chPend.get(key);
   const src=SRC(),trId=TR[deskIdx].id;
-  const url='https://bible-api.com/'+encodeURIComponent(BOOKS[b][0]+' '+c)+'?translation='+src.api;
-  const p=window.__localText(src.api,b,c).then(L=>L?{verses:L}:fetch(url).then(r=>{
+  const online=(src.api==='kjv'||src.api==='web')?src.api:'web',url='https://bible-api.com/'+encodeURIComponent(BOOKS[b][0]+' '+c)+'?translation='+online;
+  let fb=false;
+  const p=window.__localText(src.api,b,c).then(L=>L?{verses:L}:(fb=online!==src.api,fetch(url)).then(r=>{
     if(!r.ok)throw new Error(r.status===429?'Too many requests. Wait a few seconds and try again.':'The text service returned an error ('+r.status+').');
     return r.json();
   })).then(j=>{
     if(!j.verses||!j.verses.length)throw new Error('No text came back for that chapter.');
     const verses=j.verses.map(v=>({n:v.verse,text:String(v.text).replace(/\s+/g,' ').trim()}));
     const pages=paginate(verses,c);
-    const ch={b,c,verses,pages,nSp:Math.ceil(pages.length/2),nv:verses[verses.length-1].n,srcLabel:src.label};
+    const ch={b,c,verses,pages,nSp:Math.ceil(pages.length/2),nv:verses[verses.length-1].n,srcLabel:fb?'WEB':src.label};
     chCache.set(key,ch);chPend.delete(key);
-    if(src.note&&!noted.has(trId)){noted.add(trId);toast(src.note,4800);}
+    if(fb&&!noted.has(trId)){noted.add(trId);toast(src.label+' is not on the site yet, so this shows the World English Bible.',4800);}
     return ch;
   }).catch(e=>{
     chPend.delete(key);
@@ -2788,7 +2829,7 @@ const VOTD=[
 ];
 const hName=()=>{try{return (localStorage.getItem('bibleDeskName')||'').trim();}catch(e){return '';}};
 const hStarted=()=>{try{return !!localStorage.getItem('bibleDeskLoc');}catch(e){return false;}};
-const HW=2048,HH=1190,PLW=12.6,PLH=PLW*HH/HW,BW=5.8,BH=BW*220/1280,GAP=.4;
+const HW=2048,HH=1190,PLW=12.6,PLH=PLW*HH/HW,BW=5.4,BH=BW*220/1280,GAP=.4,HM=130/HW*PLW;
 let hk=1;   // canvas pixels per design unit; matched to the screen so the lettering is never resampled soft
 const hCv=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c;};
 const hInk=hCv(HW,HH),hAcc=hCv(HW,HH),hBtn=hCv(1280,220);
@@ -2799,43 +2840,61 @@ const hTrkW=(g,t,tr)=>{let w=0;for(const ch of t)w+=g.measureText(ch).width+tr;r
 function hTrk(g,t,cx,y,tr){let x=cx-hTrkW(g,t,tr)/2;g.textAlign='left';for(const ch of t){g.fillText(ch,x,y);x+=g.measureText(ch).width+tr;}}
 function hWrap(g,text,maxW){const words=text.split(' '),lines=[];let cur='';for(const w of words){const t=cur?cur+' '+w:w;if(g.measureText(t).width>maxW&&cur){lines.push(cur);cur=w;}else cur=t;}if(cur)lines.push(cur);return lines;}
 function hRR(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();}
-// Same look as the loading screen. Layers are drawn in white and tinted by the material:
-// ink = pure black by day, bright ivory by night; accent = emerald.
+// Editorial layout, left-aligned. Everything is drawn large and in heavier weights so it reads on a phone.
+// Layers are drawn in white and tinted by the material: ink = ivory, accent = jade (the wall is a deep painted green).
 function homePaint(){
   const d=new Date(),h=d.getHours(),doy=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5),v=VOTD[doy%VOTD.length],n=hName();
   const greet=h>=5&&h<12?'Good morning':h>=12&&h<17?'Good afternoon':h>=17&&h<22?'Good evening':'Good night';
-  const gi=hInk.getContext('2d'),ga=hAcc.getContext('2d'),cx=HW/2;
-  for(const g of [gi,ga]){g.setTransform(hk,0,0,hk,0,0);g.clearRect(0,0,HW,HH);g.textBaseline='alphabetic';g.fillStyle='#fff';g.strokeStyle='#fff';}
-  // logo
-  ga.save();ga.translate(cx-125,6);ga.scale(3.9,3.9);ga.lineWidth=2.1;ga.lineCap='round';ga.lineJoin='round';
+  const gi=hInk.getContext('2d'),ga=hAcc.getContext('2d'),M=130,R=HW-M;
+  for(const g of [gi,ga]){g.setTransform(hk,0,0,hk,0,0);g.clearRect(0,0,HW,HH);g.textBaseline='alphabetic';g.fillStyle='#fff';g.strokeStyle='#fff';g.textAlign='left';g.globalAlpha=1;if('letterSpacing' in g)g.letterSpacing='0px';}
+  const ls=(g,px)=>{if('letterSpacing' in g)g.letterSpacing=px+'px';};
+  // wordmark, right aligned (the settings and search buttons sit over the top-left on a phone)
+  gi.font='600 100px '+SERIF_;ls(gi,-1);const ww=gi.measureText('Bible Desk').width;
+  gi.fillText('Bible Desk',R-ww,138);ls(gi,0);
+  const lx=R-ww-176;
+  ga.save();ga.translate(lx,40);ga.scale(2.55,2.55);ga.lineWidth=2.6;ga.lineCap='round';ga.lineJoin='round';
   ga.stroke(new Path2D('M32 18v32M32 50C26 45 14 44 8 46V16c6-2 18-1 24 4 6-5 18-6 24-4v30c-6-2-18-1-24 4z'));
   ga.stroke(new Path2D('M32 4v10M27 9h10'));ga.restore();
-  // title
-  let fs=210,tr;for(;;){gi.font='700 '+fs+'px '+SERIF_;tr=fs*.22;if(hTrkW(gi,'BIBLE DESK',tr)<=1600||fs<=80)break;fs-=6;}
-  const base=282+Math.round(fs*.66);
-  hTrk(gi,'BIBLE DESK',cx,base,tr);
-  // rule that fades out at both ends
-  const gr=ga.createLinearGradient(cx-280,0,cx+280,0);gr.addColorStop(0,'rgba(255,255,255,0)');gr.addColorStop(.5,'rgba(255,255,255,1)');gr.addColorStop(1,'rgba(255,255,255,0)');
-  ga.fillStyle=gr;ga.fillRect(cx-280,base+44,560,6);ga.fillStyle='#fff';
-  // greeting
-  const gy=base+148;
-  gi.font='italic 700 90px '+SERIF_;gi.textAlign='center';gi.fillText(greet+(n?', '+n:'')+'.',cx,gy);
-  if(!n){ga.font='600 30px '+SANS_;hTrk(ga,'TAP TO ADD YOUR NAME',cx,gy+56,9);}
-  // verse of the day: full strength, no fading
-  let vf=98,lines;for(;;){gi.font='italic 700 '+vf+'px '+SERIF_;lines=hWrap(gi,'\u201C'+v[1]+'\u201D',1880);if(lines.length<=4||vf<=70)break;vf-=4;}
-  const lh=Math.round(vf*1.2),vy=gy+(n?118:176),L=lines.slice(0,4);
-  gi.textAlign='center';L.forEach((ln,i)=>gi.fillText(ln,cx,vy+i*lh));
-  gi.font='700 32px '+SANS_;hTrk(gi,(v[0]+' \u00B7 KJV').toUpperCase(),cx,vy+(L.length-1)*lh+72,10);
+  gi.globalAlpha=.2;gi.fillRect(M,222,R-M,3);gi.globalAlpha=1;
+  // date eyebrow, and the week of dots (filled = read that day)
+  const wk=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'][d.getDay()],mo=['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'][d.getMonth()];
+  gi.font='600 40px '+SANS_;gi.globalAlpha=.8;ls(gi,6);gi.fillText(wk+' · '+d.getDate()+' '+mo,M,316);ls(gi,0);gi.globalAlpha=1;
+  const S=64,x0=R-(6*S+24),cy=298;
+  for(let i=0;i<7;i++){
+    const day=ago(6-i),on=DAYS.includes(day),x=x0+i*S+24;
+    if(on){ga.beginPath();ga.arc(x,cy,22,0,Math.PI*2);ga.fill();}
+    else{gi.globalAlpha=.5;gi.lineWidth=5;gi.beginPath();gi.arc(x,cy,19,0,Math.PI*2);gi.stroke();gi.globalAlpha=1;}
+    if(i===6){gi.globalAlpha=.95;gi.lineWidth=4;gi.beginPath();gi.arc(x,cy,33,0,Math.PI*2);gi.stroke();gi.globalAlpha=1;}
+  }
+  // greeting headline
+  const line1=n?greet+',':greet+'.',line2=n?n+'.':'';
+  let fs=214;for(;;){gi.font='600 '+fs+'px '+SERIF_;ls(gi,-fs*.014);if(Math.max(gi.measureText(line1).width,line2?gi.measureText(line2).width:0)<=R-M||fs<=120)break;fs-=6;}
+  const y1=316+Math.round(fs*1.02),y2=y1+Math.round(fs*.9);
+  gi.fillText(line1,M,y1);if(line2)gi.fillText(line2,M,y2);ls(gi,0);
+  let gy=line2?y2:y1;
+  if(!n){ga.font='600 38px '+SANS_;ls(ga,7);ga.fillText('TAP TO ADD YOUR NAME',M+4,gy+78);ls(ga,0);gy+=44;}
+  // verse as a blockquote with a jade bar
+  const vTop=gy+104,vBottom=HH-130;
+  let vf=100,lines,lh;for(;;){gi.font='italic 600 '+vf+'px '+SERIF_;lines=hWrap(gi,'“'+v[1]+'”',R-M-76);lh=Math.round(vf*1.24);if((lines.length<=4&&vTop+(lines.length-1)*lh<=vBottom)||vf<=62)break;vf-=4;}
+  const L=lines.slice(0,4);
+  L.forEach((ln,i)=>gi.fillText(ln,M+58,vTop+vf*.7+i*lh));
+  ga.fillRect(M,vTop-4,9,(L.length-1)*lh+vf*.95);
+  const ry=vTop+vf*.7+(L.length-1)*lh+84;
+  gi.font='600 38px '+SANS_;gi.globalAlpha=.9;ls(gi,7);gi.fillText((v[0]+' · KJV').toUpperCase(),M+58,ry);ls(gi,0);gi.globalAlpha=1;
   tInk.needsUpdate=true;tAcc.needsUpdate=true;
 }
 let hDay=false;
 function homeBtnPaint(){
   const g=hBtn.getContext('2d'),l=savedLoc();
   g.clearRect(0,0,1280,220);
-  g.fillStyle=hDay?'#1B6B52':'#43BE90';hRR(g,0,0,1280,220,110);g.fill();
-  g.fillStyle=hDay?'#FFFFFF':'#06100C';g.textBaseline='alphabetic';g.textAlign='center';
-  g.font='700 72px '+SANS_;g.fillText(hStarted()?'Continue reading':'Begin reading',640,100);
-  g.font='600 34px '+SANS_;g.globalAlpha=.85;hTrk(g,(BOOKS[l.b][0]+' '+l.c).toUpperCase(),640,160,9);g.globalAlpha=1;
+  g.fillStyle='#F1EFE7';hRR(g,0,0,1280,220,110);g.fill();
+  g.textBaseline='alphabetic';g.textAlign='left';
+  g.fillStyle='#0D1110';
+  g.font='600 74px '+SANS_;g.fillText(hStarted()?'Continue reading':'Begin reading',96,100);
+  g.globalAlpha=.7;g.font='600 40px '+SANS_;g.fillText(BOOKS[l.b][0]+' '+l.c,98,166);g.globalAlpha=1;
+  g.fillStyle='#14795A';g.beginPath();g.arc(1280-110,110,68,0,Math.PI*2);g.fill();
+  g.strokeStyle='#F7F6F1';g.lineWidth=10;g.lineCap='round';g.lineJoin='round';
+  g.beginPath();g.moveTo(1280-137,110);g.lineTo(1280-85,110);g.moveTo(1280-108,83);g.lineTo(1280-80,110);g.lineTo(1280-108,137);g.stroke();
   tBtn.needsUpdate=true;
 }
 const hMat=t=>new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,toneMapped:false});
@@ -2844,12 +2903,12 @@ const homeG=new THREE.Group();scene.add(homeG);
 const pgeo=new THREE.PlaneGeometry(PLW,PLH);
 const pInk=new THREE.Mesh(pgeo,mInk),pAcc=new THREE.Mesh(pgeo,mAcc);
 pInk.position.y=pAcc.position.y=-PLH/2;pAcc.position.z=.002;
-const pBtn=new THREE.Mesh(new THREE.PlaneGeometry(BW,BH),mBtn);pBtn.position.set(0,-(PLH+GAP+BH/2),.004);
+const pBtn=new THREE.Mesh(new THREE.PlaneGeometry(BW,BH),mBtn);pBtn.position.set(-PLW/2+HM+BW/2,-(PLH+GAP+BH/2),.004);
 const hGhost=new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false});
-const pName=new THREE.Mesh(new THREE.PlaneGeometry(PLW*.7,PLH*.1),hGhost);pName.position.set(0,-PLH*(535/HH),.006);
+const pName=new THREE.Mesh(new THREE.PlaneGeometry(PLW*.7,PLH*.34),hGhost);pName.position.set(-PLW/2+HM+PLW*.35,-PLH*(500/HH),.006);
 homeG.add(pInk,pAcc,pBtn,pName);
 // colours are pushed above 1.0 at night on purpose: the final tone-mapping pass would otherwise dull them
-const INKN=new THREE.Color().setRGB(1.35,1.34,1.30),INKD=new THREE.Color(0x000000),ACCN=new THREE.Color().setRGB(.095,.86,.47),ACCD=new THREE.Color(0x1B6B52);
+const INKN=new THREE.Color().setRGB(1.35,1.34,1.30),INKD=new THREE.Color().setRGB(1.2,1.19,1.15),ACCN=new THREE.Color().setRGB(.095,.86,.47),ACCD=new THREE.Color().setRGB(.12,.9,.52);
 window.__homeTheme=k=>{
   const kk=Math.min(1,Math.max(0,(k-.3)/.25));
   mInk.color.lerpColors(INKN,INKD,kk);mAcc.color.lerpColors(ACCN,ACCD,kk);
@@ -2894,13 +2953,141 @@ $('nmOk').addEventListener('click',()=>{try{localStorage.setItem('bibleDeskName'
 $('nmIn').addEventListener('keydown',e=>{if(e.key==='Enter')$('nmOk').click();});
 let homeKey='';
 function homeUpdate(){
-  const l=savedLoc(),key=l.b+'|'+l.c+'|'+hStarted()+'|'+hName()+'|'+new Date().getHours()+'|'+hDay;
+  const l=savedLoc(),key=l.b+'|'+l.c+'|'+hStarted()+'|'+hName()+'|'+new Date().getHours()+'|'+hDay+'|'+new Date().getDate()+'|'+streakNow()+'|'+DAYS.length;
   if(key===homeKey)return;homeKey=key;homePaint();homeBtnPaint();
 }
 homeUpdate();homeFit();window.__homeTheme(lastK);
 setInterval(()=>{homeUpdate();if(innerWidth/innerHeight!==hAsp)homeFit();},700);
 addEventListener('resize',homeFit);
-if(document.fonts&&document.fonts.load){Promise.all(['500 100px "Cormorant Garamond"','600 100px "Cormorant Garamond"','700 100px "Cormorant Garamond"','italic 700 60px "Cormorant Garamond"','700 40px Inter','600 30px Inter','italic 500 60px "Cormorant Garamond"','600 40px Inter','500 30px Inter'].map(f=>document.fonts.load(f))).then(()=>{homeKey='';homeUpdate();}).catch(()=>{});}
+if(document.fonts&&document.fonts.load){Promise.all(['500 100px "Cormorant Garamond"','600 100px "Cormorant Garamond"','700 100px "Cormorant Garamond"','italic 700 60px "Cormorant Garamond"','700 40px Inter','600 30px Inter','italic 500 60px "Cormorant Garamond"','italic 600 60px "Cormorant Garamond"','600 40px Inter','500 30px Inter'].map(f=>document.fonts.load(f))).then(()=>{homeKey='';homeUpdate();}).catch(()=>{});}
+
+/* ═════════════ holographic hints: tiny labels on the desk objects ═════════════ */
+{
+  const HX=$('hx'),SV=$('hxs'),SEEN='bibleDeskHintSeen',ON='bibleDeskHints',NS='http://www.w3.org/2000/svg';
+  const enabled=()=>{try{return localStorage.getItem(ON)!=='0';}catch(e){return true;}};
+  const bx=new THREE.Box3(),tv=new THREE.Vector3();
+  const top=o=>{bx.setFromObject(o);return new THREE.Vector3((bx.min.x+bx.max.x)/2,bx.max.y,(bx.min.z+bx.max.z)/2);};
+  const DEFS=[
+    {id:'bible',t:'Holy Bible',s:'Tap to open and read',p:()=>top(books[deskIdx].g)},
+    {id:'pens',t:'Highlighters',s:'Tap to change colour',p:()=>top(cupG)},
+    {id:'clock',t:'Daily devotion',s:"Tap for today's reading",p:()=>top(clockG)},
+    {id:'lamp',t:'Desk lamp',s:'Tap for light',p:()=>HEAD.clone().add(new THREE.Vector3(0,.3,0))},
+    {id:'shelf',t:'Translations',s:'Tap a book to switch',p:()=>{const a=books.filter((b,i)=>i!==deskIdx).sort((x,y)=>x.g.position.x-y.g.position.x);return top(a[Math.floor(a.length/2)].g);}},
+    {id:'win',t:'Window',s:'The sky and calm music',p:()=>new THREE.Vector3(-ROOM.x+.6,(WIN.y0+WIN.y1)/2,WIN.cz)}
+  ];
+  const SHEETS='#st.show,#mb.show,#sr.show,#gd.show,#vm.show,#nm.show,#med.show,#picker.show';
+  const canShow=()=>!window.__readerOpen&&rig.stop==='study'&&rig.t>=1&&openGoal===0&&openT<.02&&!busy&&!flip.on&&!document.hidden&&!document.querySelector(SHEETS);
+  const scr=v=>{tv.copy(v).project(camera);return{x:(tv.x+1)/2*innerWidth,y:(1-tv.y)/2*innerHeight,vis:tv.z<1&&Math.abs(tv.x)<.97&&tv.y>-.9&&tv.y<.97};};
+  let cur=null,lastPlay=0;
+  const mk=(tag,cls,ns)=>{const e=ns?document.createElementNS(NS,tag):document.createElement(tag);if(cls)e.setAttribute('class',cls);return e;};
+
+  function build(defs,kind){
+    hide(true);
+    const W=innerWidth,H=innerHeight,items=[];
+    for(const d of defs){
+      let w3;try{w3=d.p();}catch(e){continue;}
+      const s=scr(w3);if(!s.vis)continue;
+      items.push({d,w3,x:s.x,y:s.y});
+    }
+    if(!items.length)return null;
+    items.sort((a,b)=>a.x-b.x);
+    const dot=[],lab=[];
+    for(const it of items){
+      it.dot=mk('i','hxd');HX.appendChild(it.dot);
+      it.lab=mk('div','hxl');it.lab.innerHTML='<b></b><span></span>';it.lab.firstChild.textContent=it.d.t;it.lab.lastChild.textContent=it.d.s;
+      it.lab.style.visibility='hidden';HX.appendChild(it.lab);
+      it.ln=mk('line','',true);SV.appendChild(it.ln);
+      const r=it.lab.getBoundingClientRect();it.w=r.width;it.h=r.height;it.lab.style.visibility='';
+    }
+    const L=8,R=W-8,T=66,B=H-96,placed=[];
+    const hit=(a,b)=>!(a.x+a.w+6<=b.x||b.x+b.w+6<=a.x||a.y+a.h+6<=b.y||b.y+b.h+6<=a.y);
+    items.forEach((it,i)=>{
+      const pref=i%2?1:-1;let pick=null,first=null;
+      const cx=Math.max(L,Math.min(it.x-it.w/2,R-it.w)),xs=[cx];
+      for(let k=1;k<=8;k++){const s=k*26;if(cx-s>=L)xs.push(cx-s);if(cx+s<=R-it.w)xs.push(cx+s);}
+      for(let lv=0;lv<4&&!pick;lv++)for(const dir of [pref,-pref]){
+        const y=dir<0?it.y-30-lv*(it.h+12)-it.h:it.y+30+lv*(it.h+12);
+        if(y<T||y+it.h>B)continue;
+        for(const x of xs){
+          const r={x,y,w:it.w,h:it.h,dir};if(!first)first=r;
+          if(placed.some(p=>hit(p,r))||items.some(o=>o!==it&&hit({x:o.x-9,y:o.y-9,w:18,h:18},r)))continue;
+          pick=r;break;
+        }
+        if(pick)break;
+      }
+      pick=pick||first;placed.push(pick);
+      it.dx=pick.x-it.x;it.dy=pick.y-it.y;it.dir=pick.dir;
+      it.len=Math.hypot(Math.max(0,Math.min(it.x,pick.x+it.w)-it.x),Math.abs((pick.dir<0?pick.y+it.h:pick.y)-it.y))+60;
+      it.ln.style.setProperty('--len',Math.ceil(it.len+80));
+    });
+    cur={items,kind,raf:0,timers:[],t0:performance.now()};
+    place();
+    items.forEach((it,i)=>{
+      cur.timers.push(setTimeout(()=>{it.dot.classList.add('on');it.ln.classList.add('on');it.lab.classList.add('on');},kind==='hover'?0:i*380));
+    });
+    if(kind!=='hover')cur.timers.push(setTimeout(()=>hide(),(kind==='first'?4200:3200)+items.length*380));
+    const loop=()=>{if(!cur)return;if(kind!=='hover'&&!canShow()){hide();return;}place();cur.raf=requestAnimationFrame(loop);};
+    cur.raf=requestAnimationFrame(loop);
+    return cur;
+  }
+  function place(){
+    if(!cur)return;
+    for(const it of cur.items){
+      const s=scr(it.w3);
+      it.dot.style.transform=s.vis&&it.dot.classList.contains('on')?'translate('+s.x+'px,'+s.y+'px)':'translate('+s.x+'px,'+s.y+'px) scale(.3)';
+      it.dot.style.left='0';it.dot.style.top='0';
+      const lx=s.x+it.dx,ly=s.y+it.dy;
+      it.lab.style.transform='translate('+lx+'px,'+ly+'px)';
+      const ax=Math.max(lx+10,Math.min(s.x,lx+it.w-10)),ay=it.dir<0?ly+it.h:ly;
+      it.ln.setAttribute('x1',s.x);it.ln.setAttribute('y1',s.y);it.ln.setAttribute('x2',ax);it.ln.setAttribute('y2',ay);
+    }
+  }
+  function hide(now){
+    if(!cur)return;const c=cur;cur=null;cancelAnimationFrame(c.raf);c.timers.forEach(clearTimeout);
+    const drop=()=>c.items.forEach(it=>{it.dot.remove();it.lab.remove();it.ln.remove();});
+    if(now){drop();return;}
+    c.items.forEach(it=>{it.dot.classList.remove('on');it.lab.classList.remove('on');it.ln.classList.remove('on');});
+    setTimeout(drop,700);
+  }
+  function play(kind){
+    if(!enabled()||!canShow())return false;
+    lastPlay=performance.now();build(DEFS,kind);return true;
+  }
+  window.__hintsPlay=()=>{hide(true);return play('first');};
+  window.__hintsHide=()=>hide();
+  window.__hintsMaybe=delay=>{
+    if(!enabled())return false;let seen=false;try{seen=!!localStorage.getItem(SEEN);}catch(e){}
+    if(seen)return false;try{localStorage.setItem(SEEN,'1');}catch(e){}
+    setTimeout(()=>play('first'),delay||0);return true;
+  };
+  window.__hintsSet=on=>{try{localStorage.setItem(ON,on?'1':'0');}catch(e){}if(!on)hide();else window.__hintsPlay();};
+  window.__hintsOn=enabled;
+  /* hide as soon as the person touches the desk */
+  canvas.addEventListener('pointerdown',()=>{if(cur&&cur.kind!=='hover')hide();});
+  /* show again when the book is closed and the camera comes back out */
+  let wasOpen=false;
+  setInterval(()=>{
+    const open=openGoal!==0||openT>=.02;
+    if(wasOpen&&!open&&rig.stop==='study'&&performance.now()-lastPlay>20000){setTimeout(()=>{if(!cur)play('return');},1100);}
+    wasOpen=open;
+  },300);
+  /* mouse hover: one label at a time */
+  let hovId=null,raf=0;
+  addEventListener('pointermove',e=>{
+    if(e.pointerType!=='mouse'||!enabled()||raf)return;
+    const px=e.clientX,py=e.clientY;
+    raf=requestAnimationFrame(()=>{
+      raf=0;
+      if(cur&&cur.kind!=='hover')return;
+      if(!canShow()){if(cur)hide();hovId=null;return;}
+      let best=null,bd=58;
+      for(const d of DEFS){let w3;try{w3=d.p();}catch(er){continue;}const s=scr(w3);if(!s.vis)continue;const dd=Math.hypot(s.x-px,s.y-py);if(dd<bd){bd=dd;best=d;}}
+      if(!best){if(cur){hide();}hovId=null;return;}
+      if(hovId===best.id&&cur)return;
+      hovId=best.id;build([best],'hover');
+    });
+  });
+}
 
 function frame(){
   if(window.__readerOpen||document.hidden){requestAnimationFrame(frame);return;}   // nothing to draw behind reading mode or in a hidden tab
@@ -2986,7 +3173,7 @@ function frame(){
   if(composer&&(!Qs||Qs.post)){finalPass.uniforms.time.value=t%10;composer.render();}
   else renderer.render(scene,camera);
 
-  if(first){first=false;window.__deskReady=true;if(window.__readerAutoClose)window.__readerAutoClose();if(lampK===0){intro.on=true;intro.t0=performance.now()+900;}setTimeout(()=>$('msg').classList.add('hide'),Math.max(0,2400-performance.now()));if(!(window.__guideMaybe&&window.__guideMaybe()))showTag('Tap the Bible to open it',4000);}
+  if(first){first=false;window.__deskReady=true;if(window.__readerAutoClose)window.__readerAutoClose();if(lampK===0){intro.on=true;intro.t0=performance.now()+900;}setTimeout(()=>$('msg').classList.add('hide'),Math.max(0,2400-performance.now()));if(!(window.__guideMaybe&&window.__guideMaybe())){if(!(window.__hintsMaybe&&window.__hintsMaybe(2600)))showTag('Tap the Bible to open it',4000);}}
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);

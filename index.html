@@ -23,6 +23,8 @@
                  05 ALARM CLOCK                     19 SEARCH
                  06 PEN CUP AND PENS                20 GRAPHICS QUALITY
                  07 BOOKS: THE FOUR TRANSLATIONS    21 DESK OBJECTS THAT DO THINGS
+                 07B JOURNAL: THE NOTEBOOK
+                 07C JOURNAL: WRITING
                  08 DESK LAMP                       22 ONE ROOM: WALLS
                  09 LIGHTS, SKY, SUN AND MOON       23 THEME: NIGHT AND DAY
                  10 STARS: CONSTELLATIONS           24 READING IN THE 3D BOOK
@@ -35,7 +37,7 @@
 -->
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content" />
     <title>Bible Desk</title>
     <meta name="theme-color" content="#0D1110" />
     <meta
@@ -925,8 +927,7 @@
         cursor: pointer;
         font-family: inherit;
       }
-      #dv button.pri,
-      #dvOn.on {
+      #dv button.pri {
         background: rgba(67, 190, 144, 0.18);
         border-color: rgba(67, 190, 144, 0.55);
       }
@@ -1015,9 +1016,6 @@
         font: inherit;
         font-size: 14px;
       }
-      #vm #vmMore {
-        grid-column: 1 / -1;
-      }
       /* bar shown while selecting several verses */
       #selBar {
         position: fixed;
@@ -1061,6 +1059,297 @@
         color: #f4f3ec;
         font: inherit;
         font-size: 13px;
+      }
+      /* while the journal is open, the Bible-only buttons are hidden */
+      body.jr #tocBtn,
+      body.jr #hlBtn {
+        display: none !important;
+      }
+      /* the Aa button and the journal settings sheet (only while the journal is open) */
+      #bar #jsBtn,
+      #bar #jvBtn {
+        display: none;
+        font-family: Georgia, serif;
+        font-style: italic;
+      }
+      body.jr #bar #jsBtn,
+      body.jr #bar #jvBtn {
+        display: inline-flex;
+      }
+      /* in the journal the bar carries more buttons, so they are made a little tighter */
+      body.jr #bar button {
+        padding: 0 11px;
+        letter-spacing: 0.04em;
+        font-size: 12px;
+      }
+      body.jr #bar button.arrow {
+        padding: 0 11px;
+        min-width: 38px;
+      }
+      body.jr #bar {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: max-content;
+        max-width: calc(100vw - 12px);
+      }
+      /* Entries and Verse sheets */
+      #jl,
+      #jv {
+        max-height: 62vh;
+      }
+      #jlQ,
+      .jvf input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(67, 190, 144, 0.35);
+        background: rgba(0, 0, 0, 0.3);
+        color: #f4f3ec;
+        font: inherit;
+        font-size: 16px;
+      }
+      .jbig {
+        width: 100%;
+        margin: 8px 0;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(67, 190, 144, 0.4);
+        background: rgba(67, 190, 144, 0.16);
+        color: #f4f3ec;
+        font: inherit;
+        font-size: 14px;
+      }
+      .jli {
+        display: block;
+        width: 100%;
+        text-align: left;
+        margin: 0 0 6px;
+        padding: 9px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(67, 190, 144, 0.2);
+        background: rgba(67, 190, 144, 0.06);
+        color: #f4f3ec;
+        font: inherit;
+        position: relative;
+      }
+      .jli b {
+        display: block;
+        font-size: 14px;
+        color: #43be90;
+        font-weight: normal;
+      }
+      .jli span {
+        display: block;
+        font-size: 13px;
+        opacity: 0.75;
+        margin-top: 2px;
+        padding-right: 36px;
+      }
+      .jli i {
+        position: absolute;
+        right: 12px;
+        top: 10px;
+        font-size: 12px;
+        opacity: 0.5;
+      }
+      .jle {
+        text-align: center;
+        opacity: 0.55;
+        padding: 16px 0;
+        font-style: italic;
+      }
+      .jvr {
+        text-align: center;
+        color: #f4f3ec;
+        margin: 4px 0 10px;
+      }
+      .jvf {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        font-size: 12px;
+        color: rgba(244, 243, 236, 0.6);
+      }
+      .jvb {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .jvb button {
+        padding: 11px 6px;
+        border-radius: 10px;
+        border: 1px solid rgba(67, 190, 144, 0.4);
+        background: rgba(67, 190, 144, 0.14);
+        color: #f4f3ec;
+        font: inherit;
+        font-size: 14px;
+      }
+      .jvh {
+        margin-top: 10px;
+        font-size: 12px;
+        font-style: italic;
+        opacity: 0.55;
+        text-align: center;
+      }
+      .jsheet {
+        position: fixed;
+        left: 50%;
+        bottom: calc(70px + env(safe-area-inset-bottom));
+        transform: translate(-50%, 12px);
+        width: min(420px, calc(100% - 24px));
+        max-height: 46vh;
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding: 12px 14px 14px;
+        border-radius: 18px;
+        background: rgba(16, 21, 19, 0.94);
+        border: 1px solid rgba(67, 190, 144, 0.3);
+        color: #f4f3ec;
+        font-family: Georgia, serif;
+        backdrop-filter: blur(8px);
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+        z-index: 7;
+      }
+      .jsheet.show {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translate(-50%, 0);
+      }
+      .jsheet .jsh {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #43be90;
+        font-style: italic;
+        margin-bottom: 8px;
+      }
+      .jsheet .jsh button {
+        padding: 6px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(67, 190, 144, 0.35);
+        background: rgba(67, 190, 144, 0.12);
+        color: #f4f3ec;
+        font: inherit;
+        font-size: 13px;
+      }
+      .jsheet .jsl {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(244, 243, 236, 0.55);
+        margin: 10px 0 6px;
+      }
+      .jsheet .jsg {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .jsheet .jsg button {
+        padding: 7px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(67, 190, 144, 0.25);
+        background: rgba(67, 190, 144, 0.08);
+        color: #f4f3ec;
+        font-size: 17px;
+      }
+      .jsheet .jsg button.on {
+        border-color: #43be90;
+        box-shadow: 0 0 0 1px #43be90;
+      }
+      .jsheet .jsg.ink button {
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+      }
+      .jsheet .jsg.ink button.on {
+        border-color: #fff;
+        box-shadow: 0 0 0 2px #43be90;
+      }
+      /* the hidden box that receives the keyboard while writing in the journal */
+      #jIn {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 8px;
+        height: 8px;
+        opacity: 0;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        font-size: 16px; /* 16px stops phones zooming in */
+        resize: none;
+        pointer-events: none;
+        z-index: -1;
+      }
+      /* the small dialog for changing an entry's date or deleting it */
+      #jd {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        background: rgba(5, 8, 7, 0.4);
+        z-index: 7;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+      }
+      #jd.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      #jd .vmc {
+        width: min(420px, 100%);
+        margin: 0 12px calc(16px + env(safe-area-inset-bottom));
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(16, 21, 19, 0.95);
+        border: 1px solid rgba(67, 190, 144, 0.28);
+        color: #f4f3ec;
+        font-family: Georgia, serif;
+        backdrop-filter: blur(8px);
+      }
+      #jd .vmr {
+        text-align: center;
+        font-style: italic;
+        letter-spacing: 0.04em;
+        color: #43be90;
+        margin-bottom: 12px;
+      }
+      #jd .vmrow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      #jd .vmrow button {
+        padding: 11px 8px;
+        border-radius: 10px;
+        border: 1px solid rgba(67, 190, 144, 0.28);
+        background: rgba(67, 190, 144, 0.1);
+        color: #f4f3ec;
+        font: inherit;
+        font-size: 14px;
+      }
+      #jd input[type='date'] {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 12px;
+        padding: 11px 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(67, 190, 144, 0.4);
+        background: rgba(0, 0, 0, 0.3);
+        color: #f4f3ec;
+        font: inherit;
+        font-size: 16px;
+        color-scheme: dark;
       }
       #vm #vmNw {
         margin-top: 10px;
@@ -1705,46 +1994,6 @@
       }
 
       /* ===== offline download ===== */
-      #st .dl {
-        border: 1px solid rgba(67, 190, 144, 0.25);
-        border-radius: 12px;
-        padding: 10px 12px 12px;
-        background: rgba(67, 190, 144, 0.05);
-      }
-      #stDlT {
-        font-size: 12.5px;
-        color: rgba(232, 234, 227, 0.75);
-        margin-bottom: 8px;
-        line-height: 1.4;
-      }
-      #st .bar {
-        height: 5px;
-        border-radius: 3px;
-        background: rgba(232, 234, 227, 0.14);
-        overflow: hidden;
-        margin-bottom: 10px;
-      }
-      #st .bar i {
-        display: block;
-        height: 100%;
-        width: 0;
-        background: linear-gradient(90deg, #3aae83, #5fd0a6);
-        transition: width 0.4s;
-      }
-      #stDl {
-        width: 100%;
-        height: 40px;
-        border-radius: 999px;
-        border: 0;
-        background: linear-gradient(180deg, #5fd0a6, #3aae83);
-        color: #06100c;
-        font: 600 13.5px var(--sans);
-        cursor: pointer;
-      }
-      #stDl[disabled] {
-        opacity: 0.5;
-        cursor: default;
-      }
       /* ===== holographic hints ===== */
       #hx {
         position: fixed;
@@ -2126,7 +2375,7 @@
         background: linear-gradient(180deg, #5fd0a6, #3aae83);
         color: #06100c;
       }
-      /* ===== refined finish =====
+      /* ===== refined finish ===== */
 #gBtn{border-color:rgba(67,190,144,.38);background:linear-gradient(180deg,rgba(24,32,29,.62),rgba(12,17,15,.62));box-shadow:0 8px 26px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.04) inset,0 0 22px rgba(67,190,144,.12)}
 #gBtn:hover{border-color:rgba(67,190,144,.7);color:#8fe3c2}
 #st,#mb{background:linear-gradient(180deg,rgba(21,28,26,.97),rgba(11,15,14,.97));border-color:rgba(67,190,144,.22);box-shadow:0 24px 60px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.06) inset}
@@ -2143,7 +2392,13 @@
 .mbi .go b{color:#f4f3ec}
 .mbi .dot{border-color:rgba(255,255,255,.35)}
 
-#st .cr{margin:18px 2px 4px;font-size:11.5px;line-height:1.55;color:rgba(232,234,227,.5)}
+#st .cr{margin:16px 2px 2px;font-size:11px;line-height:1.5;color:rgba(232,234,227,.5)}
+#st .cr summary{cursor:pointer;list-style:none;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:6px 0;color:rgba(232,234,227,.55)}
+#st .cr summary::-webkit-details-marker{display:none}
+#st .cr summary::after{content:' \25BE'}
+#st .cr[open] summary::after{content:' \25B4'}
+#st .cr p{margin:2px 0 6px;font-size:11px;line-height:1.5}
+#st .fine.by{margin-top:4px;letter-spacing:.04em}
 /* the reading hint floats above the page buttons instead of sitting behind them */
       #tag.up {
         left: 50%;
@@ -2256,7 +2511,6 @@
       .mbi .go,
       .mbi .rm,
       #st .dv,
-      #st .dl,
       #dv .box .tg {
         background: var(--gl-soft);
         border-color: rgba(255, 255, 255, 0.12);
@@ -2265,10 +2519,6 @@
       .mbi .go:hover {
         background: rgba(255, 255, 255, 0.12);
         border-color: rgba(127, 224, 184, 0.45);
-      }
-      #st .dl {
-        background: rgba(95, 208, 166, 0.07);
-        border-color: rgba(127, 224, 184, 0.28);
       }
       .seg,
       #mb .mbt button,
@@ -2302,7 +2552,6 @@
         border-color: rgba(255, 255, 255, 0.16);
       }
       #dv button.pri,
-      #dvOn.on,
       #nm .row button.pri,
       #medSleep button.on {
         background: linear-gradient(180deg, rgba(95, 208, 166, 0.42), rgba(58, 174, 131, 0.3));
@@ -2421,6 +2670,8 @@
         >
           <path d="M9 5l7 7-7 7" />
         </svg></button
+      ><button id="jvBtn" type="button" aria-label="Add a verse">Verse</button
+      ><button id="jsBtn" type="button" aria-label="Journal settings">Aa</button
       ><button id="closeBtn" type="button">Close</button>
     </div>
     <div id="nav">
@@ -2574,7 +2825,7 @@
         ></svg>
         <h2 id="gdT"></h2>
         <p id="gdP"></p>
-        <div class="gdd" id="gdD"><i></i><i></i><i></i></div>
+        <div class="gdd" id="gdD"><i></i><i></i><i></i><i></i></div>
         <div class="gdr">
           <button id="gdS" type="button">Skip</button><button id="gdX" type="button">Next</button>
         </div>
@@ -2644,7 +2895,8 @@
           <button id="vmNote" type="button">Add note</button><button id="vmBm" type="button">Bookmark</button
           ><button id="vmCopy" type="button">Copy</button
           ><button id="vmShare" type="button">Share card</button
-          ><button id="vmMore" type="button">Select more verses</button>
+          ><button id="vmMore" type="button">Select more verses</button
+          ><button id="vmJrn" type="button">Send to journal</button>
         </div>
         <div id="vmNw" hidden>
           <textarea id="vmTa" maxlength="400" placeholder="Write a note"></textarea
@@ -2657,7 +2909,45 @@
       <button id="selCopy" type="button">Copy</button>
       <button id="selShare" type="button">Share</button>
       <button id="selCard" type="button">Card</button>
+      <button id="selJrn" type="button">Journal</button>
       <button id="selX" type="button" aria-label="Cancel selection">&#x2715;</button>
+    </div>
+    <textarea id="jIn" aria-label="Journal entry" autocapitalize="sentences" autocorrect="on" spellcheck="true" rows="1"></textarea>
+    <div id="jl" class="jsheet" role="dialog" aria-label="Journal entries">
+      <div class="jsh"><span>Entries</span><button id="jlX" type="button">Close</button></div>
+      <input id="jlQ" type="search" placeholder="Search your entries" aria-label="Search your entries" />
+      <button id="jlNew" type="button" class="jbig">New entry</button>
+      <div id="jlL"></div>
+    </div>
+    <div id="jv" class="jsheet" role="dialog" aria-label="Add a verse">
+      <div class="jsh"><span>Add a verse</span><button id="jvX" type="button">Close</button></div>
+      <div class="jvr" id="jvRef"></div>
+      <div class="jvf">
+        <label>From verse <input id="jvA" type="number" min="1" inputmode="numeric" /></label>
+        <label>To verse <input id="jvB" type="number" min="1" inputmode="numeric" /></label>
+      </div>
+      <div class="jvb"><button id="jvR" type="button">Reference only</button><button id="jvT" type="button">Reference + text</button></div>
+      <div class="jvh">Tip: press and hold a reference in your writing to open it in the Bible.</div>
+    </div>
+    <div id="js" class="jsheet" role="dialog" aria-label="Journal settings">
+      <div class="jsh"><span>Journal settings</span><button id="jsX" type="button">Done</button></div>
+      <div class="jsl">Handwriting</div>
+      <div class="jsg" id="jsF"></div>
+      <div class="jsl">Size</div>
+      <div class="jsg" id="jsS"></div>
+      <div class="jsl">Paper</div>
+      <div class="jsg" id="jsP"></div>
+      <div class="jsl">Ink</div>
+      <div class="jsg ink" id="jsI"></div>
+    </div>
+    <div id="jd" role="dialog" aria-modal="true" aria-label="Entry date">
+      <div class="vmc">
+        <div class="vmr">Entry date</div>
+        <input id="jdIn" type="date" aria-label="Date of this entry" />
+        <div class="vmrow">
+          <button id="jdOk" type="button">Done</button><button id="jdDel" type="button">Delete entry</button>
+        </div>
+      </div>
     </div>
     <div id="st" role="dialog" aria-label="Settings">
       <div class="mh">
@@ -2681,7 +2971,7 @@
         My Bible<small>Bookmarks, notes and highlights</small>
       </button>
       <button id="stGd" class="big" type="button">
-        How it works<small>A 3-step tour of the desk</small>
+        How it works<small>A 4-step tour of the desk</small>
       </button>
       <button id="stRd" class="big" type="button">
         Reading mode<small>Plain text for screen readers. Text size and spacing.</small>
@@ -2730,12 +3020,16 @@
         <button id="stExp" type="button">Back up</button><button id="stImp" type="button">Restore</button>
       </div>
       <input id="stFile" type="file" accept="application/json,.json" hidden />
-      <div class="cr">
-        Bible texts: King James Version, American Standard Version (1901) and World English Bible are in the
-        public domain. Berean Standard Bible is released into the public domain by Berean Bible
-        (bereanbible.com). Bible Desk is free to use.
-      </div>
+      <details class="cr">
+        <summary>Credits</summary>
+        <p>
+          Bible texts: King James Version, American Standard Version (1901) and World English Bible are in the
+          public domain. Berean Standard Bible is released into the public domain by Berean Bible
+          (bereanbible.com). Bible Desk is free to use.
+        </p>
+      </details>
       <p class="fine">Everything is saved on this device only.</p>
+      <p class="fine by">Built by Sunchild</p>
     </div>
     <div id="mb" role="dialog" aria-modal="true" aria-label="My Bible">
       <div class="mbh">
@@ -3597,6 +3891,9 @@
         // ══════════════════════════════════════════════════════════════════════
         // The <canvas id="c"> in the page that Three.js draws into.
         const canvas = $('c');
+        // When a phone keyboard covers the bottom of the screen without resizing the page (iPhones), the scene is fitted into the visible part instead.
+        let kbShrink = false;
+        const vH = () => (kbShrink && window.visualViewport ? visualViewport.height : innerHeight);
         const renderer = new THREE.WebGLRenderer({
           canvas,
           antialias: true,
@@ -3998,6 +4295,37 @@
         pen(-0.2, -0.12, 2.1, 0.05, 0x9cc7b3, 0x9cc7b3, 0.12, 0.2);
         pen(0.04, 0.18, 2.2, 0.05, 0xe9b8c6, 0xe9b8c6, -0.2, 0.04);
         pen(0.22, 0.1, 2.0, 0.05, 0xb7c3e6, 0xb7c3e6, 0.02, -0.22);
+        // A fountain-style pen: dark body with a brass cap.
+        pen(0.2, -0.22, 2.3, 0.058, 0x1b2220, 0xc9a566, -0.1, 0.1);
+        // A pencil for the journal: green hexagonal body, a sharpened wooden tip and a dark lead point.
+        {
+          const pg = new THREE.Group();
+          pg.position.set(-0.3, 0.06, 0.16);
+          pg.rotation.set(-0.06, 0, -0.1);
+          const PLN = 2.15,
+            PR = 0.07;
+          const pb = mk(
+            new THREE.CylinderGeometry(PR, PR, PLN, 6),
+            new THREE.MeshStandardMaterial({ color: 0x1f6b52, roughness: 0.5 }),
+          );
+          pb.position.y = PLN / 2;
+          pg.add(pb);
+          const wood = mk(
+            new THREE.CylinderGeometry(0.014, PR * 0.98, 0.26, 6),
+            new THREE.MeshStandardMaterial({ color: 0xe0b98a, roughness: 0.8 }),
+          );
+          wood.position.y = PLN + 0.13;
+          pg.add(wood);
+          const lead = mk(
+            new THREE.ConeGeometry(0.02, 0.07, 6),
+            new THREE.MeshStandardMaterial({ color: 0x2b2b2b, roughness: 0.5 }),
+            false,
+            false,
+          );
+          lead.position.y = PLN + 0.295;
+          pg.add(lead);
+          cupG.add(pg);
+        }
 
         // ══════════════════════════════════════════════════════════════════════
         // 07 · BOOKS: THE FOUR TRANSLATIONS
@@ -4546,7 +4874,7 @@
         );
         const QLIE = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, -0.1, 0));
         // Where the open book lies on the desk.
-        const DESK_X = 0.2,
+        const DESK_X = -1.6, // the Bible sits left of centre to leave room for the journal on its right
           DESK_Z = 2.7;
         // Shelf slots: each book gets its own x position, side by side, based on its thickness.
         const slotX = [];
@@ -4566,7 +4894,7 @@
         const deskPose = (i) => ({ p: new THREE.Vector3(DESK_X, TR[i].T / 2 + MAT_T, DESK_Z), q: QLIE });
         {
           // dark leather desk mat with stitched edge
-          const mt = canvasTex(1536, 990, (g, w, h) => {
+          const mt = canvasTex(1536, 795, (g, w, h) => {
             const r = rng(21),
               gr = g.createLinearGradient(0, 0, w, h);
             gr.addColorStop(0, '#2a302e');
@@ -4599,12 +4927,12 @@
             bumpScale: 0.5,
           });
           const mat = mk(
-            roundBox(9.2, MAT_T, 5.9, 0.03, 3),
+            roundBox(11.4, MAT_T, 5.9, 0.03, 3), // wide enough for the Bible or the journal when opened
             [edge, edge, top, edge, edge, edge],
             false,
             true,
           );
-          mat.position.set(DESK_X + 0.1, MAT_T / 2, DESK_Z);
+          mat.position.set(0.5, MAT_T / 2, DESK_Z);
           mat.rotation.y = -0.03;
           scene.add(mat);
           navTargets.set(mat, 'study');
@@ -4635,6 +4963,7 @@
 
         // Draws a page (paper grain plus the title page) on a canvas.
         function pageFace(d, kind) {
+          if (d.journal) return jPageTex({ kind: 'jpage', idx: 0 }, kind === 'title' ? 'right' : 'left');
           return canvasTex(1024, 1392, (g, w, h) => {
             const r = rng(kind === 'title' ? 41 : 42);
             g.fillStyle = '#f6f4ec';
@@ -4681,7 +5010,7 @@
 
         // sign +1: right-hand stack (x 0..Wp), -1: left-hand stack (x -Wp..0). Gutter at x=0, base at y=0.
         // The stack of pages on the left (sign -1) or right (+1) side of the open book. hf = how thick it is.
-        function pageStack(sign, Wp, D, hf, tex) {
+        function pageStack(sign, Wp, D, hf, tex, mats = [pagesM, stackSideM]) {
           const N = 24,
             shape = new THREE.Shape();
           shape.moveTo(0, 0);
@@ -4693,7 +5022,7 @@
           shape.closePath();
           const eg = new THREE.ExtrudeGeometry(shape, { depth: D, bevelEnabled: false });
           eg.translate(0, 0, -D / 2);
-          const body = mk(eg, [pagesM, stackSideM]);
+          const body = mk(eg, mats); // mats = [front/back faces, outer edge]. The journal passes its own warm paper tones.
           const pg = new THREE.PlaneGeometry(Wp, D, 32, 1);
           pg.rotateX(-Math.PI / 2);
           pg.translate((sign * Wp) / 2, 0, 0);
@@ -4715,23 +5044,33 @@
           const { W, L, T } = bk.d,
             Wp = W - 0.14,
             D = L - 0.12,
-            PH = T - 2 * PLT,
+            PB = bk.d.PL || PLT, // thickness of this book's cover boards
+            PH = T - 2 * PB,
             HL = 0.09,
             PHR = PH - HL,
-            HF = 0.6;
+            HF = Math.min(0.6, PH * 0.94); // tallest the page stack gets
           const curve = (t) => 1 - Math.pow(1 - t, 2.2);
-          const right = pageStack(1, Wp, D, (t) => 0.14 + (HF - 0.14) * curve(t), pageFace(bk.d, 'title'));
-          right.position.set(-W / 2 + 0.1, -T / 2 + PLT, 0);
+          const sideMats = bk.d.journal ? jStackMats : undefined;
+          const right = pageStack(
+            1,
+            Wp,
+            D,
+            (t) => 0.14 + (HF - 0.14) * curve(t),
+            pageFace(bk.d, 'title'),
+            sideMats,
+          );
+          right.position.set(-W / 2 + 0.1, -T / 2 + PB, 0);
           const left = pageStack(
             -1,
             Wp,
             D,
             (t) => 0.025 + (HF - 0.025) * curve(t),
             pageFace(bk.d, 'flyleaf'),
+            sideMats,
           );
           left.position.x = Wp / 2 + 0.15;
           const leftC = new THREE.Group();
-          leftC.position.set(W / 2, -PLT / 2, 0);
+          leftC.position.set(W / 2, -PB / 2, 0);
           leftC.rotation.z = Math.PI;
           leftC.add(left);
           bk.hinge.add(leftC);
@@ -4766,7 +5105,7 @@
               lb = mk(gB, bM, true, true);
             lf.frustumCulled = lb.frustumCulled = false;
             const leafG = new THREE.Group();
-            leafG.position.set(-W / 2 + 0.09, -T / 2 + PLT, 0);
+            leafG.position.set(-W / 2 + 0.09, -T / 2 + PB, 0);
             leafG.add(lf, lb);
             leafG.visible = false;
             bk.g.add(leafG);
@@ -4799,37 +5138,49 @@
         // openT = how open the book is now (0 closed, 1 open). openGoal = where it is heading; it moves smoothly towards it.
         let openT = 0,
           openGoal = 0;
+        // jmode is true while the journal (not the Bible) is the open book. curBook() returns whichever is open.
+        let jmode = false;
+        const curBook = () => (jmode ? jb : books[deskIdx]);
+        function leaveJournal() {
+          jmode = false;
+          document.body.classList.remove('jr');
+          jEdit = null;
+        }
         // Poses the book for an openness o between 0 and 1: swings the cover, lifts it and spreads the pages.
         function applyOpen(bk, o) {
-          const { W, T } = bk.d,
+          const PB = bk.d.PL || PLT,
+            { W, T } = bk.d,
             lean = sm(o),
             cT = sm(clamp01((o - 0.18) / 0.7)),
             th = Math.PI * cT;
           bk.hinge.rotation.z = th;
-          const topY = T / 2 - PLT / 2,
-            botY = -T / 2 + PLT / 2;
+          const topY = T / 2 - PB / 2,
+            botY = -T / 2 + PB / 2;
           bk.hinge.position.y = topY + (botY - topY) * sm(clamp01((cT - 0.5) / 0.5));
           // the spine follows the hinge down: full height when closed, flat under the pages when open
           const hy = bk.hinge.position.y,
-            sh = hy + PLT / 2 + T / 2;
+            sh = hy + PB / 2 + T / 2;
           bk.spine.scale.y = Math.max(sh / T, 0.001);
           bk.spine.scale.x = bk.spine.scale.y;
-          bk.spine.position.y = (hy + PLT / 2 - T / 2) / 2;
-          bk.spine.visible = sh > PLT * 1.3;
-          bk.g.position.x = DESK_X + (W / 2 - 0.1) * lean;
-          bk.g.quaternion.slerpQuaternions(QLIE, QID, lean);
+          bk.spine.position.y = (hy + PB / 2 - T / 2) / 2;
+          bk.spine.visible = sh > PB * 1.3;
+          bk.g.position.x = (bk.baseX ?? DESK_X) + (W / 2 - 0.1) * lean;
+          bk.g.quaternion.slerpQuaternions(bk.restQ || QLIE, QID, lean);
           const vis = cT > 0.001;
           if (bk.openParts)
             bk.openParts.forEach((q) => {
               q.visible = vis;
             });
           bk.pagesBox.visible = !vis;
+          if (bk.band) bk.band.visible = o < 0.02; // the journal's elastic band is only on while it is closed
           bk.ribbon.visible = o < 0.001 && bk.i === deskIdx; // hidden while reading, shown again once closed
         }
         // Open / close the book on the desk.
         function openBook() {
           if (busy || openGoal || openT > 0 || rig.stop !== 'study' || rig.t < 1) return;
-          ensureOpenParts(books[deskIdx]);
+          const bk = curBook();
+          ensureOpenParts(bk);
+          readTarget.set(bk.baseX ?? DESK_X, 0.35, bk.baseZ ?? DESK_Z); // the camera looks at the open book
           openGoal = 1;
           clearTimeout(tagTimer);
           $('tag').style.opacity = 0;
@@ -4839,6 +5190,10 @@
           showFront();
         }
         function closeBook() {
+          if (jmode) {
+            jBlur(); // hide the keyboard and save before closing the journal
+            jPanelsOff();
+          }
           selEnd();
           if (!openGoal) return;
           openGoal = 0;
@@ -4846,7 +5201,15 @@
           navHide(false);
           closePicker();
           cancelFlip();
-          updateRibbon(books[deskIdx], readProg());
+          if (!jmode) updateRibbon(books[deskIdx], readProg());
+        }
+        // Tapping the journal: same opening as the Bible, but for the journal book.
+        function openJournal() {
+          if (busy || openGoal || openT > 0 || rig.stop !== 'study' || rig.t < 1) return;
+          jmode = true;
+          document.body.classList.add('jr');
+          jLoadFont();
+          openBook();
         }
         $('closeBtn').addEventListener('click', closeBook);
         addEventListener('keydown', (e) => {
@@ -4939,6 +5302,938 @@
         }
 
         // ══════════════════════════════════════════════════════════════════════
+        // 07B · JOURNAL: THE NOTEBOOK ON THE DESK
+        //      A tan leather journal with an elastic band and a ribbon, lying to the right of the Bible.
+        //      Step 2: it opens and its pages turn like the Bible's. Writing in it comes next.
+        // ══════════════════════════════════════════════════════════════════════
+        // Size: W = width, L = length, T = thickness; JB = thickness of each cover board.
+        // It is smaller and thinner than the Bible so the two never look alike.
+        const JN = { W: 2.5, L: 3.4, T: 0.46, JB: 0.05 };
+        // The cover picture: leather grain, stitched border and a label plate. Viewed from the front, spine on the left.
+        const jCover = canvasTex(1024, 1393, (g, w, h) => {
+          const r = rng(77);
+          const gr = g.createLinearGradient(0, 0, w, h);
+          gr.addColorStop(0, '#9a6439');
+          gr.addColorStop(1, '#7c4b29');
+          g.fillStyle = gr;
+          g.fillRect(0, 0, w, h);
+          for (let i = 0; i < 16000; i++) {
+            g.fillStyle = r() < 0.6 ? `rgba(40,20,8,${r() * 0.16})` : `rgba(255,220,170,${r() * 0.07})`;
+            g.fillRect(r() * w, r() * h, 2 + r() * 2, 2);
+          }
+          // worn edges
+          const ed = g.createRadialGradient(w / 2, h / 2, h * 0.3, w / 2, h / 2, h * 0.75);
+          ed.addColorStop(0, 'rgba(0,0,0,0)');
+          ed.addColorStop(1, 'rgba(30,14,4,.38)');
+          g.fillStyle = ed;
+          g.fillRect(0, 0, w, h);
+          // stitched border
+          g.strokeStyle = 'rgba(236,214,170,.8)';
+          g.lineWidth = 5;
+          g.lineCap = 'round';
+          g.setLineDash([16, 12]);
+          rrect(g, 62, 62, w - 124, h - 124, 30);
+          g.stroke();
+          g.setLineDash([]);
+          // label plate
+          const lw = 540,
+            lh = 250,
+            lx = (w - lw) / 2 + 40,
+            ly = h * 0.3;
+          g.fillStyle = 'rgba(0,0,0,.28)';
+          rrect(g, lx + 5, ly + 7, lw, lh, 10);
+          g.fill();
+          g.fillStyle = '#e4d3ac';
+          rrect(g, lx, ly, lw, lh, 10);
+          g.fill();
+          g.strokeStyle = 'rgba(90,60,30,.55)';
+          g.lineWidth = 3;
+          rrect(g, lx + 14, ly + 14, lw - 28, lh - 28, 6);
+          g.stroke();
+          g.fillStyle = '#4a2f18';
+          g.font = '600 74px Georgia,serif';
+          g.textBaseline = 'middle';
+          const word = 'JOURNAL',
+            tr = 14;
+          let tw = 0;
+          for (const ch of word) tw += g.measureText(ch).width + tr;
+          let tx = lx + (lw - (tw - tr)) / 2;
+          for (const ch of word) {
+            g.fillText(ch, tx, ly + lh / 2 - 8);
+            tx += g.measureText(ch).width + tr;
+          }
+          g.font = 'italic 34px Georgia,serif';
+          g.textAlign = 'center';
+          g.fillText('study & reflection', lx + lw / 2, ly + lh - 58);
+        });
+        const jLeather = new THREE.MeshStandardMaterial({
+          color: 0x8a5731,
+          roughness: 0.82,
+          bumpMap: leatherBump,
+          bumpScale: 0.8,
+        });
+        const jTopM = new THREE.MeshStandardMaterial({
+          map: jCover,
+          bumpMap: leatherBump,
+          bumpScale: 0.9,
+          roughness: 0.7,
+        });
+        const jStripe = stripe.clone(); // cream page edges, fewer lines because the block is thin
+        jStripe.repeat.set(1, 16);
+        jStripe.needsUpdate = true;
+        const jEdge = new THREE.MeshLambertMaterial({ map: jStripe, color: 0xf3ecd9 });
+        // Page-edge looks for the open journal's page stacks: striped paper on the long faces, a warm tan on the outer edge (not bright white).
+        const jStackMats = [jEdge, new THREE.MeshLambertMaterial({ color: 0xd3c7a6 })];
+        const jElastic = new THREE.MeshStandardMaterial({ color: 0x1d3a30, roughness: 0.92 });
+        const journalG = new THREE.Group();
+        let jb = null; // the journal as a 'book' object (filled in just below)
+        {
+          const { W, L, T, JB } = JN,
+            PHj = T - 2 * JB;
+          // back cover, page block, front cover (on a hinge so it can open later), and the spine strip
+          const back = mk(roundBox(W, JB, L, 0.03, 3), jLeather);
+          back.position.y = -T / 2 + JB / 2;
+          journalG.add(back);
+          const blk = mk(roundBox(W - 0.1, PHj, L - 0.1, 0.015, 2), [jEdge, jEdge, jEdge, jEdge, jEdge, jEdge]);
+          blk.position.set(0.02, 0, 0);
+          journalG.add(blk);
+          const jHinge = new THREE.Group();
+          jHinge.position.set(-W / 2, T / 2 - JB / 2, 0);
+          journalG.add(jHinge);
+          const front = mk(roundBox(W, JB, L, 0.03, 3), [jLeather, jLeather, jTopM, jLeather, jLeather, jLeather]);
+          front.position.set(W / 2, 0, 0);
+          jHinge.add(front);
+          const jSpine = mk(roundBox(0.16, T, L, 0.06, 3), jLeather);
+          jSpine.position.set(-W / 2 + 0.06, 0, 0);
+          journalG.add(jSpine);
+          // elastic band: a flat loop that runs around the whole notebook, parallel to the spine
+          const loop = (hx, hy, r) => {
+            const sh = new THREE.Shape();
+            sh.moveTo(-hx + r, -hy);
+            sh.lineTo(hx - r, -hy);
+            sh.quadraticCurveTo(hx, -hy, hx, -hy + r);
+            sh.lineTo(hx, hy - r);
+            sh.quadraticCurveTo(hx, hy, hx - r, hy);
+            sh.lineTo(-hx + r, hy);
+            sh.quadraticCurveTo(-hx, hy, -hx, hy - r);
+            sh.lineTo(-hx, -hy + r);
+            sh.quadraticCurveTo(-hx, -hy, -hx + r, -hy);
+            return sh;
+          };
+          const ring = loop(L / 2 + 0.035, T / 2 + 0.035, 0.07);
+          ring.holes.push(loop(L / 2 + 0.002, T / 2 + 0.002, 0.04));
+          const rg = new THREE.ExtrudeGeometry(ring, { depth: 0.2, bevelEnabled: false, curveSegments: 6 });
+          rg.translate(0, 0, -0.1);
+          rg.rotateY(Math.PI / 2);
+          const band = mk(rg, jElastic);
+          band.position.set(W / 2 - 0.5, 0, 0);
+          journalG.add(band);
+          // placed on the mat to the right of the Bible, turned a little as if just put down
+          journalG.position.set(2.9, T / 2 + MAT_T, 2.9);
+          journalG.rotation.y = 0.2;
+          scene.add(journalG);
+          // Everything the open/close and page-turn code needs, in the same shape as a Bible book.
+          // (No ribbon: the journal has none, so ribbon is a stand-in that is always hidden.)
+          jb = {
+            g: journalG,
+            d: { id: 'JRN', name: 'Journal', W, L, T, PL: JB, journal: true },
+            i: 'J',
+            ribbon: { visible: false },
+            hinge: jHinge,
+            pagesBox: blk,
+            spine: jSpine,
+            openParts: null,
+            band,
+            baseX: 2.9,
+            baseZ: 2.9,
+            restQ: journalG.quaternion.clone(),
+          };
+        }
+
+        // ── Journal pages: how the inside of the notebook looks ──
+        const jCache = {};
+        // Warm cream paper with fine grain and a shadow towards the spine. side is 'left' or 'right'.
+        function jPaper(side) {
+          if (jCache[side]) return jCache[side];
+          const c = document.createElement('canvas');
+          c.width = 1024;
+          c.height = 1392;
+          const g = c.getContext('2d'),
+            r = rng(side === 'left' ? 61 : 62);
+          g.fillStyle = '#f4eedc';
+          g.fillRect(0, 0, 1024, 1392);
+          for (let i = 0; i < 9000; i++) {
+            g.fillStyle = `rgba(110,85,50,${r() * 0.05})`;
+            g.fillRect(r() * 1024, r() * 1392, 1 + r() * 2, 1 + r() * 2);
+          }
+          const gx = side === 'right' ? 0 : 1024,
+            ex = side === 'right' ? 300 : 1024 - 300;
+          const gr = g.createLinearGradient(gx, 0, ex, 0);
+          gr.addColorStop(0, 'rgba(60,40,20,.5)');
+          gr.addColorStop(1, 'rgba(60,40,20,0)');
+          g.fillStyle = gr;
+          g.fillRect(0, 0, 1024, 1392);
+          return (jCache[side] = c);
+        }
+        // Builds the picture for one journal page. m.kind: 'jflyleaf' (inside cover), 'jtitle', or 'jpage' (ruled).
+        function jPageTex(m, side) {
+          const c = document.createElement('canvas');
+          c.width = 1024;
+          c.height = 1392;
+          const g = c.getContext('2d');
+          g.drawImage(jPaper(side), 0, 0);
+          const ox = side === 'right' ? 70 : 20; // text/ruling area is shifted away from the spine shadow
+          if (m.kind === 'jpage') {
+            // paper: ruled lines (with a margin line), dots, or plain
+            if (JS.paper === 0) {
+              g.strokeStyle = 'rgba(70,100,130,.3)';
+              g.lineWidth = 2;
+              for (let y = 230; y <= 1240; y += 66) {
+                g.beginPath();
+                g.moveTo(ox + 70, y);
+                g.lineTo(ox + 890, y);
+                g.stroke();
+              }
+              g.strokeStyle = 'rgba(190,80,70,.35)';
+              g.lineWidth = 2.5;
+              g.beginPath();
+              g.moveTo(ox + 150, 150);
+              g.lineTo(ox + 150, 1290);
+              g.stroke();
+            } else if (JS.paper === 1) {
+              g.fillStyle = 'rgba(70,100,130,.4)';
+              for (let y = 230; y <= 1240; y += 66)
+                for (let x = ox + 70; x <= ox + 890; x += 33) {
+                  g.beginPath();
+                  g.arc(x, y, 2.4, 0, 7);
+                  g.fill();
+                }
+            }
+            // page number
+            g.fillStyle = 'rgba(70,50,30,.55)';
+            g.font = 'italic 34px Georgia,serif';
+            g.textAlign = 'center';
+            g.fillText(String(m.idx + 1), ox + 480, 1340);
+            const pg = JP[m.idx];
+            if (pg && pg.e >= 0) {
+              const en = JE[pg.e];
+              g.textAlign = 'left';
+              if (pg.k === 0) {
+                // the entry's date, on the first page of the entry (tap it to change the date)
+                g.fillStyle = 'rgba(74,47,24,.82)';
+                g.font = 'italic 40px Georgia,serif';
+                g.fillText(jDateLabel(en.d), ox + JX0 - 20, 168);
+                g.fillStyle = 'rgba(74,47,24,.22)';
+                g.fillRect(ox + 150, 188, 740, 2);
+              }
+              // the writing: each line sits on a ruled line
+              g.font = jFont();
+              g.fillStyle = jInk();
+              pg.lines.forEach((l, r) => g.fillText(en.text.slice(l.s, l.e), ox + JX0, 220 + 66 * r));
+              // blinking cursor
+              if (jEdit && jEdit.id === en.id && jBlinkOn) {
+                const c = jCaretAt(en, jTa.selectionStart);
+                if (c.page === m.idx) {
+                  g.fillStyle = '#1B6B52';
+                  g.fillRect(ox + JX0 + c.x + 1, 220 + 66 * c.row - 44, 3, 54);
+                }
+              }
+            } else if (pg) {
+              // the empty page at the end: a very faint hint that you can start here
+              g.fillStyle = 'rgba(70,50,30,.3)';
+              g.font = 'italic 38px Georgia,serif';
+              g.textAlign = 'center';
+              g.fillText('Tap to write', ox + 480, 720);
+            }
+          } else if (m.kind === 'jflyleaf') {
+            g.strokeStyle = 'rgba(27,107,82,.4)';
+            g.lineWidth = 3;
+            rrect(g, 90, 110, 800, 1170, 18);
+            g.stroke();
+            g.fillStyle = 'rgba(60,40,20,.7)';
+            g.textAlign = 'center';
+            g.font = 'italic 44px Georgia,serif';
+            g.fillText('This journal belongs to', 490, 560);
+            g.fillStyle = 'rgba(60,40,20,.45)';
+            g.fillRect(250, 690, 480, 2);
+            const who = hName(); // the name from the greeting, if there is one
+            if (who) {
+              g.fillStyle = 'rgba(60,40,20,.85)';
+              g.font = '44px Georgia,serif';
+              g.fillText(who, 490, 665);
+            }
+          } else if (m.kind === 'jtitle') {
+            g.fillStyle = '#4a2f18';
+            g.textAlign = 'center';
+            g.font = '600 96px Georgia,serif';
+            let nm = 'JOURNAL',
+              tx = 0;
+            const tr = 18;
+            let tw = 0;
+            for (const ch of nm) tw += g.measureText(ch).width + tr;
+            tx = 535 - (tw - tr) / 2;
+            g.textAlign = 'left';
+            for (const ch of nm) {
+              g.fillText(ch, tx, 520);
+              tx += g.measureText(ch).width + tr;
+            }
+            g.textAlign = 'center';
+            g.fillStyle = 'rgba(27,107,82,.6)';
+            g.fillRect(335, 590, 400, 3);
+            g.fillStyle = 'rgba(74,47,24,.75)';
+            g.font = 'italic 42px Georgia,serif';
+            g.fillText('study & reflection', 535, 680);
+          }
+          return texFrom(c);
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // 07C · JOURNAL: WRITING
+        //      Entries are saved in the browser (bibleDeskJournal). Typing goes into a hidden text box
+        //      (so the phone keyboard, paste, undo and spelling all work) and is drawn on the page.
+        //      Each entry has a date you can change; entries are kept in date order and always start on a new page.
+        // ═══════════════════════════════════════════════════════════════════
+        // JE = all journal entries: { id, d: 'YYYY-MM-DD' (editable), text, c: when it was created }
+        let JE = [];
+        try {
+          JE = (JSON.parse(localStorage.getItem('bibleDeskJournal')) || []).filter((x) => x && x.id);
+        } catch (e) {}
+        let jSaveT = 0;
+        function jSaveNow() {
+          clearTimeout(jSaveT);
+          try {
+            localStorage.setItem(
+              'bibleDeskJournal',
+              JSON.stringify(JE.map((x) => ({ id: x.id, d: x.d, text: x.text, c: x.c }))),
+            );
+          } catch (e) {}
+        }
+        const jSaveSoon = () => {
+          clearTimeout(jSaveT);
+          jSaveT = setTimeout(jSaveNow, 500);
+        };
+        addEventListener('pagehide', jSaveNow);
+        const jToday = () => {
+          const d = new Date();
+          return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+        };
+        // '2026-11-19' to 'Thursday, 19 November 2026'
+        const jDateLabel = (d) => {
+          const t = new Date(d + 'T00:00');
+          return isNaN(t)
+            ? d
+            : t.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        };
+
+        // ── Journal settings: handwriting font, size, paper and ink (chosen in the Aa panel, saved in the browser) ──
+        // k adjusts the size so every font looks about the same height; sys = a font already on the phone (nothing to load).
+        const JFONTS = [
+          { id: 'Caveat', css: 'Caveat:wght@500;600', w: '600', k: 1 },
+          { id: 'Kalam', css: 'Kalam:wght@400', w: '400', k: 0.8 },
+          { id: 'Patrick Hand', css: 'Patrick+Hand', w: '400', k: 0.92 },
+          { id: 'Reenie Beanie', css: 'Reenie+Beanie', w: '400', k: 1.3 },
+          { id: 'Georgia', sys: true, w: 'italic 400', k: 0.82 },
+        ];
+        const JSIZES = [
+          ['Small', 0.88],
+          ['Medium', 1],
+          ['Large', 1.14],
+        ];
+        const JPAPERS = ['Lined', 'Dotted', 'Plain'];
+        const JINKS = [
+          ['Blue-black', '#1f2a44'],
+          ['Black', '#1a1a1a'],
+          ['Green', '#1B5E4A'],
+          ['Brown', '#4a2f18'],
+        ];
+        const JS = { font: 0, size: 1, paper: 0, ink: 0 }; // indexes into the lists above
+        try {
+          Object.assign(JS, JSON.parse(localStorage.getItem('bibleDeskJournalSet')) || {});
+        } catch (e) {}
+        const jSetSave = () => {
+          try {
+            localStorage.setItem('bibleDeskJournalSet', JSON.stringify(JS));
+          } catch (e) {}
+        };
+        const jInk = () => (JINKS[JS.ink] || JINKS[0])[1];
+        // The CSS font string used both to measure and to draw the writing.
+        const jFont = () => {
+          const f = JFONTS[JS.font] || JFONTS[0],
+            px = Math.round(50 * f.k * (JSIZES[JS.size] || JSIZES[1])[1]);
+          return f.sys ? 'italic 400 ' + px + 'px Georgia,serif' : f.w + ' ' + px + 'px "' + f.id + '",cursive';
+        };
+        // Loads a handwriting font from Google Fonts (only when it is needed), then redraws.
+        const jLoaded = {};
+        function jLoadFont(i) {
+          const f = JFONTS[i === undefined ? JS.font : i];
+          if (!f || f.sys || jLoaded[f.id]) return;
+          jLoaded[f.id] = true;
+          const l = document.createElement('link');
+          l.rel = 'stylesheet';
+          l.href = 'https://fonts.googleapis.com/css2?family=' + f.css + '&display=swap';
+          document.head.appendChild(l);
+          if (document.fonts && document.fonts.load)
+            document.fonts.load('40px "' + f.id + '"').then(
+              () => {
+                jRelayout();
+                jRedraw();
+              },
+              () => {},
+            );
+        }
+
+        // ── Layout: break each entry into lines, and lines into pages ──
+        const JLPP = 16; // ruled lines per page
+        const JX0 = 170; // where text starts on a page (after the margin line), measured from the page's left offset
+        const JW = 720; // width available for text
+        const jm = document.createElement('canvas').getContext('2d'); // only used to measure text
+        let JP = []; // the pages: { e: entry index (-1 = empty page), k: page number inside the entry, lines, l0: first line number }
+        // Splits text into lines that fit the page width. Each line is { s, e }: character range in the text.
+        function jWrap(text) {
+          jm.font = jFont();
+          const out = [];
+          let pos = 0;
+          for (const para of text.split('\n')) {
+            if (!para) {
+              out.push({ s: pos, e: pos });
+              pos += 1;
+              continue;
+            }
+            let lineS = pos,
+              lineT = '';
+            for (const tk of para.match(/\S+\s*|\s+/g) || []) {
+              if (jm.measureText((lineT + tk).trimEnd()).width <= JW) {
+                lineT += tk;
+                continue;
+              }
+              if (lineT) {
+                out.push({ s: lineS, e: lineS + lineT.length });
+                lineS += lineT.length;
+                lineT = '';
+              }
+              let t = tk; // a single very long word is broken across lines
+              while (t.length > 1 && jm.measureText(t.trimEnd()).width > JW) {
+                let k = t.length - 1;
+                while (k > 1 && jm.measureText(t.slice(0, k)).width > JW) k--;
+                out.push({ s: lineS, e: lineS + k });
+                lineS += k;
+                t = t.slice(k);
+              }
+              lineT = t;
+            }
+            out.push({ s: lineS, e: lineS + lineT.length });
+            pos += para.length + 1;
+          }
+          return out;
+        }
+        // Puts entries in date order and rebuilds the list of pages. Always ends with one empty page to start a new entry on.
+        function jRelayout() {
+          JE.sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : a.c - b.c));
+          JP = [];
+          JE.forEach((en, ei) => {
+            en._l = jWrap(en.text);
+            en._p0 = JP.length;
+            const n = Math.max(1, Math.ceil(en._l.length / JLPP));
+            for (let k = 0; k < n; k++)
+              JP.push({ e: ei, k, lines: en._l.slice(k * JLPP, (k + 1) * JLPP), l0: k * JLPP });
+          });
+          JP.push({ e: -1 });
+          if (jmode && view.loc.mode === 'jpage' && view.loc.s >= jSpreads())
+            view.loc.s = jSpreads() - 1;
+        }
+        const jSpreads = () => Math.max(1, Math.ceil(JP.length / 2));
+        jRelayout();
+
+        // ── The entry being written ──
+        let jEdit = null; // { id } while the keyboard is up for an entry
+        let jLast = null; // { id, i }: the last entry and cursor position, so a panel can add text there
+        let jBlinkOn = true,
+          jBlinkT = 0;
+        const jTa = $('jIn'); // the hidden text box
+        const jCur = () => (jEdit ? JE.find((x) => x.id === jEdit.id) : null);
+        // Where is character i of entry en? Returns { page, row, x } (x measured from the start of the line).
+        function jCaretAt(en, i) {
+          let li = 0;
+          for (let n = 0; n < en._l.length; n++) if (i >= en._l[n].s && i <= en._l[n].e) li = n;
+          jm.font = jFont();
+          const l = en._l[li] || { s: 0, e: 0 };
+          return {
+            page: en._p0 + Math.floor(li / JLPP),
+            row: li % JLPP,
+            x: jm.measureText(en.text.slice(l.s, Math.min(i, l.e))).width,
+          };
+        }
+        // Redraw the open pages (both, or only one side when only the cursor blinked).
+        function jRedraw(side) {
+          if (!jmode || !view.bk || !view.models || flip.on) return;
+          if (!side) return refreshSpread();
+          const bk = view.bk,
+            T = pageTexture(view.models[side], side),
+            key = side === 'left' ? 'L' : 'R';
+          setTop(bk, side, T);
+          disposeTex(view.tex[key]);
+          view.tex[key] = T;
+        }
+        // Make sure the page with the cursor is the one on screen (turns the page if the writing has flowed on).
+        function jShowCaret() {
+          const en = jCur();
+          if (!en || !jmode || !view.bk) return;
+          const pi = jCaretAt(en, jTa.selectionStart).page,
+            s = pi >> 1;
+          if (flip.on || navBusy) {
+            setTimeout(jShowCaret, 700);
+            return;
+          }
+          if (view.loc.mode === 'jpage' && view.loc.s === s) {
+            if (portrait) focus = pi & 1;
+          } else goTo({ mode: 'jpage', s, side: pi & 1 });
+        }
+        function jBlinkStart() {
+          clearInterval(jBlinkT);
+          jBlinkOn = true;
+          jBlinkT = setInterval(() => {
+            const en = jCur();
+            if (!en || !jmode || flip.on) return;
+            jBlinkOn = !jBlinkOn;
+            const pi = jCaretAt(en, jTa.selectionStart).page;
+            if (view.models.left.idx === pi) jRedraw('left');
+            else if (view.models.right.idx === pi) jRedraw('right');
+          }, 530);
+        }
+        // Start (or move) writing in entry en with the cursor at character i.
+        function jFocus(en, i) {
+          jEdit = { id: en.id };
+          jLast = { id: en.id, i };
+          if (jTa.value !== en.text) jTa.value = en.text;
+          jTa.focus({ preventScroll: true });
+          jTa.setSelectionRange(i, i);
+          jBlinkStart();
+          jRedraw();
+          jShowCaret();
+        }
+        // Stop writing: hide the keyboard, drop an entry that was left empty, save.
+        function jBlur() {
+          clearInterval(jBlinkT);
+          const had = jEdit;
+          jEdit = null;
+          jTa.blur();
+          if (had) {
+            const n = JE.length;
+            JE = JE.filter((x) => x.id !== had.id || x.text.trim() !== '');
+            if (JE.length !== n) jRelayout();
+            jSaveNow();
+            jRedraw();
+          }
+        }
+        // Start a new entry dated today.
+        function jNewEntry() {
+          const en = {
+            id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+            d: jToday(),
+            text: '',
+            c: Date.now(),
+          };
+          JE.push(en);
+          jRelayout();
+          jFocus(en, 0);
+        }
+        jTa.addEventListener('input', () => {
+          const en = jCur();
+          if (!en) return;
+          en.text = jTa.value;
+          jRelayout();
+          jBlinkOn = true;
+          jRedraw();
+          jShowCaret();
+          jSaveSoon();
+        });
+        document.addEventListener('selectionchange', () => {
+          if (document.activeElement !== jTa || !jEdit) return;
+          jLast = { id: jEdit.id, i: jTa.selectionStart };
+          jBlinkOn = true;
+          jRedraw();
+          jShowCaret();
+        });
+        jTa.addEventListener('keydown', (e) => {
+          e.stopPropagation(); // typing must not trigger the site's own keys (L = day/night, arrows = pages)
+          if (e.key === 'Escape') jTa.blur();
+        });
+        jTa.addEventListener('blur', () => {
+          // wait a moment: tapping the page moves the cursor and should not drop the keyboard
+          setTimeout(() => {
+            if (document.activeElement !== jTa && jEdit) jBlur();
+          }, 150);
+        });
+        // keep the keyboard up when the page is tapped
+        canvas.addEventListener('mousedown', (e) => {
+          if (jEdit) e.preventDefault();
+        });
+
+        // ── The Aa panel: the journal's own settings ──
+        function jPanelBuild() {
+          const group = (id, items, cur, onPick, style) => {
+            const box = $(id);
+            box.innerHTML = '';
+            items.forEach((it, i) => {
+              const b = document.createElement('button');
+              b.type = 'button';
+              b.textContent = it.label;
+              if (it.color) b.style.background = it.color;
+              if (it.font) b.style.fontFamily = it.font;
+              if (i === cur) b.className = 'on';
+              b.onclick = () => {
+                onPick(i);
+                jPanelBuild();
+              };
+              box.appendChild(b);
+            });
+          };
+          group('jsF', JFONTS.map((f) => ({ label: f.id, font: f.sys ? 'Georgia,serif' : '"' + f.id + '",cursive' })), JS.font, (i) => {
+            JS.font = i;
+            jLoadFont(i);
+            jApply();
+          });
+          group('jsS', JSIZES.map((z) => ({ label: z[0] })), JS.size, (i) => {
+            JS.size = i;
+            jApply();
+          });
+          group('jsP', JPAPERS.map((n) => ({ label: n })), JS.paper, (i) => {
+            JS.paper = i;
+            jApply();
+          });
+          group('jsI', JINKS.map((k) => ({ label: '', color: k[1] })), JS.ink, (i) => {
+            JS.ink = i;
+            jApply();
+          });
+        }
+        // A setting changed: save it and redraw the pages with it.
+        function jApply() {
+          jSetSave();
+          jRelayout();
+          jRedraw();
+        }
+        function jPanel(o) {
+          if (o) {
+            jPanelsOff('js');
+            JFONTS.forEach((f, i) => jLoadFont(i)); // so each font name can be shown in its own style
+            jPanelBuild();
+          }
+          $('js').classList.toggle('show', o);
+        }
+        $('jsBtn').onclick = () => jPanel(!$('js').classList.contains('show'));
+        $('jsX').onclick = () => jPanel(false);
+
+
+        // ── Bible references inside your writing ──
+        let jRefRe = null;
+        // Finds references like 'John 3:16' or '1 Corinthians 13:4-7' in text. Returns [{ s, e, b, c, v }] (character range and Bible place).
+        function jRefs(text) {
+          if (!jRefRe) {
+            const names = BOOKS.map((b) => b[0]).sort((a, b) => b.length - a.length);
+            jRefRe = new RegExp(
+              '(' + names.map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')\\.?\\s+(\\d{1,3})(?:\\s*:\\s*(\\d{1,3}))?',
+              'gi',
+            );
+          }
+          const out = [];
+          jRefRe.lastIndex = 0;
+          let m;
+          while ((m = jRefRe.exec(text))) {
+            const b = BOOKS.findIndex((x) => x[0].toLowerCase() === m[1].toLowerCase()),
+              c = +m[2];
+            if (b >= 0 && c >= 1 && c <= BOOKS[b][1]) out.push({ s: m.index, e: m.index + m[0].length, b, c, v: m[3] ? +m[3] : 0 });
+          }
+          return out;
+        }
+        // Close the journal, then open the Bible at that place.
+        function jOpenRef(r) {
+          toast('Opening ' + BOOKS[r.b][0] + ' ' + r.c + (r.v ? ':' + r.v : '') + '…', 3500);
+          closeBook();
+          let n = 0;
+          const w = setInterval(() => {
+            if (++n > 150) return clearInterval(w);
+            if (openT > 0 || jmode || busy || openGoal) return; // wait until the journal is fully closed
+            clearInterval(w);
+            openBook();
+            let k = 0;
+            const w2 = setInterval(() => {
+              if (++k > 150) return clearInterval(w2);
+              if (openT < 1 || flip.on || navBusy) return;
+              clearInterval(w2);
+              loadChapter(r.b, r.c)
+                .then(() => pickVerse(r.b, r.c, r.v || 0))
+                .catch((e) => toast(e.message, 4000));
+            }, 100);
+          }, 100);
+        }
+
+        // ── Panels that sit above the bar: Entries, Verse, and the Aa settings (only one open at a time) ──
+        const jPanelIds = ['jl', 'jv', 'js'];
+        function jPanelsOff(except) {
+          for (const id of jPanelIds) if (id !== except) $(id).classList.remove('show');
+        }
+        // Put text into the entry being written, at the cursor. If nothing is being written, start a new entry.
+        function jInsert(str) {
+          let en = jLast && JE.find((x) => x.id === jLast.id);
+          let at;
+          if (en) at = Math.min(jLast.i, en.text.length);
+          else {
+            en = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), d: jToday(), text: '', c: Date.now() };
+            JE.push(en);
+            jRelayout();
+            at = 0;
+          }
+          jFocus(en, at);
+          jTa.setRangeText(str, at, at, 'end');
+          jTa.dispatchEvent(new Event('input'));
+        }
+        // Add text to today's entry from the Bible side (Send to journal). Starts today's entry if there isn't one.
+        function jAppend(str) {
+          const t = jToday();
+          let en = JE.filter((x) => x.d === t).sort((a, b) => b.c - a.c)[0];
+          if (!en) {
+            en = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), d: t, text: '', c: Date.now() };
+            JE.push(en);
+          }
+          en.text = en.text ? en.text.replace(/\s+$/, '') + '\n\n' + str : str;
+          jRelayout();
+          jSaveNow();
+          toast("Added to today's journal entry", 2200);
+        }
+
+        // ── Entries panel: a contents list with search ──
+        function jGoPage(pi) {
+          if (jmode) goTo({ mode: 'jpage', s: pi >> 1, side: pi & 1 });
+        }
+        function jListDraw() {
+          const q = $('jlQ').value.trim().toLowerCase(),
+            box = $('jlL');
+          box.innerHTML = '';
+          const items = JE.filter(
+            (en) => !q || en.text.toLowerCase().includes(q) || jDateLabel(en.d).toLowerCase().includes(q),
+          ).reverse(); // newest first
+          if (!items.length) {
+            const d = document.createElement('div');
+            d.className = 'jle';
+            d.textContent = JE.length ? 'No entries match.' : 'No entries yet. Tap a page to start writing.';
+            box.appendChild(d);
+          }
+          for (const en of items) {
+            const flat = en.text.replace(/\s+/g, ' ').trim(),
+              at = q ? flat.toLowerCase().indexOf(q) : -1,
+              from = at > 30 ? at - 30 : 0;
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'jli';
+            const h = document.createElement('b');
+            h.textContent = jDateLabel(en.d);
+            const sp = document.createElement('span');
+            sp.textContent = (from ? '…' : '') + (flat.slice(from, from + 90) || 'Empty entry');
+            const pn = document.createElement('i');
+            pn.textContent = 'p. ' + (en._p0 + 1);
+            b.append(h, sp, pn);
+            b.onclick = () => {
+              jPanelsOff();
+              jGoPage(en._p0);
+            };
+            box.appendChild(b);
+          }
+        }
+        function jListOpen() {
+          if (!jmode) return;
+          jPanelsOff('jl');
+          jListDraw();
+          $('jl').classList.toggle('show');
+        }
+        $('jlQ').addEventListener('input', jListDraw);
+        for (const id of ['jlQ', 'jvA', 'jvB']) $(id).addEventListener('keydown', (e) => e.stopPropagation()); // typing here must not trigger site keys
+        $('jlX').onclick = () => jPanelsOff();
+        $('jlNew').onclick = () => {
+          jPanelsOff();
+          jNewEntry();
+        };
+
+        // ── Verse panel: add the verse(s) you were reading to your entry ──
+        let jvCh = null;
+        function jVerseOpen() {
+          if (!jmode) return;
+          if ($('jv').classList.contains('show')) return jPanelsOff();
+          const l = savedLoc();
+          jPanelsOff('jv');
+          const show = (ch) => {
+            jvCh = ch;
+            const pgs = [ch.pages[2 * l.s], ch.pages[2 * l.s + 1]].filter(Boolean);
+            let lo = 1e9,
+              hi = 0;
+            for (const pg of pgs) for (const ln of pg.lines) for (const r of ln.runs) {
+              lo = Math.min(lo, r.verse);
+              hi = Math.max(hi, r.verse);
+            }
+            if (!hi) {
+              lo = 1;
+              hi = ch.nv;
+            }
+            $('jvRef').textContent = BOOKS[ch.b][0] + ' ' + ch.c + ' · ' + ch.srcLabel;
+            $('jvA').value = lo;
+            $('jvB').value = hi;
+            $('jv').classList.add('show');
+          };
+          const have = getCh(l.b, l.c);
+          if (have) show(have);
+          else {
+            toast('Loading ' + BOOKS[l.b][0] + ' ' + l.c + '…', 3000);
+            loadChapter(l.b, l.c).then(show, (e) => toast(e.message, 4000));
+          }
+        }
+        // withText: also add the words of the verses. Reference looks like 'John 3:16-18 (KJV)'.
+        function jVerseAdd(withText) {
+          const ch = jvCh;
+          if (!ch) return;
+          let a = Math.max(1, Math.min(ch.nv, parseInt($('jvA').value, 10) || 1)),
+            b = Math.max(1, Math.min(ch.nv, parseInt($('jvB').value, 10) || a));
+          if (b < a) [a, b] = [b, a];
+          const name = BOOKS[ch.b][0] + ' ' + ch.c + ':' + (a === b ? a : a + '–' + b),
+            ref = name + ' (' + ch.srcLabel + ')';
+          const words = ch.verses.filter((v) => v.n >= a && v.n <= b).map((v) => v.text).join(' ');
+          jPanelsOff();
+          jInsert(withText ? '“' + words + '” — ' + ref : ref);
+        }
+        $('jvBtn').onclick = jVerseOpen;
+        $('jvX').onclick = () => jPanelsOff();
+        $('jvR').onclick = () => jVerseAdd(false);
+        $('jvT').onclick = () => jVerseAdd(true);
+        // buttons on the bar and in the panels must not take the keyboard away from the page
+        for (const id of ['bar', 'js', 'jl', 'jv'])
+          $(id).addEventListener('mousedown', (e) => {
+            if (jEdit && e.target.tagName !== 'INPUT') e.preventDefault();
+          });
+
+
+        // ── Tapping a journal page ──
+        // What is under the finger? Returns { pg, en, i (character nearest), cy, m } or null (m = the page model).
+        function jHit(e) {
+          const bk = view.bk;
+          if (!bk || flip.on) return null;
+          ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / vH()) * 2 + 1);
+          ray.setFromCamera(ndc, camera);
+          const h = ray.intersectObjects([bk.leftTop, bk.rightTop], false)[0];
+          if (!h || !h.uv) return null;
+          const side = h.object === bk.rightTop ? 'right' : 'left',
+            m = view.models[side];
+          if (m.kind !== 'jpage') return { m };
+          const ox = side === 'right' ? 70 : 20,
+            cx = h.uv.x * 1024 - ox - JX0,
+            cy = (1 - h.uv.y) * 1392,
+            pg = JP[m.idx];
+          if (!pg || pg.e < 0) return { m, pg, cy };
+          const en = JE[pg.e];
+          let i = en.text.length;
+          if (pg.lines.length) {
+            const r = Math.max(0, Math.min(pg.lines.length - 1, Math.round((cy - 202) / 66))),
+              l = pg.lines[r];
+            jm.font = jFont();
+            i = l.s;
+            let best = 1e9;
+            for (let k = l.s; k <= l.e; k++) {
+              const d = Math.abs(jm.measureText(en.text.slice(l.s, k)).width - cx);
+              if (d < best) {
+                best = d;
+                i = k;
+              }
+            }
+          }
+          return { m, pg, en, i, cy };
+        }
+        function jTap(e) {
+          const t = jHit(e);
+          if (!t) {
+            if (jEdit && view.bk && !flip.on) jBlur();
+            return;
+          }
+          if (t.m.kind !== 'jpage') return;
+          if (!t.pg || t.pg.e < 0) {
+            jNewEntry();
+            return;
+          }
+          if (t.pg.k === 0 && t.cy < 205) {
+            jDateOpen(t.en.id);
+            return;
+          }
+          jFocus(t.en, t.i);
+        }
+        // Press and hold on a Bible reference in your writing (like 'John 3:16') opens it in the Bible.
+        function jHoldRef(x, y) {
+          if (!jmode) return false;
+          const t = jHit({ clientX: x, clientY: y });
+          if (!t || !t.en) return false;
+          for (const r of jRefs(t.en.text)) {
+            if (t.i >= r.s && t.i <= r.e) {
+              try {
+                navigator.vibrate && navigator.vibrate(12);
+              } catch (err) {}
+              jBlur();
+              jOpenRef(r);
+              return true;
+            }
+          }
+          return false;
+        }
+
+        // ── Changing an entry's date, or deleting it ──
+        let jdId = null,
+          jdArm = false;
+        function jDateOpen(id) {
+          const en = JE.find((x) => x.id === id);
+          if (!en) return;
+          jBlur();
+          jdId = id;
+          jdArm = false;
+          $('jdIn').value = en.d;
+          $('jdDel').textContent = 'Delete entry';
+          $('jd').classList.add('show');
+        }
+        const jDateClose = () => {
+          $('jd').classList.remove('show');
+          jdId = null;
+        };
+        // After a date change the entry may have moved: turn to its first page.
+        function jGoToEntry(id) {
+          const en = JE.find((x) => x.id === id);
+          if (!en || !jmode) return;
+          const s = en._p0 >> 1;
+          if (view.loc.mode === 'jpage' && view.loc.s === s) jRedraw();
+          else goTo({ mode: 'jpage', s, side: en._p0 & 1 });
+        }
+        $('jdIn').addEventListener('change', () => {
+          const en = JE.find((x) => x.id === jdId),
+            v = $('jdIn').value;
+          if (!en || !/^\d{4}-\d{2}-\d{2}$/.test(v)) return;
+          en.d = v;
+          jRelayout();
+          jSaveNow();
+          jGoToEntry(en.id);
+          jRedraw();
+        });
+        $('jdOk').onclick = jDateClose;
+        $('jd').addEventListener('pointerdown', (e) => {
+          if (e.target === $('jd')) jDateClose();
+        });
+        $('jdDel').onclick = () => {
+          if (!jdArm) {
+            jdArm = true; // first tap asks, second tap deletes
+            $('jdDel').textContent = 'Tap again to delete';
+            return;
+          }
+          JE = JE.filter((x) => x.id !== jdId);
+          jRelayout();
+          jSaveNow();
+          jDateClose();
+          jRedraw();
+          toast('Entry deleted', 1600);
+        };
+
+
+        // ══════════════════════════════════════════════════════════════════════
         // 08 · DESK LAMP
         //      The modern barrel lamp: base, arm, head and the glowing face. Tapping it switches the light.
         // ══════════════════════════════════════════════════════════════════════
@@ -4964,7 +6259,7 @@
         const P0 = new THREE.Vector3(4.9, 0.3, -2.2),
           P1 = new THREE.Vector3(5.5, 3.9, -2.2),
           HEAD = new THREE.Vector3(3.6, 6.3, -2.2),
-          LT = new THREE.Vector3(0, 0, 1.4);
+          LT = new THREE.Vector3(0.3, 0, 1.6);
 
         // The shade is its own group because it tilts as one piece with the bulb, glow and ring.
         const shade = new THREE.Group();
@@ -5566,77 +6861,12 @@ void main(){
         // ══════════════════════════════════════════════════════════════════════
         // 11 · BIRDS OUTSIDE THE WINDOW
         //      A small flock of birds that flies past by day and is hidden at night.
-        //      (The old balloon code is left in but switched off: the list of balloons is empty.)
         // ══════════════════════════════════════════════════════════════════════
         // outG holds everything seen through the window; outMats lets the theme code dim them at night.
         const outG = new THREE.Group();
         scene.add(outG);
         const outMats = [];
         {
-          const PAL = [
-            ['#f4f1e8', '#1B6B52'],
-            ['#e9e6dc', '#2b2f2d'],
-            ['#f0ece0', '#b7a47a'],
-            ['#1B6B52', '#f4f1e8'],
-          ];
-          const balloons = [];
-          const specs = []; // hot-air balloons removed: the view follows real life
-          specs.forEach(([x, y, z, r, pi], i) => {
-            const [c1, c2] = PAL[pi];
-            const tex = canvasTex(256, 64, (g, w, h) => {
-              const n = 8;
-              for (let k = 0; k < n; k++) {
-                g.fillStyle = k % 2 ? c2 : c1;
-                g.fillRect((k * w) / n, 0, w / n + 1, h);
-              }
-            });
-            tex.wrapS = THREE.RepeatWrapping;
-            const pr = [];
-            for (let k = 0; k <= 24; k++) {
-              const a = (k / 24) * Math.PI;
-              pr.push(
-                new THREE.Vector2(
-                  Math.sin(a) * (1 - 0.18 * Math.cos(a) * (a > 1.57 ? 1 : 0)),
-                  -Math.cos(a) * 1.15,
-                ),
-              );
-            }
-            pr[pr.length - 1].x = 0.001;
-            const geo = new THREE.LatheGeometry(
-              pr.map((p) => new THREE.Vector2(Math.max(p.x, 0.001) * r, p.y * r)),
-              40,
-            );
-            const m = new THREE.MeshBasicMaterial({ map: tex, toneMapped: false, side: THREE.DoubleSide });
-            outMats.push(m);
-            const b = new THREE.Group();
-            const env = new THREE.Mesh(geo, m);
-            env.position.y = r * 1.15;
-            b.add(env);
-            const bm = new THREE.MeshBasicMaterial({ color: 0x3a3a36, toneMapped: false });
-            outMats.push(bm);
-            const bask = new THREE.Mesh(new THREE.BoxGeometry(r * 0.34, r * 0.26, r * 0.34), bm);
-            bask.position.y = -r * 0.05;
-            b.add(bask);
-            const rp = new THREE.LineSegments(
-              new THREE.BufferGeometry().setFromPoints(
-                [
-                  [1, 1],
-                  [-1, 1],
-                  [1, -1],
-                  [-1, -1],
-                ].flatMap(([a, c]) => [
-                  new THREE.Vector3(a * r * 0.15, r * 0.08, c * r * 0.15),
-                  new THREE.Vector3(a * r * 0.5, r * 0.62, c * r * 0.5),
-                ]),
-              ),
-              new THREE.LineBasicMaterial({ color: 0x555550 }),
-            );
-            b.add(rp);
-            b.position.set(x, y, z);
-            b.userData = { y0: y, z0: z, sp: 0.18 + i * 0.04, ph: i * 1.7, span: 60 };
-            outG.add(b);
-            balloons.push(b);
-          });
           // birds: V formation crossing the view
           const bm2 = new THREE.MeshBasicMaterial({
             color: 0x2a2f2c,
@@ -5676,12 +6906,6 @@ void main(){
           };
           window.__outTick = (tt) => {
             if (!outG.visible) return;
-            for (const b of balloons) {
-              const u = b.userData;
-              b.position.z = u.z0 + ((tt * u.sp * 3 + u.ph * 7) % u.span) - u.span / 2;
-              b.position.y = u.y0 + Math.sin(tt * 0.35 + u.ph) * 0.8;
-              b.rotation.y = tt * 0.05 + u.ph;
-            }
             const p = (tt / 48) % 1;
             flock.position.set(-38, 15 + Math.sin(tt * 0.4) * 1.2, -34 + p * 80);
             for (const bd of birds) {
@@ -5918,8 +7142,9 @@ void main(){
         // Called on load and on resize: picks portrait (phone) or wide settings for the camera and the room.
         function layout() {
           const w = innerWidth,
-            h = innerHeight,
+            h = vH(),
             a = w / h;
+          canvas.style.height = kbShrink ? h + 'px' : '';
           const pr = Qs ? qPR(w, h) : renderer.getPixelRatio();
           renderer.setPixelRatio(pr);
           if (composer) composer.setPixelRatio(pr);
@@ -5933,8 +7158,8 @@ void main(){
           camera.fov = baseFov;
           const fitW = a < 1 ? 12 : 15.5;
           camDist = Math.max(fitW / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * a), 11);
-          camTarget.set(0.2, a < 1 ? 3.4 : 2.6, 0.9);
-          readTarget.set(DESK_X, 0.35, DESK_Z);
+          camTarget.set(0.65, a < 1 ? 3.4 : 2.6, 0.9);
+          readTarget.set(jmode ? jb.baseX : DESK_X, 0.35, jmode ? jb.baseZ : DESK_Z);
           readDist = (a < 1 ? 3.4 : 8) / (2 * Math.tan(THREE.MathUtils.degToRad(readFov / 2)) * a);
           const stf = Math.tan(THREE.MathUtils.degToRad((a < 1 ? 55 : 42) / 2));
           const dFor = (fw, fh, pw = 0) =>
@@ -5942,7 +7167,7 @@ void main(){
               ? Math.max(fh / (2 * stf), (pw * fw) / (2 * stf * a))
               : Math.max(fw / (2 * stf * a), fh / (2 * stf));
           STOPS.study = {
-            tgt: new THREE.Vector3(0.2, a < 1 ? 3.4 : 2.6, 0.9),
+            tgt: new THREE.Vector3(0.65, a < 1 ? 3.4 : 2.6, 0.9),
             yaw: 0,
             pitch: camPitch,
             dist: camDist,
@@ -5958,6 +7183,15 @@ void main(){
           camera.updateProjectionMatrix();
         }
         addEventListener('resize', layout);
+        if (window.visualViewport)
+          visualViewport.addEventListener('resize', () => {
+            const k = !!jEdit && innerHeight - visualViewport.height > 120;
+            if (k !== kbShrink) {
+              kbShrink = k;
+              layout();
+              window.scrollTo(0, 0);
+            }
+          });
         layout();
 
         // ══════════════════════════════════════════════════════════════════════
@@ -6080,6 +7314,11 @@ void main(){
                 'Press and hold a verse to highlight, bookmark or add a note. Your streak counts each day you read. The gear holds My Bible, reading mode and settings.',
                 '<path d="M16 8h32v48L32 44 16 56z"/><path d="M24 20h16M24 28h10"/>',
               ],
+              [
+                'Your journal',
+                'Tap the journal on the desk, then tap a page and just write. Tap the date to change it. Verse adds a Bible reference, Entries lists and searches your writing, and Aa changes the handwriting. Press and hold a reference like John 3:16 in your writing to open it in the Bible.',
+                '<rect x="14" y="6" width="36" height="52" rx="4"/><path d="M14 14h-4M14 26h-4M14 38h-4M22 18h20M22 28h20M22 38h12"/><path d="M44 56l14-22 4 3-14 22z"/>',
+              ],
             ];
           let gi = 0,
             gprev = null;
@@ -6160,6 +7399,8 @@ void main(){
             'bibleDeskBook',
             'bibleDeskSnd',
             'bibleDeskQ',
+            'bibleDeskJournal',
+            'bibleDeskJournalSet',
             'bibleDeskRM',
             'bibleDeskRead',
             'bibleDeskMed',
@@ -6423,6 +7664,11 @@ void main(){
                 return;
               }
               if (rig.stop !== 'study' || rig.t < 1 || busy || flip.on || navBusy) return;
+              if (jmode) {
+                // the journal is open: close it first, the Bible opens once it is back on the desk
+                if (openGoal) closeBook();
+                return;
+              }
               if (!openGoal) {
                 openBook();
                 return;
@@ -7105,6 +8351,7 @@ void main(){
           });
         }
         studyAct(cupG, hlNext);
+        studyAct(journalG, openJournal); // tapping the journal opens it
         studyAct(clockG, openDv);
         hlUI();
 
@@ -7368,7 +8615,7 @@ void main(){
           pickables = [...lampHit, ...bookMeshes, ...navTargets.keys(), ...actionTargets.keys()];
         // Returns what was tapped (lamp, book, window, desk, action target...) or null.
         function pick(e) {
-          ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+          ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / vH()) * 2 + 1);
           ray.setFromCamera(ndc, camera);
           const h = ray.intersectObjects(pickables, false)[0];
           if (!h) return null;
@@ -7402,7 +8649,7 @@ void main(){
               !pk.open &&
               !flip.on &&
               !navBusy &&
-              verseMenuAt(ex, ey)
+              (verseMenuAt(ex, ey) || jHoldRef(ex, ey))
             )
               gest.mode = 'ignore';
           }, 480);
@@ -7518,6 +8765,10 @@ void main(){
             return;
           }
           if (rig.t < 1) return;
+          if (p.i === 'J') {
+            openJournal();
+            return;
+          }
           if (p.i === deskIdx) openBook();
           else selectBook(p.i);
         });
@@ -7999,7 +9250,8 @@ void main(){
         }
         // Builds the full picture for one page. m says what it is: flyleaf, title, contents, text or blank.
         function pageTexture(m, side) {
-          const d = books[deskIdx].d;
+          const d = curBook().d;
+          if (m.kind === 'jflyleaf' || m.kind === 'jtitle' || m.kind === 'jpage') return jPageTex(m, side);
           if (m.kind === 'flyleaf') return pageFace(d, 'flyleaf');
           if (m.kind === 'title') return pageFace(d, 'title');
           if (m.kind === 'toc') return drawTocTex(m, side);
@@ -8222,6 +9474,9 @@ void main(){
         }
         // Works out what the left and right pages should contain for place t.
         function spreadModels(t) {
+          if (t.mode === 'jfront') return { left: { kind: 'jflyleaf' }, right: { kind: 'jtitle' } };
+          if (t.mode === 'jpage')
+            return { left: { kind: 'jpage', idx: 2 * t.s }, right: { kind: 'jpage', idx: 2 * t.s + 1 } };
           if (t.mode === 'front') return { left: { kind: 'flyleaf' }, right: { kind: 'title' } };
           if (t.mode === 'toc')
             return { left: { kind: 'toc', part: 'ot' }, right: { kind: 'toc', part: 'nt' } };
@@ -8257,6 +9512,12 @@ void main(){
         // Where a page turn forwards (dir 1) or back (dir -1) would land. null = nowhere to go.
         function targetFor(dir) {
           const l = view.loc;
+          if (jmode) {
+            // journal: title spread, then ruled-page spreads (as many as the entries need)
+            if (l.mode === 'jfront') return dir > 0 ? { mode: 'jpage', s: 0 } : null;
+            if (dir > 0) return l.s + 1 < jSpreads() ? { mode: 'jpage', s: l.s + 1 } : null;
+            return l.s > 0 ? { mode: 'jpage', s: l.s - 1 } : { mode: 'jfront' };
+          }
           if (l.mode === 'front') return dir > 0 ? { mode: 'toc' } : null;
           if (l.mode === 'toc')
             return dir > 0 ? Object.assign({ mode: 'text' }, savedLoc()) : { mode: 'front' };
@@ -8274,13 +9535,18 @@ void main(){
         }
         // Compares two places so we know which comes first.
         function cmpLoc(a, b) {
-          const rk = (x) => (x.mode === 'front' ? 0 : x.mode === 'toc' ? 1 : 2);
+          if (a.mode === 'jpage' && b.mode === 'jpage') return a.s - b.s;
+          const rk = (x) => (x.mode === 'front' || x.mode === 'jfront' ? 0 : x.mode === 'toc' ? 1 : 2);
           if (a.mode !== 'text' || b.mode !== 'text') return rk(a) - rk(b);
           return a.b - b.b || a.c - b.c || a.s - b.s;
         }
         // Updates the label on the reference button: 'Go to…', 'Contents' or e.g. 'John 3'.
         function updateRef() {
           const l = view.loc;
+          if (jmode) {
+            $('refBtn').textContent = 'Entries';
+            return;
+          }
           $('refBtn').textContent =
             l.mode === 'front' ? 'Go to…' : l.mode === 'toc' ? 'Contents' : BOOKS[l.b][0] + ' ' + l.c;
         }
@@ -8297,6 +9563,7 @@ void main(){
         }
         const TOTALCH = 1189;
         function progOf(t) {
+          if (t && t.mode === 'jpage') return Math.min(1, (t.s + 1) / jSpreads());
           if (!t || t.mode !== 'text') return 0;
           const ch = getCh(t.b, t.c),
             s = t.s === 'last' && ch ? ch.nSp - 1 : t.s === 'last' ? 0 : t.s;
@@ -8343,9 +9610,9 @@ void main(){
         // ── Showing a spread and turning a page ──
         // Shows the title page with the contents ahead.
         function showFront() {
-          const bk = books[deskIdx];
+          const bk = curBook();
           cancelFlip();
-          const m = spreadModels({ mode: 'front' });
+          const m = spreadModels({ mode: jmode ? 'jfront' : 'front' });
           const L = pageTexture(m.left, 'left'),
             R = pageTexture(m.right, 'right');
           setTop(bk, 'left', L);
@@ -8354,13 +9621,13 @@ void main(){
             disposeTex(view.tex.L);
             disposeTex(view.tex.R);
           }
-          Object.assign(view, { bk, loc: { mode: 'front' }, models: m, tex: { L, R } });
+          Object.assign(view, { bk, loc: { mode: jmode ? 'jfront' : 'front' }, models: m, tex: { L, R } });
           focus = 1;
           updateRef();
           setStacks(0);
           setTimeout(() => {
             if (openGoal && !flip.on && view.loc.mode === 'front')
-              showTag('Swipe to turn the page · contents, then tap a book', 5000);
+              showTag(jmode ? 'Swipe to turn the page' : 'Swipe to turn the page · contents, then tap a book', 5000);
           }, 1900);
         }
         // Redraws the current pages (after a highlight, note or colour change).
@@ -8560,8 +9827,13 @@ void main(){
         function goTo(t) {
           if (!openGoal || openT < 1 || flip.on || navBusy) return;
           const cur = view.loc;
-          if (t.mode !== 'text' && cur.mode === t.mode) {
+          if (t.mode !== 'text' && t.mode !== 'jpage' && cur.mode === t.mode) {
             if (t.side != null) focus = t.side;
+            return;
+          }
+          if (cur.mode === 'jpage' && t.mode === 'jpage' && cur.s === t.s) {
+            if (t.side != null) focus = t.side;
+            refreshSpread();
             return;
           }
           if (cur.mode === 'text' && cur.b === t.b && cur.c === t.c && cur.s === t.s) {
@@ -8576,9 +9848,13 @@ void main(){
         // ── Tapping a verse ──
         // A tap on a page: on the contents page it opens that book; on a text page it highlights (or un-highlights) the tapped verse in the current colour.
         function pageTap(e) {
+          if (jmode) {
+            jTap(e); // tapping the journal: start or move the writing cursor, or change a date
+            return;
+          }
           const bk = view.bk;
           if (!bk || flip.on) return;
-          ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+          ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / vH()) * 2 + 1);
           ray.setFromCamera(ndc, camera);
           const h = ray.intersectObjects([bk.leftTop, bk.rightTop], false)[0];
           if (!h || !h.uv) return;
@@ -8616,8 +9892,8 @@ void main(){
         // Opens the long-press menu for the verse under screen position x,y. Returns false if there was no verse.
         function verseMenuAt(x, y) {
           const bk = view.bk;
-          if (!bk || flip.on || sel.on) return false;
-          ndc.set((x / innerWidth) * 2 - 1, -(y / innerHeight) * 2 + 1);
+          if (!bk || flip.on || sel.on || jmode) return false;
+          ndc.set((x / innerWidth) * 2 - 1, -(y / vH()) * 2 + 1);
           ray.setFromCamera(ndc, camera);
           const h = ray.intersectObjects([bk.leftTop, bk.rightTop], false)[0];
           if (!h || !h.uv) return false;
@@ -8861,6 +10137,15 @@ void main(){
           toast('Tap more verses to add them', 2600);
         };
         $('selX').onclick = selEnd;
+        $('selJrn').onclick = () => {
+          const i = selInfo();
+          jAppend('\u201C' + i.card + '\u201D \u2014 ' + i.name + ' (' + i.label + ')');
+          selEnd();
+        };
+        $('vmJrn').onclick = () => {
+          jAppend('\u201C' + vm.text + '\u201D \u2014 ' + vm.name + ' (' + vm.ch.srcLabel + ')');
+          closeVm();
+        };
         $('selCopy').onclick = () => {
           const t = selInfo().plain;
           if (navigator.clipboard && navigator.clipboard.writeText)
@@ -8896,7 +10181,7 @@ void main(){
         const pk = { open: false, view: 'books', b: 0, c: 1, back: null };
         // Open / close the picker.
         function openPicker() {
-          if (!openGoal || openT < 1) return;
+          if (!openGoal || openT < 1 || jmode) return;
           pk.open = true;
           $('picker').classList.add('show');
           pkBooks();
@@ -9007,7 +10292,7 @@ void main(){
           }
           goTo({ mode: 'text', b, c, s: idx >> 1, side: idx & 1 });
         }
-        $('refBtn').onclick = openPicker;
+        $('refBtn').onclick = () => (jmode ? jListOpen() : openPicker()); // in the journal this button is 'Entries'
         $('tocBtn').onclick = () => goTo({ mode: 'toc', side: 0 });
         $('pkBack').onclick = () => {
           if (pk.back) pk.back();
@@ -9023,7 +10308,7 @@ void main(){
           } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
             e.preventDefault();
             step(-1);
-          } else if (e.key === 'g' || e.key === 'G') {
+          } else if ((e.key === 'g' || e.key === 'G') && !jmode) {
             pk.open ? closePicker() : openPicker();
           }
         });
@@ -10001,6 +11286,7 @@ void main(){
           };
           const DEFS = [
             { id: 'bible', t: 'Holy Bible', s: 'Tap to open and read', p: () => top(books[deskIdx].g) },
+            { id: 'journal', t: 'Journal', s: 'Tap to write your own notes', p: () => top(journalG) },
             { id: 'pens', t: 'Highlighters', s: 'Tap to change colour', p: () => top(cupG) },
             { id: 'clock', t: 'Daily devotion', s: "Tap for today's reading", p: () => top(clockG) },
             {
@@ -10027,7 +11313,7 @@ void main(){
               p: () => new THREE.Vector3(-ROOM.x + 0.6, (WIN.y0 + WIN.y1) / 2, WIN.cz),
             },
           ];
-          const SHEETS = '#st.show,#mb.show,#sr.show,#gd.show,#vm.show,#nm.show,#med.show,#picker.show';
+          const SHEETS = '#st.show,#mb.show,#sr.show,#gd.show,#vm.show,#nm.show,#med.show,#picker.show,#jl.show,#jv.show,#js.show';
           const canShow = () =>
             !window.__readerOpen &&
             rig.stop === 'study' &&
@@ -10394,15 +11680,16 @@ void main(){
             shapeLeaf(flip.bk, flip.dir, flip.p);
           }
           {
-            const half = (books[deskIdx].d.W - 0.14) / 2 + 0.09;
+            const half = (curBook().d.W - 0.14) / 2 + 0.09;
             const goal = portrait ? (focus ? 1 : -1) * half : 0;
             focusOffS += (goal - focusOffS) * (1 - Math.exp(-dtS * 6));
           }
           if (openT !== openGoal) {
             const step = dtS / (rmOn() ? 0.35 : openGoal ? 1.7 : 1.2);
             openT = openGoal > openT ? Math.min(openGoal, openT + step) : Math.max(openGoal, openT - step);
-            applyOpen(books[deskIdx], openT);
+            applyOpen(curBook(), openT);
             leanK = sm(openT);
+            if (openT === 0 && !openGoal && jmode) leaveJournal();
           }
 
           // camera drift
@@ -10434,7 +11721,7 @@ void main(){
             camera.getWorldDirection(_fw);
             const fRest = lerpN(
               cd,
-              _fv.copy(books[deskIdx].g.position).sub(camera.position).dot(_fw),
+              _fv.copy(curBook().g.position).sub(camera.position).dot(_fw),
               rig.studyK,
             ); // Bible at the study, otherwise the stop's own focus
             const fT = lerpN(fRest, cd, leanK);

@@ -5538,8 +5538,8 @@
                   g.fillRect(ox + JX0 + c.x + 1, 220 + 66 * c.row - 44, 3, 54);
                 }
               }
-            } else if (pg) {
-              // the empty page at the end: a very faint hint that you can start here
+            } else if (pg && m.idx === jUsed) {
+              // the first empty page: a very faint hint that you can start here
               g.fillStyle = 'rgba(70,50,30,.3)';
               g.font = 'italic 38px Georgia,serif';
               g.textAlign = 'center';
@@ -5688,6 +5688,9 @@
         const JW = 720; // width available for text
         const jm = document.createElement('canvas').getContext('2d'); // only used to measure text
         let JP = []; // the pages: { e: entry index (-1 = empty page), k: page number inside the entry, lines, l0: first line number }
+        const JBLOCK = 20; // the notebook always has a whole number of 20-page blocks
+        let jUsed = 0; // how many pages hold writing: the first empty page is JP[jUsed]
+        let jTotal = 0; // how many pages the notebook has now
         // Splits text into lines that fit the page width. Each line is { s, e }: character range in the text.
         function jWrap(text) {
           jm.font = jFont();
@@ -5726,7 +5729,9 @@
           }
           return out;
         }
-        // Puts entries in date order and rebuilds the list of pages. Always ends with one empty page to start a new entry on.
+        // Puts entries in date order and rebuilds the list of pages. Entries sit one after another from page 1, so there are never
+        // empty pages before an entry. After the writing come empty numbered pages, up to a full block of 20.
+        // When the writing reaches the end of the block, another 20 pages are added.
         function jRelayout() {
           JE.sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : a.c - b.c));
           JP = [];
@@ -5737,7 +5742,11 @@
             for (let k = 0; k < n; k++)
               JP.push({ e: ei, k, lines: en._l.slice(k * JLPP, (k + 1) * JLPP), l0: k * JLPP });
           });
-          JP.push({ e: -1 });
+          jUsed = JP.length;
+          const total = Math.max(JBLOCK, Math.ceil((jUsed + 1) / JBLOCK) * JBLOCK);
+          while (JP.length < total) JP.push({ e: -1 });
+          if (jTotal && total > jTotal && jmode) toast(JBLOCK + ' more pages added to your journal', 3000);
+          jTotal = total;
           if (jmode && view.loc.mode === 'jpage' && view.loc.s >= jSpreads())
             view.loc.s = jSpreads() - 1;
         }
